@@ -36,6 +36,8 @@ SLCamera::SLCamera()
       _acceleration(0, 0, 0),
       _unitScaling(1.0f)
 {  
+    cout << "cameraKonstruktor" << endl;
+
     _fovInit      = 0;
     _clipNear     = 0.1f;
     _clipFar      = 300.0f;
@@ -1024,6 +1026,8 @@ primary rays in Ray Tracing.
 */
 void SLCamera::eyeToPixelRay(SLfloat x, SLfloat y, SLRay* ray)
 {
+    cout << "eye to picel ray in SLCamera" << endl;
+
     SLVec3f  EYE, LA, LU, LR;
 
     // get camera vectors eye, lookAt, lookUp from view matrix

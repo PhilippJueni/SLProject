@@ -88,6 +88,7 @@ enum SLCmd
     cmdSceneRTSoftShadows,
     cmdSceneRTDoF,
     cmdSceneRTLens,
+    cmdSceneRTEye,
 
     cmdMultiSampleToggle,// Toggles multisampling
     cmdDepthTestToggle,  // Toggles the depth test flag

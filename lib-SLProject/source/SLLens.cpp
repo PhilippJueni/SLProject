@@ -57,8 +57,11 @@ SLLens::SLLens(double sphere,
     assert(slices >= 3 && "Error: Not enough slices.");
     assert(slices >  0 && "Error: Not enough stacks.");
 
-    SLfloat diopterBot = (SLfloat)sphere; // D1 = sphere
-    SLfloat diopterTop = (SLfloat)(sphere + cylinder); // D2 = sphere + cylinder
+    // /100 to let the user input values he is used to
+    int shrink = 100;
+
+    SLfloat diopterBot = (SLfloat)(sphere / shrink); // D1 = sphere
+    SLfloat diopterTop = (SLfloat)((sphere + cylinder) / shrink); // D2 = sphere + cylinder
 
     init(diopterBot, diopterTop, diameter, thickness, stacks, slices, mat);
 }
@@ -119,6 +122,9 @@ void SLLens::init(SLfloat diopterBot,
                   SLint slices, 
                   SLMaterial* mat)
 {
+    
+
+
     assert(slices >= 3 && "Error: Not enough slices.");
     assert(slices >  0 && "Error: Not enough stacks.");
 

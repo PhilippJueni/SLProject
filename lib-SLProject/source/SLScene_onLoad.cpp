@@ -21,6 +21,7 @@
 #include <SLAssimpImporter.h>
 
 #include <SLCamera.h>
+#include <SLGullstrandCamera.h>
 #include <SLLightSphere.h>
 #include <SLLightRect.h>
 #include <SLMesh.h>
@@ -406,7 +407,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         crate = new SLNode;
         crate->addMesh(crateMesh);
         crate->rotate(20, 0, 1, 0);
-        crate->translate(3.1, 0, -1, TS_World);
+        crate->translate(3.1f, 0.0f, -1.0f, TS_World);
         scene->addChild(crate);
         
         crate = new SLNode(crateMesh);
@@ -2024,7 +2025,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
     }
     else
     if (sceneName == cmdSceneRTLens) //.........................................
-	{
+    {
         name("Ray tracing: Lens test");
         info(sv,"Ray tracing lens test scene.");
 
@@ -2075,12 +2076,13 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         // Lens from eye prescription card   
         //SLNode* lensA = new SLNode(new SLLens(0.50f, -0.50f, 4.0f, 0.0f, 32, 32, "presbyopic", matLens));   // Weitsichtig
         //SLNode* lensB = new SLNode(new SLLens(-0.65f, -0.10f, 4.0f, 0.0f, 32, 32, "myopic", matLens));      // Kurzsichtig
+        //SLNode* lensDCopy = new SLNode(new SLLens(-3.35, 6.70, 1.0f, 0.1f, 32, 32, "presbyopic", matLens));    // Kurzsichtig
         //lensA->translate(-2, 1, -2, TS_Local);
         //lensB->translate(2, 1, -2, TS_Local);
 
         // Lens with radius
         //SLNode* lensC = new SLNode(new SLLens(5.0, 4.0, 4.0f, 0.0f, 32, 32, "presbyopic", matLens));        // Weitsichtig
-        SLNode* lensD = new SLNode(new SLLens(-15.0, -15.0, 1.0f, 0.1f, 32, 32, "myopic", matLens));          // Kurzsichtig
+        SLNode* lensD = new SLNode(new SLLens(-15.0f, -15.0f, 1.0f, 0.1f, 32, 32, "myopic", matLens));          // Kurzsichtig
         //lensC->translate(-2, 1, 2, TS_Local);
         lensD->translate(0, 6, 0, TS_Local);
 
@@ -2098,6 +2100,64 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         sv->camera(cam1);
         _root3D = scene;
     }
+    else
+    if (sceneName == cmdSceneRTEye) //.........................................
+    {
+        name("Human Eye Ray tracing");
+        info(sv, "Ray Tracing through a gullstrand eye.");
+
+        // Create textures and materials
+        SLGLTexture* texC = new SLGLTexture("VisionExample.png");
+
+        SLMaterial* mT = new SLMaterial("mT", texC, 0, 0, 0); mT->kr(0.5f);
+
+        #ifndef SL_GLES2
+            SLint numSamples = 10;
+        #else
+            SLint numSamples = 6;
+        #endif
+
+        // standard camera
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(0, 8, 0);
+        cam1->lookAt(0, 0, 0);
+        cam1->focalDist(6);
+        cam1->lensDiameter(0.4f);
+        cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->setInitialState();
+        
+        // Gullstrand camera
+        SLGullstrandCamera* cam2 = new SLGullstrandCamera;
+        cam2->position(2, 8, 0);
+        cam2->lookAt(0, 0, 0);
+        cam2->focalDist(6);
+        cam2->lensDiameter(0.4f);
+        cam2->lensSamples()->samples(numSamples, numSamples);
+        cam2->setInitialState();
+
+        cam2->eyeToPixelRay(1.0f, 1.0f, new SLRay);
+
+        SLLightSphere* light1 = new SLLightSphere(1, 6, 1, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+
+        SLNode* rect = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 20, 20, "Rect", mT));
+        rect->rotate(90, -1, 0, 0);
+        rect->translate(0, 0, -0.0f, TS_Local);
+
+        // Node
+        SLNode* scene = new SLNode;
+        scene->addChild(rect);
+        scene->addChild(light1);
+        scene->addChild(cam1);
+        scene->addChild(cam2);
+
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
+        //sv->camera(cam2);
+        _root3D = scene;
+    }
+
 
     // call onInitialize on all scene views
     for (SLint i = 0; i < _sceneViews.size(); ++i)
