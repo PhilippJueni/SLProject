@@ -258,7 +258,7 @@
     <ClInclude Include="..\include\SLInputEvent.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="SLGullstrandCamera.h">
+    <ClInclude Include="..\include\SLGullstrandCamera.h">
       <Filter>Nodes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -425,7 +425,7 @@
     <ClCompile Include="source\SLInputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="SLGullstrandCamera.cpp">
+    <ClCompile Include="source\SLGullstrandCamera.cpp">
       <Filter>Nodes</Filter>
     </ClCompile>
   </ItemGroup>
