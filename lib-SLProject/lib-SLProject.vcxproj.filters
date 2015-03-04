@@ -258,7 +258,7 @@
     <ClInclude Include="..\include\SLInputEvent.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="SLGullstrandCamera.h">
+    <ClInclude Include="..\include\SLGullstrandCamera.h">
       <Filter>Nodes</Filter>
     </ClInclude>
     <ClInclude Include="SLLensSurface.h">
