@@ -12,18 +12,16 @@
 
 #include <stdafx.h>
 #include "SLCamera.h"
-#include "SLRaytracer.h"
-#include "SLScene.h"
 
 //-----------------------------------------------------------------------------
-class SLGullstrandCamera : public SLCamera, public SLRaytracer
+class SLGullstrandCamera : public SLCamera
 {
 public:
     SLGullstrandCamera();
 
-    void        prepareImage();
     void        eyeToPixelRay(SLfloat x, SLfloat y, SLRay* ray);
-    SLbool      onMouseWheel(SLint delta, const SLKey mod);
+    void        drawMeshes(SLSceneView* sv);
+    void        addLens(SLNode* node,SLfloat position=0);
 };
 
 //-----------------------------------------------------------------------------
