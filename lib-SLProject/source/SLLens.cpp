@@ -116,21 +116,21 @@ SLLens::SLLens(SLfloat radiusBot,
 \param mat SLMaterial* The Material of the lens
 */
 void SLLens::init(SLfloat diopterBot,
-	SLfloat diopterTop,
-	SLfloat diameter,
-	SLfloat thickness,
-	SLint stacks,
-	SLint slices,
-	SLMaterial* mat)
+    SLfloat diopterTop,
+    SLfloat diameter,
+    SLfloat thickness,
+    SLint stacks,
+    SLint slices,
+    SLMaterial* mat)
 {
-	assert(slices >= 3 && "Error: Not enough slices.");
-	assert(slices > 0 && "Error: Not enough stacks.");
+    assert(slices >= 3 && "Error: Not enough slices.");
+    assert(slices > 0 && "Error: Not enough stacks.");
 
-	_diameter = diameter;
-	_thickness = thickness;
-	_stacks = stacks;
-	_slices = slices;
-	_pointOutput = false; // cout the coordinates of each point of the lens
+    _diameter = diameter;
+    _thickness = thickness;
+    _stacks = stacks;
+    _slices = slices;
+    _pointOutput = true; // cout the coordinates of each point of the lens
 
     // Gullstrand-Formel
     // D = D1 + D2 - delta * D1 * D2
@@ -146,7 +146,7 @@ void SLLens::init(SLfloat diopterBot,
     _radiusTop = (SLfloat) ((nOut - nLens) / diopterTop) * _diameter;
 
     if (_pointOutput)
-		std::cout << " radiusBot: " << _radiusBot <<
+        std::cout << " radiusBot: " << _radiusBot <<
                 " radiusTop: " << _radiusTop << endl;
 
     // generate lens
@@ -167,43 +167,15 @@ void SLLens::generateLens(SLfloat radiusBot, SLfloat radiusTop, SLMaterial* mat)
 
     if (_diameter > 0)
     {
-		/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		SLLensSurface* lensSurf = new SLLensSurface(_diameter, 1.0f, mat->kn(), 32, 32, "surface", mat);
-		
-		SLfloat yStart = -lensSurf->calcSagitta(radiusBot);		
-		SLfloat x = lensSurf->addSurface(radiusBot, 0, yStart, radiusBot - lensSurf->calcSagitta(radiusBot), -SL_HALFPI);
-		SLfloat betaAsin = _diameter / (2.0f * radiusTop);
-		betaAsin = (betaAsin > 1) ? 1 : betaAsin;  // correct rounding errors
-		betaAsin = (betaAsin < -1) ? -1 : betaAsin;// correct rounding errors
-		SLfloat currentRAD = SL_HALFPI - ((2.0f * (SLfloat)asin(betaAsin))*0.5f);
-		yStart = -radiusTop + lensSurf->calcSagitta(radiusTop);		
-		x = lensSurf->addSurface(radiusTop, x, yStart, -radiusTop + lensSurf->calcSagitta(radiusTop), currentRAD);
-		
-		
-
-		if (x == 0)
-			lensSurf->drawMesh();
-		else
-			cout << "error in lens calculation: (x = " << x << ")" << endl;
-		*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-
-		
         SLfloat x = generateLensBot(radiusBot);
         x = generateLensTop(radiusTop);
-		if (x == 0)
-		{
-			
-			buildMesh(mat);
-		}
-		else
-		{
-			std::cout << "error in lens calculation: (x = " << x << ")" << endl;
-		}
-		
+        if (x == 0)
+            buildMesh(mat);
+        else
+            std::cout << "error in lens calculation: (x = " << x << ")" << endl;
     }
     else
-		std::cout << "invalid lens diameter: " << _diameter << endl;
+        std::cout << "invalid lens diameter: " << _diameter << endl;
 }
 
 /*! 
@@ -250,15 +222,13 @@ SLfloat SLLens::generateLensBot(SLfloat radius)
 
         y = yStart1;
         // set start point
-		cout << "drawLens xStart: " << x << " yStart: " << y << endl;
-
         p.x = (SLfloat) x;
         p.y = (SLfloat) y;
         p.z = 0;
         _revPoints.push_back(p);
-        if (_pointOutput) cout << currentAlphaDEG << "  x: " << x << "  y: " << y << endl;
         
-		cout << "2. radius: " << radius << " x: " << x << " y: " << y << " yT: " << yTranslate1 << " Angle: " << currentAlphaRAD << endl;
+        if (_pointOutput)
+            cout << "2. radius: " << radius << " x: " << x << " y: " << y << " yT: " << yTranslate1 << " Angle: " << currentAlphaRAD << endl;
 
         // draw bottom part of the lens
         for (int i = 0; i < halfStacks; i++)
@@ -274,11 +244,7 @@ SLfloat SLLens::generateLensBot(SLfloat radius)
             if ((i + 1 == halfStacks) && (radius >= 0))
                 y = 0;
             else
-				cout << "sin: " << sin(currentAlphaRAD) << "rad: " << radiusAmount1 << "yT: " << yTranslate1;
                 y = ((sin(currentAlphaRAD)) * radiusAmount1 + yTranslate1);
-				cout << " y: " << y << " x: " << x << endl;
-
-            if (_pointOutput) cout << currentAlphaDEG << "  x: " << x << "  y: " << y << endl;
 
             // set point
             p.x = x;
@@ -289,7 +255,8 @@ SLfloat SLLens::generateLensBot(SLfloat radius)
     }
     else
     {
-		cout << "2. Plane radius: " << radius << " x: " << x << " y: " << 0 << endl;
+        if (_pointOutput)
+            cout << "2. Plane radius: " << radius << " x: " << x << " y: " << 0 << endl;
 
         SLfloat cutX = (_diameter / 2) / halfStacks;
 
@@ -304,8 +271,6 @@ SLfloat SLLens::generateLensBot(SLfloat radius)
             p.y = y;
             p.z = 0;
             _revPoints.push_back(p);
-            if (_pointOutput) cout << "0" << "  x: " << x << "  y: " << y << " _B" << endl;
-			cout << "B" << "  x: " << x << "  y: " << y << " _B" << endl;
         }
     }
     return x;
@@ -359,9 +324,8 @@ SLfloat SLLens::generateLensTop(SLfloat radius)
         p.y = (SLfloat) y;
         p.z = 0;
         _revPoints.push_back(p);
-        if (_pointOutput) cout << currentBetaDEG << "  x: " << x << "  y: " << y << endl;
-
-		cout << "3. radius: " << radius << " x: " << x << " y: " << y << " yT: " << yTranslate2 << " Angle: " << currentBetaRAD << endl;
+        if (_pointOutput)
+            cout << "3. radius: " << radius << " x: " << x << " y: " << y << " yT: " << yTranslate2 << " Angle: " << currentBetaRAD << endl;
 
         // draw top part of the lens
         for (int i = 0; i < halfStacks; i++)
@@ -382,10 +346,7 @@ SLfloat SLLens::generateLensTop(SLfloat radius)
             }
             else
                 x = cos(currentBetaRAD) * radiusAmount2;
-
-            if (_pointOutput) cout << currentBetaDEG << "  x: " << x << "  y: " << y << endl;
-			cout << "sin: " << sin(currentBetaRAD) << "rad: " << radiusAmount2 << "yT: " << yTranslate2;
-			cout << " y: " << y << " x: " << x << endl;
+            
             // set point
             p.x = x;
             p.y = y;
@@ -395,7 +356,8 @@ SLfloat SLLens::generateLensTop(SLfloat radius)
     }
     else
     {
-		cout << "3. Plane radius: " << radius << " x: " << x << " y: " << _thickness << endl;
+        if (_pointOutput)
+            cout << "3. Plane radius: " << radius << " x: " << x << " y: " << _thickness << endl;
 
         SLfloat cutX = x / halfStacks;
 
@@ -410,8 +372,6 @@ SLfloat SLLens::generateLensTop(SLfloat radius)
             p.y = y;
             p.z = 0;
             _revPoints.push_back(p);
-            if (_pointOutput) cout << "0" << "  x: " << x << "  y: " << y << " _T" << endl;
-			cout << "B2" << "  x: " << x << "  y: " << y << " _B2" << endl;
         }
     }
     return x;

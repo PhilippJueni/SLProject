@@ -122,7 +122,6 @@ SLfloat SLLensSurface::generateLensSurface(SLfloat radius,
     SLfloat startAngle
     )
 {
-    // TODO: check if lens has a deep
     SLfloat radiusAmount = std::fabs(radius);
     SLint halfStacks = _stacks / 2;
     SLfloat dAlphaRAD = (calcAngle(radius) * 0.5f) / halfStacks;
@@ -155,7 +154,7 @@ SLfloat SLLensSurface::generateLensSurface(SLfloat radius,
 
         if ((i + 1 == halfStacks))
         {
-            // x wird grösser bot                    
+            // x wird grösser bot
             if (oldX <= x)
             {
                 // y wird grösser bot konvex

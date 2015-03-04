@@ -34,6 +34,8 @@
 #include <SLText.h>
 #include <SLGrid.h>
 #include <SLLens.h>
+#include <SLLens2.h>
+#include <SLLensSurface.h>
 
 SLNode* SphereGroup(SLint, SLfloat, SLfloat, SLfloat, SLfloat, SLint, SLMaterial*, SLMaterial*);
 //-----------------------------------------------------------------------------
@@ -2039,6 +2041,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         // name, ambient, specular,	shininess, kr(reflectivity), kt(transparency), kn(refraction)
         SLMaterial* matLens = new SLMaterial("lens", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f);
         //SLGLShaderProg* sp1 = new SLGLShaderProgGeneric("RefractReflect.vert", "RefractReflect.frag");
+
         //matLens->shaderProg(sp1);
 
         #ifndef SL_GLES2
@@ -2082,8 +2085,8 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // Lens with radius
         //SLNode* lensC = new SLNode(new SLLens(5.0, 4.0, 4.0f, 0.0f, 32, 32, "presbyopic", matLens));        // Weitsichtig
-        SLNode* lensD = new SLNode(new SLLens(-15.0f, -15.0f, 1.0f, 0.1f, 32, 32, "myopic", matLens));          // Kurzsichtig
         //lensC->translate(-2, 1, 2, TS_Local);
+        SLNode* lensD = new SLNode(new SLLens(-15.0f, -15.0f, 1.0f, 0.1f, 32, 32, "myopic", matLens));          // Kurzsichtig
         lensD->translate(0, 6, 0, TS_Local);
 
         // Node
@@ -2110,12 +2113,25 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLGLTexture* texC = new SLGLTexture("VisionExample.png");
 
         SLMaterial* mT = new SLMaterial("mT", texC, 0, 0, 0); mT->kr(0.5f);
+        SLMaterial* matLens = new SLMaterial("lens", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f);
 
         #ifndef SL_GLES2
             SLint numSamples = 10;
         #else
             SLint numSamples = 6;
         #endif
+
+        // Gullstrand camera
+        SLGullstrandCamera* cam2 = new SLGullstrandCamera;
+        cam2->position(2, 8, 0);
+        cam2->lookAt(0, 0, 0);
+        cam2->focalDist(6);
+        cam2->lensDiameter(0.4f);
+        cam2->lensSamples()->samples(numSamples, numSamples);
+        cam2->setInitialState();
+
+        //cam2->addLens(new SLNode(new SLLens(2.0f, 2.0f, 1.8f, 0.1f, 32, 32, "lens", matLens)), 1.0);
+        //cam2->addLens(new SLNode(new SLLens(2.0f, -2.0f, 2.2f, 0.0f, 32, 32, "cornea", matLens)), 0.3);
 
         // standard camera
         SLCamera* cam1 = new SLCamera;
@@ -2126,14 +2142,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         cam1->lensSamples()->samples(numSamples, numSamples);
         cam1->setInitialState();
         
-        // Gullstrand camera
-        SLGullstrandCamera* cam2 = new SLGullstrandCamera;
-        cam2->position(2, 8, 0);
-        cam2->lookAt(0, 0, 0);
-        cam2->focalDist(6);
-        cam2->lensDiameter(0.4f);
-        cam2->lensSamples()->samples(numSamples, numSamples);
-        cam2->setInitialState();
+       
 
         cam2->eyeToPixelRay(1.0f, 1.0f, new SLRay);
 
@@ -2144,10 +2153,39 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLNode* rect = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 20, 20, "Rect", mT));
         rect->rotate(90, -1, 0, 0);
         rect->translate(0, 0, -0.0f, TS_Local);
+        
+        SLNode* lens = new SLLens2(-15.0f, -15.0f, 1.0f, 0.1f, 32, 32, "myopic", matLens);                  // Kurzsichtig
+        lens->translate(0, 6, 3, TS_Local);
+
+
+        SLLensSurface* lensSurf = new SLLensSurface(1.0f, 1.0f, 1.5f, 32, 32, "surface");
+        lensSurf->addBottom(4.0f);
+        lensSurf->setSpaceBetweenSurfaces(0.1f);
+        lensSurf->addTop(-4.0f);
+        lensSurf->setSpaceBetweenSurfaces(0.2f);
+        lensSurf->addBottom(2.0f);
+        lensSurf->setSpaceBetweenSurfaces(0.3f);
+        lensSurf->addTop(2.0f);
+        lensSurf->setSpaceBetweenSurfaces(0.4f);
+        lensSurf->addBottom(4.0f);
+        lensSurf->setSpaceBetweenSurfaces(0.5f);
+        lensSurf->addPlane(0.5f,0.6f);
+        lensSurf->buildMesh(matLens);
+        SLNode* lensSurface = new SLNode(lensSurf);
+        lensSurface->translate(0, 6, 0, TS_Local);
+
+        SLLensSurface* lensSurf2 = new SLLensSurface(1.0f, 1.0f, 1.5f, 32, 32, "surface");
+        lensSurf2->addBottom(4.0f);
+        lensSurf2->buildMesh(matLens);
+        SLNode* lensSurface2 = new SLNode(lensSurf2);
+        lensSurface2->translate(0, 7, 0, TS_Local);
 
         // Node
         SLNode* scene = new SLNode;
         scene->addChild(rect);
+        scene->addChild(lensSurface);
+        scene->addChild(lensSurface2);
+        scene->addChild(lens);
         scene->addChild(light1);
         scene->addChild(cam1);
         scene->addChild(cam2);
