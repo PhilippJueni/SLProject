@@ -17,7 +17,7 @@
 
 SLGullstrandCamera::SLGullstrandCamera()
 {
-    
+
 }
 
 void SLGullstrandCamera::addLens(SLNode* node, SLfloat position)
@@ -30,7 +30,7 @@ void SLGullstrandCamera::addLens(SLNode* node, SLfloat position)
 
 void SLGullstrandCamera::eyeToPixelRay(SLfloat x, SLfloat y, SLRay* ray)
 {
-	cout << "eyeToPixelRay SLGullstrandCamera" << endl;
+    cout << "eyeToPixelRay SLGullstrandCamera" << endl;
     SLCamera::eyeToPixelRay(x, y, ray);
 }
 

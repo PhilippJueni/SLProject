@@ -471,9 +471,13 @@
     <ClInclude Include="..\include\SLMaterial.h" />
     <ClInclude Include="..\include\SLMesh.h" />
     <ClInclude Include="SLGullstrandCamera.h" />
+    <ClInclude Include="SLLens2.h" />
+    <ClInclude Include="SLLensSurface.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SLGullstrandCamera.cpp" />
+    <ClCompile Include="source\SLGullstrandCamera.cpp" />
+    <ClCompile Include="source\SLLens2.cpp" />
+    <ClCompile Include="source\SLLensSurface.cpp" />
     <ClCompile Include="source\math\SLCurveBezier.cpp" />
     <ClCompile Include="source\math\SLPlane.cpp" />
     <ClCompile Include="source\SLAnimation.cpp" />

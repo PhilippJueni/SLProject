@@ -261,6 +261,12 @@
     <ClInclude Include="SLGullstrandCamera.h">
       <Filter>Nodes</Filter>
     </ClInclude>
+    <ClInclude Include="SLLensSurface.h">
+      <Filter>Nodes\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="SLLens2.h">
+      <Filter>Nodes\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SLAABBox.cpp">
@@ -425,8 +431,14 @@
     <ClCompile Include="source\SLInputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="SLGullstrandCamera.cpp">
+    <ClCompile Include="source\SLGullstrandCamera.cpp">
       <Filter>Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SLLensSurface.cpp">
+      <Filter>Nodes\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SLLens2.cpp">
+      <Filter>Nodes\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

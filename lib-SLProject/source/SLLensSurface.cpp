@@ -19,7 +19,7 @@ SLLensSurface::SLLensSurface(SLfloat diameter,
     SLfloat knTop,
     SLint stacks,
     SLint slices,
-    SLstring name ) : SLRevolver(name)
+    SLstring name) : SLRevolver(name)
 {
     _diameter = diameter;
     _knBot = knBot;
@@ -104,7 +104,6 @@ SLfloat SLLensSurface::addPlane(SLfloat xStart, SLfloat yStart)
         p.y = y;
         p.z = 0;
         _revPoints.push_back(p);
-        cout << "A" << "  x: " << x << "  y: " << y << " _A" << endl;
     }
     return x;
 }

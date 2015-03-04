@@ -64,7 +64,7 @@ SLLens2::SLLens2(double sphere,
     SLfloat diopterBot = (SLfloat)(sphere / shrink); // D1 = sphere
     SLfloat diopterTop = (SLfloat)((sphere + cylinder) / shrink); // D2 = sphere + cylinder
 
-    init(diopterBot, diopterTop, diameter, thickness, stacks, slices,name, mat);
+    init(diopterBot, diopterTop, diameter, thickness, stacks, slices, name, mat);
 }
 
 /*!
@@ -102,7 +102,7 @@ SLLens2::SLLens2(SLfloat radiusBot,
     SLfloat diopterBot = (SLfloat)((nLens - nOut) * diameter / radiusBot);
     SLfloat diopterTop = (SLfloat)((nOut - nLens) * diameter / radiusTop);
 
-    init(diopterBot, diopterTop, diameter, thickness, stacks, slices,name, mat);
+    init(diopterBot, diopterTop, diameter, thickness, stacks, slices, name, mat);
 }
 
 /*!
@@ -146,7 +146,7 @@ void SLLens2::init(SLfloat diopterBot,
     lensSurf->setSpaceBetweenSurfaces(thickness);
     lensSurf->addTop(_radiusTop);
     lensSurf->buildMesh(mat);
-    
+
     addMesh(lensSurf);
 }
 //-----------------------------------------------------------------------------

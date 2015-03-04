@@ -21,7 +21,7 @@ public:
 
     void        eyeToPixelRay(SLfloat x, SLfloat y, SLRay* ray);
     void        drawMeshes(SLSceneView* sv);
-    void        addLens(SLNode* node,SLfloat position=0);
+    void        addLens(SLNode* node, SLfloat position = 0);
 };
 
 //-----------------------------------------------------------------------------

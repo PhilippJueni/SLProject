@@ -53,8 +53,8 @@ public:
         SLint slices = 32,
         SLstring name = "Lens",
         SLMaterial* mat = 0);
-    
-    
+
+
 
     ~SLLens2() { ; }
 
@@ -67,13 +67,13 @@ private:
         SLint slices,
         SLstring name,
         SLMaterial *mat);
-    
+
     //SLint   _stacks;        //!< NO. of stacks 
     SLfloat _diameter;      //!< The diameter of the lens
     //SLfloat _thickness;     //!< The space between the primary planes of lens sides
     SLfloat _radiusBot;     //!< The radius of the bot (front) side of the lens
     SLfloat _radiusTop;     //!< The radius of the top (back) side of the lens
-    
+
 
 };
 //-----------------------------------------------------------------------------
