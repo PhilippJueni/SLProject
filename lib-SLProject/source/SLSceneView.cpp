@@ -1317,7 +1317,8 @@ SLbool SLSceneView::onCommand(const SLCmd cmd)
         case cmdSceneRTSoftShadows:
         case cmdSceneRTDoF:
         case cmdSceneRTLens:
-        case cmdSceneRTEye:         s->onLoad(this, (SLCmd)cmd); return false;
+        case cmdSceneRTEye:
+        case cmdSceneRTEye2:        s->onLoad(this, (SLCmd)cmd); return false;
 
         case cmdUseSceneViewCamera: switchToSceneViewCamera(); return true;
         case cmdStatsToggle:        _showStats = !_showStats; return true;
@@ -1593,6 +1594,7 @@ void SLSceneView::build2DMenus()
     mn3->addChild(new SLButton(this, "Depth of Field", f, cmdSceneRTDoF, true, curS==cmdSceneRTDoF, mn2));
     mn3->addChild(new SLButton(this, "Lens Test", f, cmdSceneRTLens, true, curS==cmdSceneRTLens, mn2));
     mn3->addChild(new SLButton(this, "Eye Test", f, cmdSceneRTEye, true, curS == cmdSceneRTEye, mn2));
+    mn3->addChild(new SLButton(this, "Ray Test", f, cmdSceneRTEye2, true, curS == cmdSceneRTEye2, mn2));
 
     mn2 = new SLButton(this, "Camera >", f); mn1->addChild(mn2);
    

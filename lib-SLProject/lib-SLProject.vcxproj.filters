@@ -431,14 +431,14 @@
     <ClCompile Include="source\SLInputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="source\SLGullstrandCamera.cpp">
-      <Filter>Nodes</Filter>
-    </ClCompile>
     <ClCompile Include="source\SLLensSurface.cpp">
       <Filter>Nodes\Meshes</Filter>
     </ClCompile>
     <ClCompile Include="source\SLLens2.cpp">
       <Filter>Nodes\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SLGullstrandCamera.cpp">
+      <Filter>Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

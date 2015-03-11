@@ -27,12 +27,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app-Demo-Qt", "app-Demo-Qt\
 		{CCC645D3-B20F-431C-824A-7895D6E404DF} = {CCC645D3-B20F-431C-824A-7895D6E404DF}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app-Demo-Android", "app-Demo-Android\app-Demo-Android.vcxproj", "{158CCAFB-7A8D-4555-91DF-99284FADABEB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{54BE2CB2-A4F9-481D-9C74-FAAE4CD0764D} = {54BE2CB2-A4F9-481D-9C74-FAAE4CD0764D}
-		{CCC645D3-B20F-431C-824A-7895D6E405DF} = {CCC645D3-B20F-431C-824A-7895D6E405DF}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app-Viewer-Qt", "app-Viewer-Qt\app-Viewer-Qt.vcxproj", "{52314CF7-DD1E-350A-82AB-B18DEC6D7072}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EA50E705-5113-49E5-B105-2512EDC8DDC6} = {EA50E705-5113-49E5-B105-2512EDC8DDC6}
@@ -155,24 +149,6 @@ Global
 		{54BE2CB2-A4BB-481D-9C74-FCCC07640000}.Release|x64.Build.0 = Release|x64
 		{54BE2CB2-A4BB-481D-9C74-FCCC07640000}.Release|x86.ActiveCfg = Release|Win32
 		{54BE2CB2-A4BB-481D-9C74-FCCC07640000}.Release|x86.Build.0 = Release|Win32
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|Android.ActiveCfg = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|Android.Build.0 = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|Android.Deploy.0 = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|Mixed Platforms.ActiveCfg = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|Mixed Platforms.Build.0 = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|Mixed Platforms.Deploy.0 = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|Win32.ActiveCfg = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|x64.ActiveCfg = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Debug|x86.ActiveCfg = Debug|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|Android.ActiveCfg = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|Android.Build.0 = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|Android.Deploy.0 = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|Mixed Platforms.ActiveCfg = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|Mixed Platforms.Build.0 = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|Mixed Platforms.Deploy.0 = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|Win32.ActiveCfg = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|x64.ActiveCfg = Release|Android
-		{158CCAFB-7A8D-4555-91DF-99284FADABEB}.Release|x86.ActiveCfg = Release|Android
 		{52314CF7-DD1E-350A-82AB-B18DEC6D7072}.Debug|Android.ActiveCfg = Debug|Win32
 		{52314CF7-DD1E-350A-82AB-B18DEC6D7072}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{52314CF7-DD1E-350A-82AB-B18DEC6D7072}.Debug|Mixed Platforms.Build.0 = Debug|Win32

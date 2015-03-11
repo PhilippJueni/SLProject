@@ -2130,8 +2130,8 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         cam2->lensSamples()->samples(numSamples, numSamples);
         cam2->setInitialState();
 
-        //cam2->addLens(new SLNode(new SLLens(2.0f, 2.0f, 1.8f, 0.1f, 32, 32, "lens", matLens)), 1.0);
-        //cam2->addLens(new SLNode(new SLLens(2.0f, -2.0f, 2.2f, 0.0f, 32, 32, "cornea", matLens)), 0.3);
+        cam2->addLens(new SLNode(new SLLens(2.0f, 2.0f, 1.8f, 0.1f, 32, 32, "lens", matLens)), 1.0);
+        cam2->addLens(new SLNode(new SLLens(2.0f, -2.0f, 2.2f, 0.0f, 32, 32, "cornea", matLens)), 0.3);
 
         // standard camera
         SLCamera* cam1 = new SLCamera;
@@ -2142,9 +2142,6 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         cam1->lensSamples()->samples(numSamples, numSamples);
         cam1->setInitialState();
         
-       
-
-        cam2->eyeToPixelRay(1.0f, 1.0f, new SLRay);
 
         SLLightSphere* light1 = new SLLightSphere(1, 6, 1, 0.1f);
         light1->attenuation(0, 0, 1);
@@ -2183,9 +2180,9 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         // Node
         SLNode* scene = new SLNode;
         scene->addChild(rect);
-        scene->addChild(lensSurface);
-        scene->addChild(lensSurface2);
-        scene->addChild(lens);
+        //scene->addChild(lensSurface);
+        //scene->addChild(lensSurface2);
+        //scene->addChild(lens);
         scene->addChild(light1);
         scene->addChild(cam1);
         scene->addChild(cam2);
@@ -2193,6 +2190,51 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
         sv->camera(cam1);
         //sv->camera(cam2);
+        _root3D = scene;
+    }
+    if (sceneName == cmdSceneRTEye2) //.........................................
+    {
+        name("Human Eye Ray tracing");
+        info(sv, "Ray Tracing through a gullstrand eye.");
+
+        // Create textures and materials
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* mT = new SLMaterial("mT", texC, 0, 0, 0); mT->kr(0.5f);
+
+#ifndef SL_GLES2
+        SLint numSamples = 10;
+#else
+        SLint numSamples = 6;
+#endif
+
+        // standard camera
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(0, 8, 0);
+        cam1->lookAt(0, 0, 0);
+        cam1->focalDist(6);
+        cam1->lensDiameter(0.4f);
+        cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->setInitialState();
+
+
+        SLLightSphere* light1 = new SLLightSphere(1, 6, 1, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+
+
+
+        SLNode* rect = new SLNode(new SLRectangle(SLVec2f(-1, -1), SLVec2f(1, 1), 10, 10, "Rect", mT));
+        rect->rotate(90, -1, 0, 0);
+        rect->translate(0, 0, -0.0f, TS_Local);
+
+        // Node
+        SLNode* scene = new SLNode;
+        scene->addChild(rect);
+        scene->addChild(light1);
+        scene->addChild(cam1);
+
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
         _root3D = scene;
     }
 

@@ -471,8 +471,6 @@
     <ClInclude Include="..\include\SLLight.h" />
     <ClInclude Include="..\include\SLMaterial.h" />
     <ClInclude Include="..\include\SLMesh.h" />
-<<<<<<< HEAD
-    <ClInclude Include="SLGullstrandCamera.h" />
     <ClInclude Include="SLLens2.h" />
     <ClInclude Include="SLLensSurface.h" />
   </ItemGroup>
@@ -480,17 +478,14 @@
     <ClCompile Include="source\SLGullstrandCamera.cpp" />
     <ClCompile Include="source\SLLens2.cpp" />
     <ClCompile Include="source\SLLensSurface.cpp" />
-=======
   </ItemGroup>
   <ItemGroup>
->>>>>>> origin/master
     <ClCompile Include="source\math\SLCurveBezier.cpp" />
     <ClCompile Include="source\math\SLPlane.cpp" />
     <ClCompile Include="source\SLAnimation.cpp" />
     <ClCompile Include="source\SLAnimManager.cpp" />
     <ClCompile Include="source\SLAnimPlayback.cpp" />
     <ClCompile Include="source\SLAnimTrack.cpp" />
-    <ClCompile Include="source\SLGullstrandCamera.cpp" />
     <ClCompile Include="source\SLInputDevice.cpp" />
     <ClCompile Include="source\SLInputManager.cpp" />
     <ClCompile Include="source\SLJoint.cpp" />
