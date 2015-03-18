@@ -390,6 +390,7 @@ SLbool SLSceneView::onPaint()
         {   case renderGL: camUpdated = draw3DGL(s->_elapsedTimeMS); break;
             case renderRT: camUpdated = draw3DRT(); break;
             case renderPT: camUpdated = draw3DPT(); break;
+            case renderHE: camUpdated = draw3DHE(); break;
         }
     };
 
@@ -1374,6 +1375,8 @@ SLbool SLSceneView::onCommand(const SLCmd cmd)
         case cmdPT10000: startPathtracing(5, 100000); return true;
         case cmdPTSaveImage: _pathtracer.saveImage(); return true;
 
+        case cmdHERT5: startHumanEyeRT(5); return true;
+
         default: break;
    }
 
@@ -1672,6 +1675,7 @@ void SLSceneView::build2DMenus()
     mn2 = new SLButton(this, "Renderer >", f);
     mn1->addChild(mn2);
     mn2->addChild(new SLButton(this, "Ray tracing", f, cmdRT5, false, false, 0, true));
+    mn2->addChild(new SLButton(this, "Human Eye Ray Tracing", f, cmdHERT5, false, false, 0, true));
     #ifndef SL_GLES2
     mn2->addChild(new SLButton(this, "Path tracing", f, cmdPT10, false, false, 0, true));
     #else
@@ -1736,6 +1740,22 @@ void SLSceneView::build2DMenus()
     mn1->setPosRec(SLButton::minMenuPos.x, SLButton::minMenuPos.y);
     mn1->updateAABBRec();
     s->_menuPT = mn1;
+
+    // Build Human Eye ray tracing menu
+    SLCol3f red(0.5f,0.0f,0.0f);
+   
+    mn1 = new SLButton(this, ">", f, cmdMenu, false, false, 0, true,  0, 0, red, 0.3f, centerCenter);
+    mn1->drawBits()->off(SL_DB_HIDDEN);
+   
+    mn1->addChild(new SLButton(this, "OpenGL Rendering", f, cmdRenderOpenGL, false, false, 0, true,  0, 0, red));
+    mn1->addChild(new SLButton(this, "Rendering Depth 5", f, cmdHERT5, false, false, 0, true,  0, 0, red));
+
+    // Init RT menu
+    _stateGL->modelViewMatrix.identity();
+    mn1->setSizeRec();
+    mn1->setPosRec(SLButton::minMenuPos.x, SLButton::minMenuPos.y);
+    mn1->updateAABBRec();
+    s->_menuHERT = mn1;
 
     build2DMsgBoxes(); 
 
@@ -2022,6 +2042,63 @@ SLbool SLSceneView::draw3DRT()
 
     // Refresh the render image during RT
     _raytracer.renderImage();
+
+    // React on the stop flag (e.g. ESC)
+    if(_stopRT)
+    {   _renderType = renderGL;
+        SLScene* s = SLScene::current;
+        s->menu2D(s->_menuGL);
+        s->menu2D()->closeAll();
+        updated = true;
+    }
+
+    return updated;
+}
+//-----------------------------------------------------------------------------
+/*!
+Starts the ray tracing & sets the RT menu
+*/
+void SLSceneView::startHumanEyeRT(SLint maxDepth)
+{  
+    SLScene* s = SLScene::current;
+    _renderType = renderHE;
+    _stopRT = false;
+    _humanEyeRT.maxDepth(maxDepth);
+    _humanEyeRT.aaSamples(_doMultiSampling?3:1);
+    s->_menu2D = s->_menuHERT;
+}
+//-----------------------------------------------------------------------------
+/*!
+SLSceneView::updateAndRT3D starts the raytracing or refreshes the current RT
+image during rendering. The function returns true if an animation was done 
+prior to the rendering start.
+*/
+SLbool SLSceneView::draw3DHE()
+{
+    SLbool updated = false;
+   
+    // if the raytracer not yet got started
+    if (_humanEyeRT.state()==rtReady)
+    {
+        SLScene* s = SLScene::current;
+
+        // Update transforms and aabbs
+        s->root3D()->needUpdate();
+
+        // Do software skinning on all changed skeletons
+        for (SLuint i=0; i<s->meshes().size(); ++i) 
+        {   
+            s->meshes()[i]->updateAccelStruct();
+        }
+
+        // Start raytracing
+        if (_humanEyeRT.distributed())
+             _humanEyeRT.renderDistrib(this);
+        else _humanEyeRT.renderClassic(this);
+    }
+
+    // Refresh the render image during RT
+    _humanEyeRT.renderImage();
 
     // React on the stop flag (e.g. ESC)
     if(_stopRT)

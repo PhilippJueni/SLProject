@@ -18,6 +18,7 @@
 #include <SLEventHandler.h>
 #include <SLRaytracer.h>
 #include <SLPathtracer.h>
+#include <SLHumanEyeRT.h>
 #include <SLAABBox.h>
 #include <SLDrawBits.h>
 #include <SLGLOculusFB.h>
@@ -61,6 +62,7 @@ class SLSceneView: public SLObject
 {   friend class SLNode;
     friend class SLRaytracer;
     friend class SLPathtracer;
+    friend class SLHumanEyeRT;
    
     public:           
                             SLSceneView     ();
@@ -124,6 +126,7 @@ class SLSceneView: public SLObject
             void            draw2DGLAll     ();
             SLbool          draw3DRT        ();
             SLbool          draw3DPT        ();
+            SLbool          draw3DHE        ();
             
             // SceneView camera
             void            initSceneViewCamera(const SLVec3f& dir = -SLVec3f::AXISZ, 
@@ -142,6 +145,7 @@ class SLSceneView: public SLObject
             SLstring        windowTitle         ();
             void            startRaytracing     (SLint maxDepth);
             void            startPathtracing    (SLint maxDepth, SLint samples);
+            void            startHumanEyeRT     (SLint maxDepth);
             void            printStats          () {_stats.print();}
 
             // Callback routines
@@ -253,6 +257,8 @@ class SLSceneView: public SLObject
 
             SLPathtracer    _pathtracer;        //!< Pathtracer
             SLbool          _stopPT;            //!< Flag to stop the PT 
+
+            SLHumanEyeRT    _humanEyeRT;         //!< Human eye raytracer
 
 
             // temporary test stuff

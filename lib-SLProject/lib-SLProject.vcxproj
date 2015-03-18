@@ -407,6 +407,7 @@
     <ClInclude Include="..\include\SLAssimpImporter.h" />
     <ClInclude Include="..\include\SLAverage.h" />
     <ClInclude Include="..\include\SLGullstrandCamera.h" />
+    <ClInclude Include="..\include\SLHumanEyeRT.h" />
     <ClInclude Include="..\include\SLInputDevice.h" />
     <ClInclude Include="..\include\SLInputEvent.h" />
     <ClInclude Include="..\include\SLInputManager.h" />
@@ -479,6 +480,7 @@
   <ItemGroup>
     <ClCompile Include="source\MyRectangle.cpp" />
     <ClCompile Include="source\SLGullstrandCamera.cpp" />
+    <ClCompile Include="source\SLHumanEyeRT.cpp" />
     <ClCompile Include="source\SLLens2.cpp" />
     <ClCompile Include="source\SLLensSurface.cpp" />
   </ItemGroup>

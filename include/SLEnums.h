@@ -34,7 +34,8 @@ enum SLRenderer
 {
     renderGL=0,
     renderRT=1,
-    renderPT=2
+    renderPT=2,
+    renderHE=3
 };
 
 //-----------------------------------------------------------------------------
@@ -163,7 +164,8 @@ enum SLCmd
     cmdPT1000,           // Do pathtracing 1000 Rays
     cmdPT5000,           // Do pathtracing 5000 Rays
     cmdPT10000,          // Do pathtracing 10000 Rays
-    cmdPTSaveImage       // Save the ray tracing image
+    cmdPTSaveImage,      // Save the ray tracing image
+    cmdHERT5             // Start Human Eye RT
 };
 
 //-----------------------------------------------------------------------------

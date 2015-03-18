@@ -132,6 +132,7 @@ class SLScene: public SLObject
             SLButton*       _menuGL;            //!< Root button node for OpenGL menu
             SLButton*       _menuRT;            //!< Root button node for RT menu
             SLButton*       _menuPT;            //!< Root button node for PT menu
+            SLButton*       _menuHERT;          //!< Root button node for Human Eye RT menu
             SLButton*       _btnAbout;          //!< About button
             SLButton*       _btnHelp;           //!< Help button
             SLButton*       _btnCredits;        //!< Credits button
