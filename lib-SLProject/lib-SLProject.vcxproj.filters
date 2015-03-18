@@ -261,10 +261,16 @@
     <ClInclude Include="..\include\SLGullstrandCamera.h">
       <Filter>Nodes</Filter>
     </ClInclude>
-    <ClInclude Include="SLLensSurface.h">
+    <ClInclude Include="..\include\SLSurface.h">
       <Filter>Nodes\Meshes</Filter>
     </ClInclude>
-    <ClInclude Include="SLLens2.h">
+    <ClInclude Include="..\include\SLLensSurface.h">
+      <Filter>Nodes\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SLLens2.h">
+      <Filter>Nodes\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyRectangle.h">
       <Filter>Nodes\Meshes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -439,6 +445,12 @@
     </ClCompile>
     <ClCompile Include="source\SLGullstrandCamera.cpp">
       <Filter>Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SLSurface.cpp">
+      <Filter>Nodes\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MyRectangle.cpp">
+      <Filter>Nodes\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

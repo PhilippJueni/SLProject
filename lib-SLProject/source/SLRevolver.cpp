@@ -24,7 +24,7 @@ SLRevolver::SLRevolver(SLVVec3f revolvePoints,
                        SLint    slices,
                        SLbool   smoothFirst, SLbool   smoothLast, 
                        SLstring name,
-                       SLMaterial* mat) : SLMesh(name)
+                       SLMaterial* mat) : SLSurface(name)
 {  
     assert(revolvePoints.size() >= 2 && "Error: Not enough revolve points.");
     assert(revolveAxis!=SLVec3f::ZERO && "Error axis is a zero vector.");
