@@ -12,7 +12,6 @@
 #define SLREVOLVER_H
 
 #include <SLMesh.h>
-#include <SLSurface.h>
 
 //-----------------------------------------------------------------------------
 //! SLRevolver is an SLMesh object built out of revolving points.
@@ -24,7 +23,7 @@ If all points in the array _revPoints are different the normals will be
 smoothed. If two consecutive points are identical the normals will define a
 hard edge. Texture coords. are cylindrically mapped.
 */      
-class SLRevolver: public SLSurface 
+class SLRevolver: public SLMesh 
 {  public:                    
                             //! ctor for generic revolver mesh
                             SLRevolver (SLVVec3f revolvePoints,
@@ -36,7 +35,7 @@ class SLRevolver: public SLSurface
                                         SLMaterial* mat = 0);
 
                             //! ctor for derived revolver shapes
-                            SLRevolver  (SLstring name) : SLSurface(name) {;}
+                            SLRevolver  (SLstring name) : SLMesh(name) {;}
                            ~SLRevolver  (){;}
                              
             void           buildMesh   (SLMaterial* mat=0);

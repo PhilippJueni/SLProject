@@ -30,7 +30,8 @@ SLMaterial::SLMaterial(const SLchar* name,
                        SLfloat shininess, 
                        SLfloat kr, 
                        SLfloat kt, 
-                       SLfloat kn) : SLObject(name)
+                       SLfloat kn,
+                       SLfloat knB) : SLObject(name)
 {
     _ambient = _diffuse = amdi;
     _specular = spec;
@@ -41,6 +42,7 @@ SLMaterial::SLMaterial(const SLchar* name,
     _kr = kr;
     _kt = kt;
     _kn = kn;
+    _knB = knB; // if knB is set, the material is considerad as a surface to refract.
    
     // sync the transparency coeffitient with the alpha value or vice versa
     if (_kt!=0) _diffuse.w = 1.0f - _kt;

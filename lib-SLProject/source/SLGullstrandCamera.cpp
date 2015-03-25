@@ -20,6 +20,7 @@ SLGullstrandCamera::SLGullstrandCamera()
 
 }
 
+
 void SLGullstrandCamera::addLens(SLNode* node, SLfloat position)
 {
     node->rotate(90, 1, 0, 0, TS_Local);
@@ -28,6 +29,7 @@ void SLGullstrandCamera::addLens(SLNode* node, SLfloat position)
     
 }
 
+/*
 void SLGullstrandCamera::addSurface(SLSurface* surf, SLfloat position)
 {
     _surfaces.push_back(surf);
@@ -48,7 +50,20 @@ void SLGullstrandCamera::addLSurface(SLSurface* surf, SLfloat position)
     node->translate(0, position, 0, TS_Local);
     addChild(node);
 }
+*/
 
+void SLGullstrandCamera::addSurface(SLMesh* mesh, SLfloat position)
+{
+    _meshes.push_back(mesh);
+    // todo: check that it is a surface
+    
+
+    SLNode *node = new SLNode(mesh);
+    node->translate(0, 0, position, TS_Local);
+    addChild(node);
+}
+
+/*
 void SLGullstrandCamera::renderClassic(SLSceneView* sv)
 {
     
@@ -135,7 +150,7 @@ void SLGullstrandCamera::prepareImage()
 
     // get camera vectors eye, lookAt, lookUp
     updateAndGetVM().lookAt(&_EYE, &_LA, &_LU, &_LR);
-    /*
+    
     if (_cam->projection() == monoOrthographic)
     {   /*
         In orthographic projection the bottom-left vector (_BL) points
@@ -152,12 +167,12 @@ void SLGullstrandCamera::prepareImage()
         _BL = _EYE - hw*_LR - hh*_LU + _pxSize / 2 * _LR - _pxSize / 2 * _LU;
     }
     else
-    {  */ /*
-        In perspective projection the bottom-left vector (_BL) points
-        from the eye to the center of the bottom-left pixel on a projection
-        plan in focal distance. See also the computergraphics script about
-        primary ray calculation.
-        */
+    {
+        // In perspective projection the bottom-left vector (_BL) points
+        // from the eye to the center of the bottom-left pixel on a projection
+        // plan in focal distance. See also the computergraphics script about
+        // primary ray calculation.
+        
         // calculate half window width & height in world coords
         SLfloat hh = tan(SL_DEG2RAD* fov()*0.5f) * focalDist();
         SLfloat hw = hh * _sv->scrWdivH();
@@ -216,13 +231,12 @@ void SLGullstrandCamera::setPrimaryRay(SLfloat x, SLfloat y, SLRay* primaryRay)
 }
 SLCol4f SLGullstrandCamera::traceClassic(SLRay* ray)
 {
-    /*!
-    This method is the classic recursive ray tracing method that checks the scene
-    for intersection. If the ray hits an object the local color is calculated and
-    if the material is reflective and/or transparent new rays are created and
-    passed to this trace method again. If no object got intersected the
-    background color is return.
-    */
+    // This method is the classic recursive ray tracing method that checks the scene
+    // for intersection. If the ray hits an object the local color is calculated and
+    // if the material is reflective and/or transparent new rays are created and
+    // passed to this trace method again. If no object got intersected the
+    // background color is return.
+    
     SLScene* s = SLScene::current;
     SLCol4f color(s->backColor());
 
@@ -374,7 +388,7 @@ SLCol4f SLGullstrandCamera::shade(SLRay* ray)
     return localColor;
     
 }
-
+*/
 //-----------------------------------------------------------------------------
 void SLGullstrandCamera::drawMeshes(SLSceneView* sv)
 {

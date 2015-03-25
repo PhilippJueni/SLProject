@@ -6,7 +6,7 @@
 #include "SLSurface.h"
 
 
-class MyRectangle : public SLSurface
+class MyRectangle : public SLMesh
 {
 public:
     MyRectangle(SLVec2f min, SLVec2f max,

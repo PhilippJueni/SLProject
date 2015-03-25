@@ -21,7 +21,7 @@
 MyRectangle::MyRectangle(SLVec2f min, SLVec2f max,
     SLuint resX, SLuint resY,
     SLstring name,
-    SLMaterial* mat) : SLSurface(name)
+    SLMaterial* mat) : SLMesh(name)
 {
     assert(min != max);
     assert(resX>0);

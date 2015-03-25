@@ -1,3 +1,4 @@
+/*
 #ifndef SLSURFACE_H
 #define SLSURFACE_H
 
@@ -8,6 +9,7 @@
 
 class SLSurface : public SLMesh
 {
+    /*
 public: 
     SLSurface(SLstring name);
 
@@ -22,6 +24,9 @@ protected:
 
 private:
     SLMesh _mesh;
+    
 };
 //-----------------------------------------------------------------------------
 #endif //SLSURFACE_H
+
+*/

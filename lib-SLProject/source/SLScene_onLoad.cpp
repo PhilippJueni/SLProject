@@ -2195,6 +2195,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         //sv->camera(cam2);
         _root3D = scene;
     }
+    else
     if (sceneName == cmdSceneRTEye2) //.........................................
     {
         name("Human Eye Ray tracing");
@@ -2236,18 +2237,21 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         cam2->setInitialState();
                 
         MyRectangle* rect = new MyRectangle(SLVec2f(-1, -1), SLVec2f(1, 1), 1, 1, "Rect", mT);
-        rect->setSurface(1.0f, 1.5f);
-        cam2->addSurface( rect, -1);
+        //rect->setSurface(1.0f, 1.5f);
+        //cam2->addSurface( rect, -1);
+        cam2->addSurface(rect, -1);
         
         //MyRectangle* rect2 = new MyRectangle(SLVec2f(-1, -1), SLVec2f(1, 1), 1, 1, "Rect", mT);
         //rect2->setSurface(1.5f, 1.0f);
         //cam2->addSurface(rect2, -1.5);
 
+        /*
         SLLensSurface *lensSurf = new SLLensSurface(2.0f, 1.0f, 1.5f, 32, 32, "Lens");
         lensSurf->addBottom( -2.0f );
         lensSurf->setSurface(1.5f, 1.0f);
         lensSurf->buildMesh(mT);
         cam2->addLSurface(lensSurf, -1.5);
+        */
         
         //SLNode* node = new SLNode( rect );
         //node->rotate(90, -1, 0, 0);
@@ -2265,6 +2269,87 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         sv->camera(cam1);
         //sv->camera(cam2);
         //cam2->renderClassic(sv);
+        _root3D = scene;
+    }
+    else
+    if (sceneName == cmdSceneRTEye3) //.........................................
+    {
+        name("Human Eye Ray tracing");
+        info(sv, "HERT Cube");
+
+
+#ifndef SL_GLES2
+        SLint numSamples = 10;
+#else
+        SLint numSamples = 6;
+#endif
+
+        // Create textures and materials
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* matBack = new SLMaterial("matBack", texC);
+        SLMaterial* matBox  = new SLMaterial("matBox", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f);
+        // Front: kn = 1.0f, knB = 1.5f
+        SLMaterial* matRectFro = new SLMaterial("matRectFro", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
+        SLMaterial* matRectBac = new SLMaterial("matRectBac", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
+        SLMaterial* matRectLef = new SLMaterial("matRectLef", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
+        SLMaterial* matRectRig = new SLMaterial("matRectRig", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
+        SLMaterial* matRectTop = new SLMaterial("matRectTop", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
+        SLMaterial* matRectBot = new SLMaterial("matRectBot", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
+        
+
+        
+        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-2, -3), SLVec2f(5, 4), 20, 20, "Rect", matBack));
+        background->translate(0, 0, -3.0f, TS_Local);
+
+        SLLightSphere* light1 = new SLLightSphere(1.5, 2, 2, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+        // standard camera
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(1.5, 0, 4);
+        cam1->lookAt(1.5, 0, 0);
+        cam1->focalDist(6);
+        cam1->lensDiameter(0.4f);
+        cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->setInitialState();
+
+        SLNode* rectFront = new SLNode(new MyRectangle(SLVec2f(0, 0), SLVec2f(1, 1), 1, 1, "Front", matRectFro));
+        rectFront->translate(0, 0, 0); 
+        rectFront->rotate(360, 0, 1, 0);
+        SLNode* rectBack = new SLNode(new MyRectangle(SLVec2f(0, 0), SLVec2f(1, 1), 1, 1, "Back", matRectBac));
+        rectBack->translate(1, 0, -1);
+        rectBack->rotate(180, 0, 1, 0);
+        SLNode* rectLeft = new SLNode(new MyRectangle(SLVec2f(0, 0), SLVec2f(1, 1), 1, 1, "Left", matRectLef));
+        rectLeft->translate(0, 0, -1);
+        rectLeft->rotate(-90, 0, 1, 0);
+        SLNode* rectRright = new SLNode(new MyRectangle(SLVec2f(0, 0), SLVec2f(1, 1), 1, 1, "Right", matRectRig));
+        rectRright->translate(1, 0, 0);
+        rectRright->rotate(90, 0, 1, 0);
+        SLNode* rectTop = new SLNode(new MyRectangle(SLVec2f(0, 0), SLVec2f(1, 1), 1, 1, "Top", matRectTop));
+        rectTop->translate(0, 1, 0);
+        rectTop->rotate(-90, 1, 0, 0);
+        SLNode* rectBot = new SLNode(new MyRectangle(SLVec2f(0, 0), SLVec2f(1, 1), 1, 1, "Bottom", matRectBot));
+        rectBot->translate(0, 0, -1);
+        rectBot->rotate(90, 1, 0, 0);
+
+        SLNode* box = new SLNode(new SLBox(SLVec3f(0, 0, -1), SLVec3f(1, 1, 0), "Box", matBox));
+        box->translate(2, 0, 0);
+
+        // Node
+        SLNode* scene = new SLNode;
+        scene->addChild(background); 
+        scene->addChild(light1);
+        scene->addChild(cam1);
+        scene->addChild(rectTop);
+        scene->addChild(rectBot);
+        scene->addChild(rectLeft);
+        scene->addChild(rectRright);
+        scene->addChild(rectFront);
+        scene->addChild(rectBack);
+        scene->addChild(box);
+
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
         _root3D = scene;
     }
 

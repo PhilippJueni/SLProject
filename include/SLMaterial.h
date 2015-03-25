@@ -37,7 +37,8 @@ class SLMaterial : public SLObject
                                        SLfloat shininess=100.0f,
                                        SLfloat kr=0.0, 
                                        SLfloat kt=0.0f, 
-                                       SLfloat kn=1.0f);
+                                       SLfloat kn=1.0f,
+                                       SLfloat knB=0.0f);
                            
                             //! Ctor for textures
                             SLMaterial(const SLchar* name,
@@ -90,7 +91,9 @@ class SLMaterial : public SLObject
                                                               _diffuse.w  = 1.0f-kt;
                                                               _specular.w = 1.0f-kt;}
             void            kn              (SLfloat kn)      {assert(kn>=0.0f);
-                                                              _kn = kn;}  
+                                                              _kn = kn;}
+            void            knB             (SLfloat knB)     {assert(knB >= 0.0f);
+                                                              _knB = knB;}
             void            program      (SLGLProgram* sp){_program = sp;}
             
             // Getters
@@ -104,6 +107,7 @@ class SLMaterial : public SLObject
             SLfloat         kr              () {return _kr;}
             SLfloat         kt              () {return _kt;}
             SLfloat         kn              () {return _kn;}
+            SLfloat         knB             () {return _knB;}
             SLVGLTexture&   textures        () {return _textures;}
             SLGLProgram*    program         () {return _program;}
 
@@ -127,6 +131,7 @@ class SLMaterial : public SLObject
             SLfloat         _kr;            //!< reflection coefficient 0.0 - 1.0
             SLfloat         _kt;            //!< transmission coefficient 0.0 - 1.0
             SLfloat         _kn;            //!< refraction index
+            SLfloat         _knB;           //!< refraction index backside (only if refraction on surface)
             SLVGLTexture    _textures;      //!< vector of texture pointers
             SLGLProgram*    _program;       //!< pointer to a GLSL shader program
 

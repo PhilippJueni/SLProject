@@ -1,14 +1,11 @@
-
-
 #include <stdafx.h>           // precompiled headers
 #ifdef SL_MEMLEAKDETECT       // set in SL.h for debug config only
 #include <debug_new.h>        // memory leak detector
 #endif
 
-
+/*
 #include "stdafx.h"
 #include "SLSurface.h"
-
 
 SLSurface::SLSurface(SLstring name)
 {
@@ -26,15 +23,10 @@ void SLSurface::setSurface(SLfloat knIn, SLfloat knOut)
     cout << "asdf" << endl;
 }
 
-/*!
-Intersects the nodes meshes with the given ray. The intersection
-test is only done if the AABB is intersected. The ray-mesh intersection is
-done in the nodes object space. The rays origin and direction is therefore
-transformed into the object space.
-*/
+
 bool SLSurface::hitRec2(SLGullstrandRay* ray)
 {
-    /*
+    
     assert(ray != 0);
 
     // Do not test hidden nodes
@@ -81,9 +73,9 @@ bool SLSurface::hitRec2(SLGullstrandRay* ray)
     }
 
     return wasHit;
-    */
+    
     return false;
 }
 
-
 //-----------------------------------------------------------------------------
+*/

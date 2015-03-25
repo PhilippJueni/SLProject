@@ -236,6 +236,96 @@ void SLRay::refract(SLRay* refracted)
     refracted->y = y;
     depthReached = refracted->depth;
 }
+
+/*!
+SLRay::refract calculates a secondary refracted ray, starting at the
+intersection point. All vectors must be normalized vectors, so the refracted
+vector T will be a unit vector too. If total internal refraction occurs a
+reflected ray is calculated instead.
+Index of refraction eta = Kn_Source/Kn_Destination (Kn_Air = 1.0)
+*/
+void SLRay::refractHE(SLRay* refracted)
+{
+    if (!hitMat->knB() == 0.0f)
+    {
+        SLVec3f T;   // refracted direction
+        SLfloat eta; // refraction coefficient
+
+        // Calculate index of refraction eta = Kn_Source/Kn_Destination
+        eta = hitMat->knB() / hitMat->kn();
+
+        //cout << hitMat->name() << endl;
+
+
+        /*
+        if (isOutside)
+        {
+            if (originMat == 0) // from air (outside) into a material
+                eta = 1 / hitMat->kn();
+            else // from another material into another one
+                eta = originMat->kn() / hitMat->kn();
+        }
+        else
+        {
+            if (originMat == hitMat) // from the inside a material into air
+                eta = hitMat->kn(); // hitMat / 1                
+            else // from inside a material into another material
+                eta = originMat->kn() / hitMat->kn();
+        }
+        */
+
+        // Bec's formula is a little faster (from Ray Tracing News) 
+        // hitNormal = Surface normal at intersection point
+        SLfloat c1 = hitNormal * -dir;
+        SLfloat w = eta * c1;
+        SLfloat c2 = 1.0f + (w - eta) * (w + eta);
+
+        if (c2 >= 0.0f)
+        {
+            T = eta * dir + (w - sqrt(c2)) * hitNormal;
+            refracted->contrib = contrib * hitMat->kt();
+            refracted->type = TRANSMITTED;
+            //refracted->isOutside = !isOutside;
+            ++refractedRays;
+        }
+        else // total internal refraction results in a internal reflected ray
+        {
+            T = 2.0f * (-dir*hitNormal) * hitNormal + dir;
+            refracted->contrib = 1.0f; 
+            refracted->type = REFLECTED;
+
+            //refracted->isOutside = isOutside;
+            
+            // count the total refrcted rays
+            ++tirRays;
+        }
+
+        // set refracted ray parameter
+        refracted->setDir(T);
+        refracted->origin.set(hitPoint);
+        refracted->originMat = hitMat;
+        refracted->length = FLT_MAX;
+        refracted->originNode = hitNode;
+        refracted->originMesh = hitMesh;
+        refracted->originTria = hitTriangle;
+        refracted->depth = depth + 1;
+        refracted->x = x;
+        refracted->y = y;
+        depthReached = refracted->depth;
+    }
+    else
+    {
+        refract(refracted);
+    }
+
+
+    
+}
+
+
+
+
+
 //-----------------------------------------------------------------------------
 /*!
 SLRay::reflectMC scatters a ray around perfect specular direction according to 

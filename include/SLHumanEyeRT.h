@@ -38,17 +38,11 @@ class SLHumanEyeRT: public SLGLTexture, public SLEventHandler
             
             // ray tracer functions
             SLbool      renderClassic   (SLSceneView* sv);
-            SLbool      renderDistrib   (SLSceneView* sv);
-            void        renderSlices    (const bool isMainThread);
-            void        renderSlicesMS  (const bool isMainThread);
             SLCol4f     traceClassic    (SLRay* ray);
-            SLCol4f     traceDistrib    (SLRay* ray);
             SLCol4f     shade           (SLRay* ray);
-            void        sampleAAPixels  (const bool isMainThread);
             
             // additional ray tracer functions
             void        setPrimaryRay   (SLfloat x, SLfloat y, SLRay* primaryRay); 
-            void        getAAPixels     ();
             SLCol4f     fogBlend        (SLfloat z, SLCol4f color);
             void        printStats      (SLfloat sec);
             void        initStats       (SLint depth);

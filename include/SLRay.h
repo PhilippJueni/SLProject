@@ -50,6 +50,7 @@ class SLRay
                                      
             void        reflect     (SLRay* reflected);
             void        refract     (SLRay* refracted);
+            void        refractHE   (SLRay* refracted);
             bool        reflectMC   (SLRay* reflected, SLMat3f rotMat);
             void        refractMC   (SLRay* refracted, SLMat3f rotMat);
             void        diffuseMC   (SLRay* scattered);
@@ -91,8 +92,10 @@ class SLRay
             SLRayType   type;          //!< PRIMARY, REFLECTED, TRANSMITTED, SHADOW
             SLfloat     lightDist;     //!< Distance to light for shadow rays
             SLfloat     x, y;          //!< Pixel position for primary rays
+            
             SLbool      isOutside;     //!< Flag if ray is inside of a material
             SLbool      isInsideVolume;//!< Flag if ray is in Volume
+            
             SLNode*     originNode;    //!< Points to the node at ray origin
             SLMesh*     originMesh;    //!< Points to the mesh at ray origin
             SLint       originTria;    //!< Points to the triangle at ray origin
