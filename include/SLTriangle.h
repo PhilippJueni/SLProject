@@ -1,28 +1,27 @@
 #ifndef SLTRIANGLE_H
 #define SLTRIANGLE_H
 
-//#include <stdafx.h>
 #include "SLMesh.h"
+
 
 class SLTriangle : public SLMesh
 {
 public:
-    SLTriangle(SLMaterial *mat);
-
-    SLTriangle(SLVec2f min, SLVec2f max,
-        SLuint resX, SLuint resY,
-        SLstring name,
-        SLMaterial* mat);
+    SLTriangle( SLMaterial *mat,
+                SLstring name = "Triangle",
+                SLVec3f v0 = SLVec3f(0, 0, 0),
+                SLVec3f v1 = SLVec3f(1, 0, 0),
+                SLVec3f v2 = SLVec3f(0, 1, 0),
+                SLVec2f t0 = SLVec2f(0, 0),
+                SLVec2f t1 = SLVec2f(1, 0),
+                SLVec2f t2 = SLVec2f(0, 1));
 
     void        buildMesh(SLMaterial* mat);
 
 protected:
-    SLVec3f    _min;     //!< min corner
-    SLVec3f    _max;     //!< max corner
-    SLVec2f    _tmin;    //!< min corner texCoord
-    SLVec2f    _tmax;    //!< max corner texCoord
-    SLuint     _resX;    //!< resolution in x direction
-    SLuint     _resY;    //!< resolution in y direction
+    SLVec3f    v[3];  //!< Array of vertex positions
+    SLVec2f    t[3];  //!< Array of vertex tex. coords. (opt.)
+
 };
 //-----------------------------------------------------------------------------
 #endif //SLTRIANGLE_H

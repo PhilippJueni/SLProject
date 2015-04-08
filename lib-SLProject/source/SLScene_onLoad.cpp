@@ -2377,6 +2377,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", texC);
         SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", texC);
         SLMaterial* matTriangle3 = new SLMaterial("matTriangle_3", texC);
+        SLMaterial* matTriangle4 = new SLMaterial("matTriangle_3", texC);
         matTriangle1->kn(1.0f);
         //matTriangle1->knB(1.5f);
         matTriangle2->kn(1.0f);
@@ -2389,17 +2390,21 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // triangles
         SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1));
-        triangle1->translate(0, 0, 2, TS_Local);
+        triangle1->translate(0, 0, 3, TS_Local);
         SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2));
-        triangle2->translate(0, 0, 1, TS_Local);
+        triangle2->translate(0, 0, 2, TS_Local);
         SLNode* triangle3 = new SLNode(new SLTriangle(matTriangle3));
-        triangle3->translate(0, 0, 0, TS_Local);
+        triangle3->translate(0, 0, 1, TS_Local);
+
+        //SLNode* triangle4 = new SLNode(new SLTriangle(matTriangle4, "skewed", SLVec3f(1, 0, 0), SLVec3f(0, 0, 2), SLVec3f(0, 2, 0)));
+        //triangle4->translate(0, 0, -2, TS_Local);
 
         // Node
         SLNode* scene = new SLNode;        
         scene->addChild(triangle1);
         scene->addChild(triangle2);
         scene->addChild(triangle3);
+        //scene->addChild(triangle4);
         
         scene->addChild(light1);
         scene->addChild(cam1);
