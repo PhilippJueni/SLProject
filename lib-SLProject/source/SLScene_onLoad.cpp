@@ -38,6 +38,7 @@
 #include <SLLensSurface.h>
 #include <MyRectangle.h>
 #include <SLSurface.h>
+#include <SLTriangle.h>
 
 
 SLNode* SphereGroup(SLint, SLfloat, SLfloat, SLfloat, SLfloat, SLint, SLMaterial*, SLMaterial*);
@@ -2348,6 +2349,61 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         scene->addChild(rectBack);
         scene->addChild(box);
 
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
+        _root3D = scene;
+    }
+    else
+    if (sceneName == cmdSceneRTTriangle) //.........................................
+    {
+        name("Ray tracing Triangle");
+        info(sv, "HERT Triangle");
+
+
+#ifndef SL_GLES2
+        SLint numSamples = 10;
+#else
+        SLint numSamples = 6;
+#endif
+
+        // standard camera
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(0, 0, 4);
+        cam1->lookAt(0, 0, 0);
+        cam1->setInitialState();
+
+        // Create textures and materials
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", texC);
+        SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", texC);
+        SLMaterial* matTriangle3 = new SLMaterial("matTriangle_3", texC);
+        matTriangle1->kn(1.0f);
+        //matTriangle1->knB(1.5f);
+        matTriangle2->kn(1.0f);
+        matTriangle2->knB(1.0f);
+        matTriangle3->kn(1.0f);
+        //matTriangle3->knB(1.5f);
+
+        SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+        // triangles
+        SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1));
+        triangle1->translate(0, 0, 2, TS_Local);
+        SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2));
+        triangle2->translate(0, 0, 1, TS_Local);
+        SLNode* triangle3 = new SLNode(new SLTriangle(matTriangle3));
+        triangle3->translate(0, 0, 0, TS_Local);
+
+        // Node
+        SLNode* scene = new SLNode;        
+        scene->addChild(triangle1);
+        scene->addChild(triangle2);
+        scene->addChild(triangle3);
+        
+        scene->addChild(light1);
+        scene->addChild(cam1);
+        
         _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
         sv->camera(cam1);
         _root3D = scene;

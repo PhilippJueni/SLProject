@@ -285,7 +285,7 @@ void SLRay::refractHE(SLRay* refracted)
             T = eta * dir + (w - sqrt(c2)) * hitNormal;
             refracted->contrib = contrib * hitMat->kt();
             refracted->type = TRANSMITTED;
-            //refracted->isOutside = !isOutside;
+            refracted->isOutside = !isOutside;
             ++refractedRays;
         }
         else // total internal refraction results in a internal reflected ray
@@ -294,7 +294,7 @@ void SLRay::refractHE(SLRay* refracted)
             refracted->contrib = 1.0f; 
             refracted->type = REFLECTED;
 
-            //refracted->isOutside = isOutside;
+            refracted->isOutside = isOutside;
             
             // count the total refrcted rays
             ++tirRays;

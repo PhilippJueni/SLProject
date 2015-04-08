@@ -748,32 +748,36 @@ tools 2, 1997).
 */
 SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 {
-    #if _DEBUG
+
+#if _DEBUG
     ++SLRay::tests;
-    #endif
- 
+#endif
+
     if (_primitive != SL_TRIANGLES)
         return false;
 
     // prevent self-intersection of triangle
-    if(ray->originMesh == this && ray->originTria == iT) 
+    if (ray->originMesh == this && ray->originTria == iT)
         return false;
-      
+
     SLVec3f A, B, C;     // corners
     SLVec3f e1, e2;      // edge 1 and 2
     SLVec3f AO, K, Q;
-   
+
     // get the corner vertices
     if (I16)
-    {   A = finalP()[I16[iT  ]];
-        B = finalP()[I16[iT+1]];
-        C = finalP()[I16[iT+2]];
-    } else
-    {   A = finalP()[I32[iT  ]];
-        B = finalP()[I32[iT+1]];
-        C = finalP()[I32[iT+2]];
+    {
+        A = finalP()[I16[iT]];
+        B = finalP()[I16[iT + 1]];
+        C = finalP()[I16[iT + 2]];
     }
-   
+    else
+    {
+        A = finalP()[I32[iT]];
+        B = finalP()[I32[iT + 1]];
+        C = finalP()[I32[iT + 2]];
+    }
+
     // find vectors for two edges sharing the triangle vertex A
     e1.sub(B, A);
     e2.sub(C, A);
@@ -783,71 +787,154 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 
     // if determinant is near zero, ray lies in plane of triangle
     const SLfloat det = e1.dot(K);
-   
+
     SLfloat inv_det, t, u, v;
-   
-    // if ray is outside do test with face culling
-    if (ray->isOutside && _isVolume)
-    {   // check only front side triangles           
-        if (det < FLT_EPSILON) return false;
 
-        // calculate distance from A to ray origin
-        AO.sub(ray->originOS, A);
-            
-        // Calculate barycentric coordinates: u>0 && v>0 && u+v<=1
-        u = AO.dot(K);
-        if (u < 0.0f || u > det) return false;
 
-        // prepare to test v parameter
-        Q.cross(AO, e1);
 
-        // calculate v parameter and test bounds
-        v = Q.dot(ray->dirOS);
-        if (v < 0.0f || u+v > det) return false;
-      
-        // calculate intersection distance t
-        inv_det = 1.0f / det;
-        t = e2.dot(Q) * inv_det;
-   
-        // if intersection is closer replace ray intersection parameters
-        if (t > ray->length || t < 0.0f) return false;
+    
+    if (!this->mat->knB() == 0.0f)
+    {
+    
+        cout << "back kn " << mat->knB() << endl;
 
-        ray->length = t;
-      
-        // scale down u & v so that u+v<=1
-        ray->hitU = u * inv_det;
-        ray->hitV = v * inv_det;
+        // if ray is outside do test with face culling
+        if (ray->isOutside && _isVolume)
+        {   // check only front side triangles           
+            if (det < FLT_EPSILON) return false;
+
+            // calculate distance from A to ray origin
+            AO.sub(ray->originOS, A);
+
+            // Calculate barycentric coordinates: u>0 && v>0 && u+v<=1
+            u = AO.dot(K);
+            if (u < 0.0f || u > det) return false;
+
+            // prepare to test v parameter
+            Q.cross(AO, e1);
+
+            // calculate v parameter and test bounds
+            v = Q.dot(ray->dirOS);
+            if (v < 0.0f || u + v > det) return false;
+
+            // calculate intersection distance t
+            inv_det = 1.0f / det;
+            t = e2.dot(Q) * inv_det;
+
+            // if intersection is closer replace ray intersection parameters
+            if (t > ray->length || t < 0.0f) return false;
+
+            ray->length = t;
+
+            // scale down u & v so that u+v<=1
+            ray->hitU = u * inv_det;
+            ray->hitV = v * inv_det;
+        }
+        else
+        {   // check front & backside triangles
+            if (det < FLT_EPSILON && det > -FLT_EPSILON) return false;
+
+            inv_det = 1.0f / det;
+
+            // calculate distance from A to ray origin
+            AO.sub(ray->originOS, A);
+
+            // Calculate barycentric coordinates: u>0 && v>0 && u+v<=1
+            u = AO.dot(K) * inv_det;
+            if (u < 0.0f || u > 1.0) return false;
+
+            // prepare to test v parameter
+            Q.cross(AO, e1);
+
+            // calculate v parameter and test bounds
+            v = Q.dot(ray->dirOS) * inv_det;
+            if (v < 0.0f || u + v > 1.0f) return false;
+
+            // calculate t, ray intersects triangle
+            t = e2.dot(Q) * inv_det;
+
+            // if intersection is closer replace ray intersection parameters
+            if (t > ray->length || t < 0.0f) return false;
+
+            ray->length = t;
+            ray->hitU = u;
+            ray->hitV = v;
+        }
     }
-    else 
-    {   // check front & backside triangles
-        if (det < FLT_EPSILON && det > -FLT_EPSILON) return false;
-      
-        inv_det = 1.0f / det;
-      
-        // calculate distance from A to ray origin
-        AO.sub(ray->originOS, A);
-      
-        // Calculate barycentric coordinates: u>0 && v>0 && u+v<=1
-        u = AO.dot(K) * inv_det;
-        if (u < 0.0f || u > 1.0) return false;
-      
-        // prepare to test v parameter
-        Q.cross(AO, e1);
-      
-        // calculate v parameter and test bounds
-        v = Q.dot(ray->dirOS) * inv_det;
-        if (v < 0.0f || u+v > 1.0f) return false;
-      
-        // calculate t, ray intersects triangle
-        t = e2.dot(Q) * inv_det;
-         
-        // if intersection is closer replace ray intersection parameters
-        if (t > ray->length || t < 0.0f) return false;
+    else
+    {
+    
+        cout << "no back kn" << endl;
 
-        ray->length = t;
-        ray->hitU = u;
-        ray->hitV = v;
+        // if ray is outside do test with face culling
+        if (ray->isOutside && _isVolume)
+        {   // check only front side triangles           
+            if (det < FLT_EPSILON) return false;
+
+            // calculate distance from A to ray origin
+            AO.sub(ray->originOS, A);
+
+            // Calculate barycentric coordinates: u>0 && v>0 && u+v<=1
+            u = AO.dot(K);
+            if (u < 0.0f || u > det) return false;
+
+            // prepare to test v parameter
+            Q.cross(AO, e1);
+
+            // calculate v parameter and test bounds
+            v = Q.dot(ray->dirOS);
+            if (v < 0.0f || u + v > det) return false;
+
+            // calculate intersection distance t
+            inv_det = 1.0f / det;
+            t = e2.dot(Q) * inv_det;
+
+            // if intersection is closer replace ray intersection parameters
+            if (t > ray->length || t < 0.0f) return false;
+
+            ray->length = t;
+
+            // scale down u & v so that u+v<=1
+            ray->hitU = u * inv_det;
+            ray->hitV = v * inv_det;
+        }
+        else
+        {   // check front & backside triangles
+            if (det < FLT_EPSILON && det > -FLT_EPSILON) return false;
+
+            inv_det = 1.0f / det;
+
+            // calculate distance from A to ray origin
+            AO.sub(ray->originOS, A);
+
+            // Calculate barycentric coordinates: u>0 && v>0 && u+v<=1
+            u = AO.dot(K) * inv_det;
+            if (u < 0.0f || u > 1.0) return false;
+
+            // prepare to test v parameter
+            Q.cross(AO, e1);
+
+            // calculate v parameter and test bounds
+            v = Q.dot(ray->dirOS) * inv_det;
+            if (v < 0.0f || u + v > 1.0f) return false;
+
+            // calculate t, ray intersects triangle
+            t = e2.dot(Q) * inv_det;
+
+            // if intersection is closer replace ray intersection parameters
+            if (t > ray->length || t < 0.0f) return false;
+
+            ray->length = t;
+            ray->hitU = u;
+            ray->hitV = v;
+        }
     }
+
+    
+
+
+   
+    
 
     ray->hitTriangle = iT;
     ray->hitNode = node;

@@ -92,6 +92,7 @@ enum SLCmd
     cmdSceneRTEye,
     cmdSceneRTEye2,
     cmdSceneRTEye3,
+    cmdSceneRTTriangle,
 
     cmdMultiSampleToggle,// Toggles multisampling
     cmdDepthTestToggle,  // Toggles the depth test flag

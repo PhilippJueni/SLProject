@@ -276,6 +276,9 @@
     <ClInclude Include="..\include\SLHumanEyeRT.h">
       <Filter>Raytracer</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SLTriangle.h">
+      <Filter>Nodes\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SLAABBox.cpp">
@@ -457,6 +460,9 @@
     </ClCompile>
     <ClCompile Include="source\SLHumanEyeRT.cpp">
       <Filter>Raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SLTriangle.cpp">
+      <Filter>Nodes\Meshes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
