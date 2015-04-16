@@ -252,27 +252,33 @@ void SLRay::refractHE(SLRay* refracted)
         SLfloat eta; // refraction coefficient
 
         // Calculate index of refraction eta = Kn_Source/Kn_Destination
-        eta = hitMat->knB() / hitMat->kn();
+        //eta = hitMat->knB() / hitMat->kn();
 
         //cout << hitMat->name() << endl;
 
 
-        /*
+        
         if (isOutside)
         {
+            eta = hitMat->knB() / hitMat->kn();
+            /*
             if (originMat == 0) // from air (outside) into a material
                 eta = 1 / hitMat->kn();
             else // from another material into another one
                 eta = originMat->kn() / hitMat->kn();
+                */
         }
         else
         {
+            eta = hitMat->kn() / hitMat->knB();
+            /*
             if (originMat == hitMat) // from the inside a material into air
                 eta = hitMat->kn(); // hitMat / 1                
             else // from inside a material into another material
                 eta = originMat->kn() / hitMat->kn();
+                */
         }
-        */
+        
 
         // Bec's formula is a little faster (from Ray Tracing News) 
         // hitNormal = Surface normal at intersection point
@@ -280,12 +286,15 @@ void SLRay::refractHE(SLRay* refracted)
         SLfloat w = eta * c1;
         SLfloat c2 = 1.0f + (w - eta) * (w + eta);
 
+        
+
         if (c2 >= 0.0f)
         {
             T = eta * dir + (w - sqrt(c2)) * hitNormal;
             refracted->contrib = contrib * hitMat->kt();
             refracted->type = TRANSMITTED;
             refracted->isOutside = !isOutside;
+            
             ++refractedRays;
         }
         else // total internal refraction results in a internal reflected ray
@@ -312,6 +321,8 @@ void SLRay::refractHE(SLRay* refracted)
         refracted->x = x;
         refracted->y = y;
         depthReached = refracted->depth;
+
+        
     }
     else
     {

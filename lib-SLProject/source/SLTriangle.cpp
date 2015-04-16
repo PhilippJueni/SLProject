@@ -28,7 +28,7 @@ SLTriangle::SLTriangle(SLMaterial *material, SLstring name, SLVec3f v0, SLVec3f 
 
     mat = material;
 
-    _isVolume = true;
+    _isVolume = false;
 
     buildMesh(mat);
 }
@@ -65,6 +65,5 @@ void SLTriangle::buildMesh(SLMaterial* material)
     N[0] = n;
     N[1] = n;
     N[2] = n;
-    //calcNormals();
 }
 //-----------------------------------------------------------------------------

@@ -749,6 +749,8 @@ tools 2, 1997).
 SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 {
 
+    //cout << mat->name() << " ================================" << endl;
+
 #if _DEBUG
     ++SLRay::tests;
 #endif
@@ -796,9 +798,11 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
     if (!this->mat->knB() == 0.0f)
     {
     
-        cout << "back kn " << mat->knB() << endl;
+        //cout << mat->name() << ": back kn " << mat->knB() << endl;
 
         // if ray is outside do test with face culling
+        
+
         if (ray->isOutside && _isVolume)
         {   // check only front side triangles           
             if (det < FLT_EPSILON) return false;
@@ -864,7 +868,7 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
     else
     {
     
-        cout << "no back kn" << endl;
+        //cout << mat->name() << ": no back kn" << endl;
 
         // if ray is outside do test with face culling
         if (ray->isOutside && _isVolume)

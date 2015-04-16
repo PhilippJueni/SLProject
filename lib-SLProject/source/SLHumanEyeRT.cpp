@@ -84,8 +84,11 @@ SLbool SLHumanEyeRT::renderClassic(SLSceneView* sv)
     double t1 = SLScene::current->timeSec();
     double tStart = t1;
 
-    for (SLuint x=180; x<151; ++x)
-    {   for (SLuint y=150; y<181; ++y)
+    // for (SLuint x = 0; x<_img[0].width(); ++x)
+    // for (SLuint y = 0; y<_img[0].height(); ++y)
+    for (SLuint x = 180; x<_img[0].width(); ++x)
+    {
+        for (SLuint y = 150; y < _img[0].height(); ++y)
         {
             SLRay primaryRay;
             setPrimaryRay((SLfloat)x, (SLfloat)y, &primaryRay);
