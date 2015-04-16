@@ -194,14 +194,14 @@ void SLRay::refract(SLRay* refracted)
     // Calculate index of refraction eta = Kn_Source/Kn_Destination
     if (isOutside)
     {   if (originMat==0) // from air (outside) into a material
-            eta = 1 / hitMat->kn();
+            eta = 1 / hitMat->knI();
         else // from another material into another one
-            eta = originMat->kn() / hitMat->kn();
+            eta = originMat->knI() / hitMat->knI();
     } else
     {   if (originMat==hitMat) // from the inside a material into air
-            eta = hitMat->kn(); // hitMat / 1
+            eta = hitMat->knI(); // hitMat / 1
         else // from inside a material into another material
-            eta = originMat->kn() / hitMat->kn();
+            eta = originMat->knI() / hitMat->knI();
     }
 
     // Bec's formula is a little faster (from Ray Tracing News) 
@@ -246,18 +246,18 @@ Index of refraction eta = Kn_Source/Kn_Destination (Kn_Air = 1.0)
 */
 void SLRay::refractHE(SLRay* refracted)
 {
-    if (!hitMat->knB() == 0.0f)
+    if (!hitMat->knO() == 0.0f)
     {
         SLVec3f T;   // refracted direction
         SLfloat eta; // refraction coefficient
 
         if (isOutside)
         {
-            eta = hitMat->knB() / hitMat->kn(); // Triangle_1: 1,5 / 1 = 1,5
+            eta = hitMat->knO() / hitMat->knI(); // Triangle_1: 1,5 / 1 = 1,5
         }
         else
         {
-            eta = hitMat->kn() / hitMat->knB();
+            eta = hitMat->knI() / hitMat->knO();
         }
         
 

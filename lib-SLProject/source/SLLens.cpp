@@ -98,7 +98,7 @@ SLLens::SLLens(SLfloat radiusBot,
                SLMaterial* mat) : SLRevolver(name)
 {
     SLfloat nOut = 1.00;            // kn material outside lens
-    SLfloat nLens = mat->kn();      // kn material of the lens
+    SLfloat nLens = mat->knI();      // kn material of the lens
     SLfloat diopterBot = (SLfloat)((nLens - nOut) * diameter / radiusBot);
     SLfloat diopterTop = (SLfloat)((nOut - nLens) * diameter / radiusTop);
 
@@ -138,7 +138,7 @@ void SLLens::init(SLfloat diopterBot,
 
     // calc radius
     SLfloat nOut = 1.00;         // kn material outside lens
-    SLfloat nLens = mat->kn();   // kn material of the lens
+    SLfloat nLens = mat->knI();   // kn material of the lens
     SLfloat delta = _thickness / nLens; // d/n
 
     // calc radius

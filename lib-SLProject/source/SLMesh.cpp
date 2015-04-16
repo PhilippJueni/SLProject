@@ -795,7 +795,7 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 
 
     
-    if (!this->mat->knB() == 0.0f)
+    if (!this->mat->knO() == 1.0f)
     {
     
         //cout << mat->name() << ": back kn " << mat->knB() << endl;

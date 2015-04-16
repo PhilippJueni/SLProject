@@ -296,10 +296,10 @@ SLCol4f SLPathtracer::trace(SLRay* ray, SLbool em)
         // ray from outside in
         if (ray->isOutside)
         {   n = 1.0f;
-            nt = mat->kn();
+            nt = mat->knI();
         }
         else // ray from inside out
-        {   n = mat->kn();
+        {   n = mat->knI();
             nt = 1.0f;
         }
 

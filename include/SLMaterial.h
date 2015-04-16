@@ -90,10 +90,10 @@ class SLMaterial : public SLObject
                                                               _ambient.w  = 1.0f-kt;
                                                               _diffuse.w  = 1.0f-kt;
                                                               _specular.w = 1.0f-kt;}
-            void            kn              (SLfloat kn)      {assert(kn>=0.0f);
-                                                              _kn = kn;}
-            void            knB             (SLfloat knB)     {assert(knB >= 0.0f);
-                                                              _knB = knB;}
+            void            knI              (SLfloat kn)     {assert(kn>=0.0f);
+                                                              _knI = kn;}
+            void            knO             (SLfloat knB)     {assert(knB >= 0.0f);
+                                                              _knO = knB;}
             void            program      (SLGLProgram* sp){_program = sp;}
             
             // Getters
@@ -106,8 +106,8 @@ class SLMaterial : public SLObject
             SLfloat         translucency    () {return _translucency;}
             SLfloat         kr              () {return _kr;}
             SLfloat         kt              () {return _kt;}
-            SLfloat         kn              () {return _kn;}
-            SLfloat         knB             () {return _knB;}
+            SLfloat         knI             () {return _knI;}
+            SLfloat         knO             () {return _knO;}
             SLVGLTexture&   textures        () {return _textures;}
             SLGLProgram*    program         () {return _program;}
 
@@ -130,8 +130,8 @@ class SLMaterial : public SLObject
             SLfloat         _translucency;  //!< PM: translucency exponent for light refraction
             SLfloat         _kr;            //!< reflection coefficient 0.0 - 1.0
             SLfloat         _kt;            //!< transmission coefficient 0.0 - 1.0
-            SLfloat         _kn;            //!< refraction index
-            SLfloat         _knB = 0.0f;    //!< refraction index backside (only if refraction on surface)
+            SLfloat         _knI;           //!< refraction index (the materials kn)
+            SLfloat         _knO = 1.0f;    //!< refraction index outside (side of the normals),default vacuum
             SLVGLTexture    _textures;      //!< vector of texture pointers
             SLGLProgram*    _program;       //!< pointer to a GLSL shader program
 

@@ -30,8 +30,8 @@ SLMaterial::SLMaterial(const SLchar* name,
                        SLfloat shininess, 
                        SLfloat kr, 
                        SLfloat kt, 
-                       SLfloat kn,
-                       SLfloat knB) : SLObject(name)
+                       SLfloat knI,
+                       SLfloat knO) : SLObject(name)
 {
     _ambient = _diffuse = amdi;
     _specular = spec;
@@ -41,8 +41,8 @@ SLMaterial::SLMaterial(const SLchar* name,
    
     _kr = kr;
     _kt = kt;
-    _kn = kn;
-    _knB = knB; // if knB is set, the material is considerad as a surface to refract.
+    _knI = knI;
+    _knO = knO; // if knB is set, the material is considerad as a surface to refract.
    
     // sync the transparency coeffitient with the alpha value or vice versa
     if (_kt!=0) _diffuse.w = 1.0f - _kt;
@@ -75,7 +75,7 @@ SLMaterial::SLMaterial(const SLchar*   name,
    
     _kr = 0.0f;
     _kt = 0.0f;
-    _kn = 1.0f;
+    _knI = 1.0f;
     _diffuse.w = 1.0f - _kt;
    
     // Add pointer to the global resource vectors for deallocation
@@ -96,7 +96,7 @@ SLMaterial::SLMaterial(SLCol4f uniformColor, const SLchar* name)
    
     _kr = 0.0f;
     _kt = 0.0f;
-    _kn = 1.0f;
+    _knI = 1.0f;
    
     // Add pointer to the global resource vectors for deallocation
     SLScene::current->materials().push_back(this);

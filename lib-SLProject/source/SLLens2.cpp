@@ -98,7 +98,7 @@ SLLens2::SLLens2(SLfloat radiusBot,
     SLMaterial* mat)
 {
     SLfloat nOut = 1.00;            // kn material outside lens
-    SLfloat nLens = mat->kn();      // kn material of the lens
+    SLfloat nLens = mat->knI();      // kn material of the lens
     SLfloat diopterBot = (SLfloat)((nLens - nOut) * diameter / radiusBot);
     SLfloat diopterTop = (SLfloat)((nOut - nLens) * diameter / radiusTop);
 
@@ -133,7 +133,7 @@ void SLLens2::init(SLfloat diopterBot,
 
     // calc radius
     SLfloat nOut = 1.00;         // kn material outside lens
-    SLfloat nLens = mat->kn();   // kn material of the lens
+    SLfloat nLens = mat->knI();   // kn material of the lens
     SLfloat delta = thickness / nLens; // d/n
 
     // calc radius
