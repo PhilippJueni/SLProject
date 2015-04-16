@@ -2375,42 +2375,27 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
 
-        // Create textures and materials
-        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
-        SLMaterial* matBack = new SLMaterial("matBack", texC);
-        SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.2f, 1.5f);
-        SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.2f, 1.5f);
-        //SLMaterial* matTriangle3 = new SLMaterial("matTriangle_3", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f, 1.2f);
-        //SLMaterial* matTriangle4 = new SLMaterial("matTriangle_3", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
-
-        SLNode* lensD = new SLNode(new SLLens(0.0f, 0.0f, 1.0f, 1.0f, 32, 32, "myopic", matTriangle1));          // Kurzsichtig
-        lensD->translate(2, 0, 2, TS_Local);
-        lensD->rotate(90, 1, 0, 0, TS_Local);
-
-        
-
-        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 20, 20, "Rect", matBack));
-        background->translate(0, 0, -3.0f, TS_Local);
-
         SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
         light1->attenuation(0, 0, 1);
-
         
-        SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1));
-        triangle1->translate(-0.5, -0.5, 3, TS_Local);
-        SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2));
-        triangle2->translate(-0.5, -0.5, 2, TS_Local);
-        //SLNode* triangle3 = new SLNode(new SLTriangle(matTriangle3));
-        //triangle3->translate(-0.5, -0.5, 1, TS_Local);
-        //SLNode* triangle4 = new SLNode(new SLTriangle(matTriangle4, "skewed", SLVec3f(1, 0, 0), SLVec3f(0, 0, 2), SLVec3f(0, 2, 0)));
-        //triangle4->translate(0, 0, -2, TS_Local);
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* matBack = new SLMaterial("matBack", texC);
+        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 1, 1, "Rect", matBack),"Background");
+        background->translate(0, 0, -3.0f, TS_Local);
 
-        SLNode* scene = new SLNode;        
+        // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
+        SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.5f, 1.5f, 1.0f);
+        SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1, "Triangle_1"), "Triangle");
+        triangle1->translate(-0.5, -0.5, 3, TS_Local);
+        
+        //SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.5f, 1.5f, 1.0f);
+        //SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2, "Triangle_2"));
+        //triangle2->translate(-0.5, -0.5, 2, TS_Local);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        SLNode* scene = new SLNode("Scene");        
         scene->addChild(triangle1);
-        scene->addChild(triangle2);
-        //scene->addChild(triangle3);
-        //scene->addChild(triangle4);
-        //scene->addChild(lensD);
+        //scene->addChild(triangle2);
         scene->addChild(background);
         scene->addChild(light1);
         scene->addChild(cam1);

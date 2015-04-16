@@ -251,51 +251,32 @@ void SLRay::refractHE(SLRay* refracted)
         SLVec3f T;   // refracted direction
         SLfloat eta; // refraction coefficient
 
-        // Calculate index of refraction eta = Kn_Source/Kn_Destination
-        //eta = hitMat->knB() / hitMat->kn();
-
-        //cout << hitMat->name() << endl;
-
-
-        
         if (isOutside)
         {
-            eta = hitMat->knB() / hitMat->kn();
-            /*
-            if (originMat == 0) // from air (outside) into a material
-                eta = 1 / hitMat->kn();
-            else // from another material into another one
-                eta = originMat->kn() / hitMat->kn();
-                */
+            eta = hitMat->knB() / hitMat->kn(); // Triangle_1: 1,5 / 1 = 1,5
         }
         else
         {
             eta = hitMat->kn() / hitMat->knB();
-            /*
-            if (originMat == hitMat) // from the inside a material into air
-                eta = hitMat->kn(); // hitMat / 1                
-            else // from inside a material into another material
-                eta = originMat->kn() / hitMat->kn();
-                */
         }
         
 
         // Bec's formula is a little faster (from Ray Tracing News) 
         // hitNormal = Surface normal at intersection point
-        SLfloat c1 = hitNormal * -dir;
-        SLfloat w = eta * c1;
-        SLfloat c2 = 1.0f + (w - eta) * (w + eta);
+        SLfloat c1 = hitNormal * -dir;              // Triangle_1: 0.961437881 = (0,0,1) * -(-0.231,-0.148,-0.961)
+        SLfloat w = eta * c1;                       // Triangle_1: 1.44215679 = 1.5 * 0.961437881
+        SLfloat c2 = 1.0f + (w - eta) * (w + eta);  // Triangle_1: 0.829816222
 
         
 
         if (c2 >= 0.0f)
         {
-            T = eta * dir + (w - sqrt(c2)) * hitNormal;
-            refracted->contrib = contrib * hitMat->kt();
-            refracted->type = TRANSMITTED;
-            refracted->isOutside = !isOutside;
+            T = eta * dir + (w - sqrt(c2)) * hitNormal;     // Triangle_1: (-0.347, -0.222, -0.910)
+            refracted->contrib = contrib * hitMat->kt();    // Triangle_1: 0.5 = 1 * 1.5
+            refracted->type = TRANSMITTED;                  // Triangle_1: TRANSMITTED(2)
+            refracted->isOutside = !isOutside;              // Triangle_1: false
             
-            ++refractedRays;
+            ++refractedRays;                                // Triangle_1: 0 --> 1
         }
         else // total internal refraction results in a internal reflected ray
         {
@@ -310,17 +291,17 @@ void SLRay::refractHE(SLRay* refracted)
         }
 
         // set refracted ray parameter
-        refracted->setDir(T);
-        refracted->origin.set(hitPoint);
-        refracted->originMat = hitMat;
-        refracted->length = FLT_MAX;
-        refracted->originNode = hitNode;
-        refracted->originMesh = hitMesh;
-        refracted->originTria = hitTriangle;
-        refracted->depth = depth + 1;
-        refracted->x = x;
-        refracted->y = y;
-        depthReached = refracted->depth;
+        refracted->setDir(T);                       // Triangle_1: (-0.347, -0.222, -0.910)
+        refracted->origin.set(hitPoint);            // Triangle_1: (-0.240, -0.154, 3.0 )
+        refracted->originMat = hitMat;              // Triangle_1: matTriangle_1
+        refracted->length = FLT_MAX;                // Triangle_1: 3.4e+038                     ???
+        refracted->originNode = hitNode;            // Triangle_1: Triangle_1-Node
+        refracted->originMesh = hitMesh;            // Triangle_1: Triangle_1
+        refracted->originTria = hitTriangle;        // Triangle_1: 0
+        refracted->depth = depth + 1;               // Triangle_1: 1
+        refracted->x = x;                           // Triangle_1: 180
+        refracted->y = y;                           // Triangle_1: 150
+        depthReached = refracted->depth;            // Triangle_1: 1
 
         
     }
