@@ -2191,7 +2191,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         scene->addChild(cam1);
         scene->addChild(cam2);
 
-        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        _backColor.set(SLCol4f(0.9f, 0.9f, 0.7f));
         sv->camera(cam1);
         //sv->camera(cam2);
         _root3D = scene;
@@ -2200,7 +2200,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
     if (sceneName == cmdSceneRTEye2) //.........................................
     {
         name("Human Eye Ray tracing");
-        info(sv, "Ray Tracing through a gullstrand eye.");
+        info(sv, "Test rectangle eye.");
 
 
 #ifndef SL_GLES2
@@ -2309,9 +2309,9 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLCamera* cam1 = new SLCamera;
         cam1->position(1.5, 0, 4);
         cam1->lookAt(1.5, 0, 0);
-        cam1->focalDist(6);
-        cam1->lensDiameter(0.4f);
-        cam1->lensSamples()->samples(numSamples, numSamples);
+        //cam1->focalDist(6);
+        //cam1->lensDiameter(0.4f);
+        //cam1->lensSamples()->samples(numSamples, numSamples);
         cam1->setInitialState();
 
         SLNode* rectFront = new SLNode(new MyRectangle(SLVec2f(0, 0), SLVec2f(1, 1), 1, 1, "Front", matRectFro));
