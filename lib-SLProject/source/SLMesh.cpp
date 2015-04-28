@@ -794,17 +794,30 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 
 
 
+    // outside material differs from vacuum
     
-    if (!this->mat->knO() == 1.0f)
+    SLfloat kn = this->mat->knO();
+
+
+    if (mat->knO() != 0.0f)
     {
-    
         //cout << mat->name() << ": back kn " << mat->knB() << endl;
 
         // if ray is outside do test with face culling
         
 
-        if (ray->isOutside && _isVolume)
-        {   // check only front side triangles           
+        if (ray->isOutside)
+        { 
+            /*
+            if (ray->originMat->knO() == this->mat->knO())
+            {
+                cout << "o:same mat: " << ray->originMat->knO() << "_" << this->mat->knO() << endl;
+            }else{
+                cout << "o:not same mat: " << ray->originMat->knO() << "_" << this->mat->knO() << endl;
+            }
+            */
+
+            // check only front side triangles           
             if (det < FLT_EPSILON) return false;
 
             // calculate distance from A to ray origin
@@ -835,7 +848,18 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
             ray->hitV = v * inv_det;
         }
         else
-        {   // check front & backside triangles
+        {   
+            /*
+            if (ray->originMat->knI() == this->mat->knI())
+            {
+                cout << "i:same mat: " << ray->originMat->knI() << "_" <<  this->mat->knI() << endl;
+            }
+            else{
+                cout << "i:not same mat: " << ray->originMat->knI() << "_" << this->mat->knI() << endl;
+            }
+            */
+            
+            // check front & backside triangles
             if (det < FLT_EPSILON && det > -FLT_EPSILON) return false;
 
             inv_det = 1.0f / det;
@@ -867,9 +891,6 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
     }
     else
     {
-    
-        //cout << mat->name() << ": no back kn" << endl;
-
         // if ray is outside do test with face culling
         if (ray->isOutside && _isVolume)
         {   // check only front side triangles           

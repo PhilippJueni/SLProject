@@ -37,8 +37,8 @@ class SLMaterial : public SLObject
                                        SLfloat shininess=100.0f,
                                        SLfloat kr=0.0, 
                                        SLfloat kt=0.0f, 
-                                       SLfloat kn=1.0f,
-                                       SLfloat knB=0.0f);
+                                       SLfloat knI=1.0f,
+                                       SLfloat knO=0.0f);
                            
                             //! Ctor for textures
                             SLMaterial(const SLchar* name,
@@ -90,10 +90,10 @@ class SLMaterial : public SLObject
                                                               _ambient.w  = 1.0f-kt;
                                                               _diffuse.w  = 1.0f-kt;
                                                               _specular.w = 1.0f-kt;}
-            void            knI              (SLfloat kn)     {assert(kn>=0.0f);
-                                                              _knI = kn;}
-            void            knO             (SLfloat knB)     {assert(knB >= 0.0f);
-                                                              _knO = knB;}
+            void            knI             (SLfloat knI)     {assert(knI>=0.0f);
+                                                              _knI = knI;}
+            void            knO             (SLfloat knO)     {assert(knO >= 0.0f);
+                                                              _knO = knO;}
             void            program      (SLGLProgram* sp){_program = sp;}
             
             // Getters
@@ -131,7 +131,7 @@ class SLMaterial : public SLObject
             SLfloat         _kr;            //!< reflection coefficient 0.0 - 1.0
             SLfloat         _kt;            //!< transmission coefficient 0.0 - 1.0
             SLfloat         _knI;           //!< refraction index (the materials kn)
-            SLfloat         _knO = 1.0f;    //!< refraction index outside (side of the normals),default vacuum
+            SLfloat         _knO = 0.0f;    //!< refraction index outside (side of the normals),default vacuum
             SLVGLTexture    _textures;      //!< vector of texture pointers
             SLGLProgram*    _program;       //!< pointer to a GLSL shader program
 

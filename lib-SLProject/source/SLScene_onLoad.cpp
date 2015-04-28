@@ -2290,12 +2290,12 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLMaterial* matBack = new SLMaterial("matBack", texC);
         SLMaterial* matBox  = new SLMaterial("matBox", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f);
         // Front: kn = 1.0f, knB = 1.5f
-        SLMaterial* matRectFro = new SLMaterial("matRectFro", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
-        SLMaterial* matRectBac = new SLMaterial("matRectBac", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
-        SLMaterial* matRectLef = new SLMaterial("matRectLef", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
-        SLMaterial* matRectRig = new SLMaterial("matRectRig", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
-        SLMaterial* matRectTop = new SLMaterial("matRectTop", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
-        SLMaterial* matRectBot = new SLMaterial("matRectBot", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.0f, 1.5f);
+        SLMaterial* matRectFro = new SLMaterial("matRectFro", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f, 1.0f);
+        SLMaterial* matRectBac = new SLMaterial("matRectBac", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f, 1.0f);
+        SLMaterial* matRectLef = new SLMaterial("matRectLef", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f, 1.0f);
+        SLMaterial* matRectRig = new SLMaterial("matRectRig", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f, 1.0f);
+        SLMaterial* matRectTop = new SLMaterial("matRectTop", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f, 1.0f);
+        SLMaterial* matRectBot = new SLMaterial("matRectBot", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f, 1.0f);
         
 
         
@@ -2367,7 +2367,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
-        cam1->position(0, 0, 4);
+        cam1->position(0, 0, 1.5);
         cam1->lookAt(0, 0, 0);
         //cam1->focalDist(6);
         //cam1->lensDiameter(0.4f);
@@ -2384,18 +2384,20 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         background->translate(0, 0, -3.0f, TS_Local);
 
         // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
-        SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.5f, 1.5f, 1.0f);
-        SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1, "Triangle_1"), "Triangle");
-        triangle1->translate(-0.5, -0.5, 3, TS_Local);
+        SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1, "Triangle_1"), "Triangle1");
+        triangle1->translate(-0.5, -0.5, 1, TS_Local);
         
-        //SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.5f, 1.5f, 1.0f);
-        //SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2, "Triangle_2"));
-        //triangle2->translate(-0.5, -0.5, 2, TS_Local);
+        SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.1f);
+        SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2, "Triangle_2"), "Triangle2");
+        triangle2->translate(-0.5f, -0.5f, 0.8f, TS_Local);
+        triangle2->rotate(180,0,1,0);
+        triangle2->rotate(90, 0, 0, 1);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         SLNode* scene = new SLNode("Scene");        
         scene->addChild(triangle1);
-        //scene->addChild(triangle2);
+        scene->addChild(triangle2);
         scene->addChild(background);
         scene->addChild(light1);
         scene->addChild(cam1);
