@@ -2388,7 +2388,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1, "Triangle_1"), "Triangle1");
         triangle1->translate(-0.5, -0.5, 1, TS_Local);
         
-        SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.1f);
+        SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
         SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2, "Triangle_2"), "Triangle2");
         triangle2->translate(-0.5f, -0.5f, 0.8f, TS_Local);
         triangle2->rotate(180,0,1,0);
