@@ -801,27 +801,28 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 
     if (mat->knO() != 0.0f)
     {
-        //cout << mat->name() << ": back kn " << mat->knB() << endl;
+        // Surfaces
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (det > 0)
+        {
+            ray->hitDir = true;
+        }
+        if (det < 0)
+        {
+            ray->hitDir = false;
+        }
 
-        // if ray is outside do test with face culling
-        
-
+        // if ray is in air (outside) do test with face culling
         if (ray->isOutside)
+        //if (ray->kn == 1.0f)
         { 
-            /*
-            if (ray->originMat->knO() == this->mat->knO())
-            {
-                cout << "o:same mat: " << ray->originMat->knO() << "_" << this->mat->knO() << endl;
-            }else{
-                cout << "o:not same mat: " << ray->originMat->knO() << "_" << this->mat->knO() << endl;
-            }
-            */
+            // check only front side triangles                      
+            if (det < FLT_EPSILON) return false;                    
+            
 
-            // check only front side triangles           
-            if (det < FLT_EPSILON) return false;
-
-            // calculate distance from A to ray origin
-            AO.sub(ray->originOS, A);
+            // calculate distance from A to ray origin              
+            AO.sub(ray->originOS, A);                               
 
             // Calculate barycentric coordinates: u>0 && v>0 && u+v<=1
             u = AO.dot(K);
@@ -849,16 +850,6 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
         }
         else
         {   
-            /*
-            if (ray->originMat->knI() == this->mat->knI())
-            {
-                cout << "i:same mat: " << ray->originMat->knI() << "_" <<  this->mat->knI() << endl;
-            }
-            else{
-                cout << "i:not same mat: " << ray->originMat->knI() << "_" << this->mat->knI() << endl;
-            }
-            */
-            
             // check front & backside triangles
             if (det < FLT_EPSILON && det > -FLT_EPSILON) return false;
 
@@ -889,7 +880,11 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
             ray->hitV = v;
         }
     }
-    else
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    else // without surfaces
     {
         // if ray is outside do test with face culling
         if (ray->isOutside && _isVolume)

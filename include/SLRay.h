@@ -87,6 +87,7 @@ class SLRay
             SLfloat     length;        //!< length from origin to an intersection
             SLint       depth;         //!< Recursion depth for ray tracing
             SLfloat     contrib;       //!< Current contibution of ray to color
+            SLfloat     kn;            //!< the kn of the material the ray is in (Default vacuum)
             
             // Additional info for intersection 
             SLRayType   type;          //!< PRIMARY, REFLECTED, TRANSMITTED, SHADOW
@@ -107,6 +108,8 @@ class SLRay
             SLMesh*     hitMesh;       //!< Points to the intersected mesh
             SLint       hitTriangle;   //!< Points to the intersected triangle
             SLMaterial* hitMat;        //!< Points to material of intersected node
+            SLbool      hitDir;        //!< true if the hited side is the outside of the surface, false inside
+            SLfloat     hitKn;         
             
             // Members set before shading
             SLVec3f     hitPoint;      //!< Point of intersection
