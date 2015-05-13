@@ -444,7 +444,7 @@ void SLMesh::calcMinMax()
         if (finalP()[i].y > maxP.y) maxP.y = finalP()[i].y;
         if (finalP()[i].z < minP.z) minP.z = finalP()[i].z;
         if (finalP()[i].z > maxP.z) maxP.z = finalP()[i].z;
-    } 
+    }
 }
 //-----------------------------------------------------------------------------
 /*!
@@ -559,6 +559,14 @@ void SLMesh::buildAABB(SLAABBox &aabb, SLMat4f wmNode)
     }     
     else
         calcMinMax();
+
+    SLVec3f addon1PC = (maxP - minP) * 0.01f;
+    SLfloat maxAddon = addon1PC.maxXYZ();
+    addon1PC.set(maxAddon,maxAddon,maxAddon);
+
+    maxP += addon1PC;
+    minP -= addon1PC;
+
     // Apply world matrix
     aabb.fromOStoWS(minP, maxP, wmNode);
 }

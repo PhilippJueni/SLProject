@@ -2402,7 +2402,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLNode* scene = new SLNode("Scene");        
         scene->addChild(triangle1);
         scene->addChild(triangle2);
-        //scene->addChild(triangle3);
+        scene->addChild(triangle3);
         scene->addChild(background);
         scene->addChild(light1);
         scene->addChild(cam1);

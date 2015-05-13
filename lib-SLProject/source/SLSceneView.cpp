@@ -1105,7 +1105,7 @@ SLbool SLSceneView::onDoubleClick(const SLMouseButton button,
         {   _camera->eyeToPixelRay((SLfloat)x, (SLfloat)y, &pickRay);
             s->_root3D->hitRec(&pickRay);
             if(pickRay.hitNode)
-                cout << "NODE HIT: " << pickRay.hitNode->name() << endl;
+                cout << "NODE HIT: " << pickRay.hitNode->name() << " (" << x << "," << y << ")" << endl;
         }
       
         if (pickRay.length < FLT_MAX)
