@@ -757,7 +757,7 @@ tools 2, 1997).
 SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 {
 
-    //cout << mat->name() << " ================================" << endl;
+    
 
 #if _DEBUG
     ++SLRay::tests;

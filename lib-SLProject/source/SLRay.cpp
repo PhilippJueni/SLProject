@@ -272,8 +272,11 @@ void SLRay::refractHE(SLRay* refracted)
             else{
                 hitKn = hitMat->knI();
                 
-                cout << "ERROR 1: " << originMat->name() << ":" << hitMat->name() << " _ " << kn << " _ " << hitMat->knO() << endl;
+                //cout << "ERROR 1: " << originMat->name() << ":" << hitMat->name() << " _ " << kn << " _ " << hitMat->knO();
+                //cout << " ( x:" << x << " y:" << y << " )" << endl;
             }
+            eta = 1;
+            refractedKn = kn;
         }
     }
     else // from ray kn to knO (knI == rayKn)
@@ -288,6 +291,9 @@ void SLRay::refractHE(SLRay* refracted)
         {
             hitKn = hitMat->knO();
             cout << "ERROR 2: " << originMat->name() <<":"<< hitMat->name() <<" _ "<< kn <<" _ "<< hitMat->knI() << endl;
+
+            eta = 1;
+            refractedKn = kn;
         }
     }
 

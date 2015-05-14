@@ -1321,6 +1321,10 @@ SLbool SLSceneView::onCommand(const SLCmd cmd)
         case cmdSceneRTEye:
         case cmdSceneRTEye3:
         case cmdSceneRTTriangle:
+        case cmdSceneRTTriangle2:
+        case cmdSceneRTTriangle3:
+        case cmdSceneRTTriangle4:
+        case cmdSceneRTTriangle5:
         case cmdSceneRTEye2:        s->onLoad(this, (SLCmd)cmd); return false;
 
         case cmdUseSceneViewCamera: switchToSceneViewCamera(); return true;
@@ -1602,6 +1606,10 @@ void SLSceneView::build2DMenus()
     mn3->addChild(new SLButton(this, "Ray Test", f, cmdSceneRTEye2, true, curS == cmdSceneRTEye2, mn2));
     mn3->addChild(new SLButton(this, "Cube RT", f, cmdSceneRTEye3, true, curS == cmdSceneRTEye3, mn2));
     mn3->addChild(new SLButton(this, "Triangle RT", f, cmdSceneRTTriangle, true, curS == cmdSceneRTTriangle, mn2));
+    mn3->addChild(new SLButton(this, "Triangle RT 2", f, cmdSceneRTTriangle2, true, curS == cmdSceneRTTriangle2, mn2));
+    mn3->addChild(new SLButton(this, "Triangle RT 3", f, cmdSceneRTTriangle3, true, curS == cmdSceneRTTriangle3, mn2));
+    mn3->addChild(new SLButton(this, "Triangle RT 4", f, cmdSceneRTTriangle4, true, curS == cmdSceneRTTriangle4, mn2));
+    mn3->addChild(new SLButton(this, "Triangle RT 5", f, cmdSceneRTTriangle5, true, curS == cmdSceneRTTriangle5, mn2));
     
 
     mn2 = new SLButton(this, "Camera >", f); mn1->addChild(mn2);

@@ -2386,17 +2386,17 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
         SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
         SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1, "Triangle_1"), "Triangle1");
-        triangle1->translate(-0.5, -0.5, 1, TS_Local);
+        triangle1->translate(-0.25f, -0.25f, 1, TS_Local);
         
         SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
         SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2, "Triangle_2"), "Triangle2");
-        triangle2->translate(-0.5f, -0.5f, 0.8f, TS_Local);
+        triangle2->translate(-0.25f, -0.25f, 0.8f, TS_Local);
         triangle2->rotate(180,0,1,0);
         triangle2->rotate(90, 0, 0, 1);
 
         SLMaterial* matTriangle3 = new SLMaterial("matTriangle_3", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
         SLNode* triangle3 = new SLNode(new SLTriangle(matTriangle3, "Triangle_3"), "Triangle3");
-        triangle3->translate(-0.5, -0.5, 0.6, TS_Local);
+        triangle3->translate(-0.25f, -0.25f, 0.6f, TS_Local);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         SLNode* scene = new SLNode("Scene");        
@@ -2407,6 +2407,212 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         scene->addChild(light1);
         scene->addChild(cam1);
         
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
+        _root3D = scene;
+    }
+    else
+    if (sceneName == cmdSceneRTTriangle2) //.........................................
+    {
+        name("Ray tracing Triangle");
+        info(sv, "HERT Triangle");
+
+#ifndef SL_GLES2
+        SLint numSamples = 10;
+#else
+        SLint numSamples = 6;
+#endif
+
+        // standard camera /////////////////////////////////////////////////
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(0, 0, 1.5);
+        cam1->lookAt(0, 0, 0);
+        //cam1->focalDist(6);
+        //cam1->lensDiameter(0.4f);
+        //cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->setInitialState();
+        ////////////////////////////////////////////////////////////////////
+
+        SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* matBack = new SLMaterial("matBack", texC);
+        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 1, 1, "Rect", matBack), "Background");
+        background->translate(0, 0, -3.0f, TS_Local);
+
+        // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
+        SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1, "Triangle_1"), "Triangle1");
+        triangle1->translate(-0.25f, -0.25f, 1, TS_Local);
+
+        SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2, "Triangle_2"), "Triangle2");
+        triangle2->translate(-0.25f, -0.25f, 0.8f, TS_Local);
+        triangle2->rotate(180, 0, 1, 0);
+        triangle2->rotate(90, 0, 0, 1);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        SLNode* scene = new SLNode("Scene");
+        scene->addChild(triangle1);
+        scene->addChild(triangle2);
+        scene->addChild(background);
+        scene->addChild(light1);
+        scene->addChild(cam1);
+
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
+        _root3D = scene;
+    }
+    else
+    if (sceneName == cmdSceneRTTriangle3) //.........................................
+    {
+        name("Ray tracing Triangle");
+        info(sv, "HERT Triangle");
+
+#ifndef SL_GLES2
+        SLint numSamples = 10;
+#else
+        SLint numSamples = 6;
+#endif
+
+        // standard camera /////////////////////////////////////////////////
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(0, 0, 2.5);
+        cam1->lookAt(0, 0, 0);
+        //cam1->focalDist(6);
+        //cam1->lensDiameter(0.4f);
+        //cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->setInitialState();
+        ////////////////////////////////////////////////////////////////////
+
+        SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* matBack = new SLMaterial("matBack", texC);
+        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 1, 1, "Rect", matBack), "Background");
+        background->translate(0, 0, -3.0f, TS_Local);
+
+        // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
+        SLMaterial* matTriangle1 = new SLMaterial("matTriangle_1", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLNode* triangle1 = new SLNode(new SLTriangle(matTriangle1, "Triangle_1"), "Triangle1");
+        triangle1->translate(-0.25f, -0.25f, 0.8f, TS_Local);
+
+        SLMaterial* matTriangle2 = new SLMaterial("matTriangle_2", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLNode* triangle2 = new SLNode(new SLTriangle(matTriangle2, "Triangle_2"), "Triangle2");
+        triangle2->translate(-0.25f, -0.25f, 0.4f, TS_Local);
+        triangle2->rotate(180, 0, 1, 0);
+        triangle2->rotate(90, 0, 0, 1);
+
+        SLMaterial* matTriangle3 = new SLMaterial("matTriangle_3", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.3f, 1.0f);
+        SLNode* triangle3 = new SLNode(new SLTriangle(matTriangle3, "Triangle_3"), "Triangle3");
+        triangle3->translate(-0.25f, -0.25f, 0.6f, TS_Local);
+
+        SLMaterial* matTriangle4 = new SLMaterial("matTriangle_4", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.3f, 1.0f);
+        SLNode* triangle4 = new SLNode(new SLTriangle(matTriangle4, "Triangle_4"), "Triangle4");
+        triangle4->translate(-0.25f, -0.25f, 0.2f, TS_Local);
+        triangle4->rotate(180, 0, 1, 0);
+        triangle4->rotate(90, 0, 0, 1);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        SLNode* scene = new SLNode("Scene");
+        scene->addChild(triangle1);
+        scene->addChild(triangle2);
+        scene->addChild(triangle3);
+        scene->addChild(triangle4);
+        scene->addChild(background);
+        scene->addChild(light1);
+        scene->addChild(cam1);
+
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
+        _root3D = scene;
+    }
+    else
+    if (sceneName == cmdSceneRTTriangle4) //.........................................
+    {
+        name("Ray tracing Triangle");
+        info(sv, "HERT Triangle");
+
+#ifndef SL_GLES2
+        SLint numSamples = 10;
+#else
+        SLint numSamples = 6;
+#endif
+
+        // standard camera /////////////////////////////////////////////////
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(0, 0, 1.5);
+        cam1->lookAt(0, 0, 0);
+        //cam1->focalDist(6);
+        //cam1->lensDiameter(0.4f);
+        //cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->setInitialState();
+        ////////////////////////////////////////////////////////////////////
+
+        SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* matBack = new SLMaterial("matBack", texC);
+        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 1, 1, "Rect", matBack), "Background");
+        background->translate(0, 0, -3.0f, TS_Local);
+
+        // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
+       
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        SLNode* scene = new SLNode("Scene");
+       
+        scene->addChild(background);
+        scene->addChild(light1);
+        scene->addChild(cam1);
+
+        _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
+        sv->camera(cam1);
+        _root3D = scene;
+    }
+    else
+    if (sceneName == cmdSceneRTTriangle5) //.........................................
+    {
+        name("Ray tracing Triangle");
+        info(sv, "HERT Triangle");
+
+#ifndef SL_GLES2
+        SLint numSamples = 10;
+#else
+        SLint numSamples = 6;
+#endif
+
+        // standard camera /////////////////////////////////////////////////
+        SLCamera* cam1 = new SLCamera;
+        cam1->position(0, 0, 1.5);
+        cam1->lookAt(0, 0, 0);
+        //cam1->focalDist(6);
+        //cam1->lensDiameter(0.4f);
+        //cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->setInitialState();
+        ////////////////////////////////////////////////////////////////////
+
+        SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
+        light1->attenuation(0, 0, 1);
+
+        SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
+        SLMaterial* matBack = new SLMaterial("matBack", texC);
+        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 1, 1, "Rect", matBack), "Background");
+        background->translate(0, 0, -3.0f, TS_Local);
+
+        // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
+       
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        SLNode* scene = new SLNode("Scene");
+        
+        scene->addChild(background);
+        scene->addChild(light1);
+        scene->addChild(cam1);
+
         _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
         sv->camera(cam1);
         _root3D = scene;

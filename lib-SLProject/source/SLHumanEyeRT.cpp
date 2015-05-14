@@ -86,9 +86,9 @@ SLbool SLHumanEyeRT::renderClassic(SLSceneView* sv)
 
     // for (SLuint x = 320; x<_img[0].width(); ++x)
     // for (SLuint y = 235; y<_img[0].height(); ++y)
-    for (SLuint x = 0; x<_img[0].width(); ++x)
+    for (SLuint x = 320; x < _img[0].width(); ++x)
     {
-        for (SLuint y = 0; y < _img[0].height(); ++y)
+        for (SLuint y = 240; y < _img[0].height(); ++y)
         {
             SLRay primaryRay;
             setPrimaryRay((SLfloat)x, (SLfloat)y, &primaryRay);
@@ -146,12 +146,12 @@ SLCol4f SLHumanEyeRT::traceClassic(SLRay* ray)
         {
             if (ray->hitMat->kt())
             {   SLRay refracted;
-                ray->refractHE(&refracted);             //                                      ray->length wird auf FLT_MAX gesetzt
+                ray->refractHE(&refracted);
 
-                SLfloat kt = ray->hitMat->kt();         // Triangle_1: 0.5
-                SLCol4f tC = traceClassic(&refracted);  // Triangle_1: x=0.1, y=0.4, z=0.8      mit ray->length == FLT_MAX, deshalb backgroundColor
-                color += kt * tC;                       // Triangle_1: ( 0.05, 0.2, 0.4 )
                 //color += ray->hitMat->kt() * traceClassic(&refracted);
+                SLfloat kt = ray->hitMat->kt();         
+                SLCol4f tC = traceClassic(&refracted);  
+                color += kt * tC;                       
             }
             if (ray->hitMat->kr())
             {   SLRay reflected;
