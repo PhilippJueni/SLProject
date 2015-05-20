@@ -815,14 +815,16 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
         if (det > 0)
         {
             ray->hitDir = true;
+
         }
         if (det < 0)
         {
             ray->hitDir = false;
+
         }
 
         // if ray is in air (outside) do test with face culling
-        if (ray->isOutside)
+        if (ray->hitDir)
         //if (ray->kn == 1.0f)
         { 
             // check only front side triangles                      
@@ -855,6 +857,8 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
             // scale down u & v so that u+v<=1
             ray->hitU = u * inv_det;
             ray->hitV = v * inv_det;
+
+
         }
         else
         {   
@@ -1009,7 +1013,7 @@ void SLMesh::preShade(SLRay* ray)
     ray->hitNormal.set(ray->hitNode->updateAndGetWMN() * ray->hitNormal);
                  
     // invert normal if the ray is inside a mesh
-    if (!ray->isOutside) ray->hitNormal *= -1;
+    //if (!ray->isOutside) ray->hitNormal *= -1;
    
     // for shading the normal is expected to be unit length
     ray->hitNormal.normalize();

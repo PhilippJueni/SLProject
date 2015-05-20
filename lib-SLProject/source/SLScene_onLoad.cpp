@@ -2367,8 +2367,8 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
-        cam1->position(0, 0, 1.5);
-        cam1->lookAt(0, 0, 0);
+        cam1->position(0, -3, 5.5);
+        cam1->lookAt(0, 1, 0);
         //cam1->focalDist(6);
         //cam1->lensDiameter(0.4f);
         //cam1->lensSamples()->samples(numSamples, numSamples);
@@ -2478,7 +2478,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
-        cam1->position(0, 0, 2.5);
+        cam1->position(0, 0, 1.5);
         cam1->lookAt(0, 0, 0);
         //cam1->focalDist(6);
         //cam1->lensDiameter(0.4f);

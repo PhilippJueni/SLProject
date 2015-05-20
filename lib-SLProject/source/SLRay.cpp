@@ -257,7 +257,7 @@ void SLRay::refractHE(SLRay* refracted)
     // Calculate index of refraction eta = Kn_Source/Kn_Destination
     if (hitDir) // from ray kn to KnI (knO == rayKn)
     {
-        if ( kn == hitMat->knO() )
+        if ( kn == hitMat->knO() )  // from air into a material
         {
             //cout << "test 1" << endl;
             eta = kn / hitMat->knI();
@@ -265,14 +265,15 @@ void SLRay::refractHE(SLRay* refracted)
         }
         else
         {
-            if (hitKn != 0 && hitKn == hitMat->knI())
+            // Test 3
+            if (hitKn != NULL && hitKn == hitMat->knI())
             {
-
-            }
-            else{
-                hitKn = hitMat->knI();
-                
+                // Test 3.1                
                 //cout << "ERROR 1: " << originMat->name() << ":" << hitMat->name() << " _ " << kn << " _ " << hitMat->knO();
+            }
+            else{   // ignore new material before the current ended
+                // Test 3.2
+                hitKn = hitMat->knI();
                 //cout << " ( x:" << x << " y:" << y << " )" << endl;
             }
             eta = 1;
@@ -281,35 +282,61 @@ void SLRay::refractHE(SLRay* refracted)
     }
     else // from ray kn to knO (knI == rayKn)
     {
-        if ( kn == hitMat->knI() )
+        hitNormal *= -1;
+        if ( kn == hitMat->knI() )             // from ray kn to knO (knI = rayKn)
         {
             //cout << "test 2" << endl;
-            eta = kn / hitMat->knO();
-            refractedKn = hitMat->knO();            
+            if (hitKn != NULL)
+            {
+                // Test 2.1
+                eta = kn / hitKn;
+                refractedKn = hitKn;
+                hitKn = NULL;
+            }
+            else{
+                // Test 2.2
+                eta = kn / hitMat->knO();
+                refractedKn = hitMat->knO();
+            }
         }
         else
         {
-            hitKn = hitMat->knO();
-            cout << "ERROR 2: " << originMat->name() <<":"<< hitMat->name() <<" _ "<< kn <<" _ "<< hitMat->knI() << endl;
-
-            eta = 1;
-            refractedKn = kn;
+            if (kn == hitMat->knO())
+            {
+                // Test 4.1
+                eta = 1;// hitMat->knO() / hitMat;
+                refractedKn = kn;
+            }
+            else{
+                // test 4.2                
+                eta = 1;
+                refractedKn = kn;
+                //cout << "ERROR 2: " << originMat->name() <<":"<< hitMat->name() <<" _ "<< kn <<" _ "<< hitMat->knI() << endl;
+            }
         }
     }
 
     
     // Bec's formula is a little faster (from Ray Tracing News) 
     // hitNormal = Surface normal at intersection point
-    SLfloat c1 = hitNormal * -dir;              
-    SLfloat w = eta * c1;                       
-    SLfloat c2 = 1.0f + (w - eta) * (w + eta);  
+    SLbool bla0 = hitDir;                       // true         // true
+    SLfloat c1 = hitNormal * -dir;              // 0.99999      -0.99999
+    SLfloat w = eta * c1;                       // 0.66666      -0.99999
+    SLfloat c2 = 1.0f + (w - eta) * (w + eta);  // 0.99999      0.99999
 
     if (c2 >= 0.0f)
-    {   T = eta * dir + (w - sqrt(c2)) * hitNormal;     
+    {                                       // T1               T3
+        SLfloat bla1 = (w - sqrt(c2));      // -0.33333         -1.999999
+        SLVec3f bla2 = bla1 * hitNormal;    // -0,-0,-0.33333   0,0,1.999999
+        SLVec3f bla3 = eta * dir;           // 0,0,-0.66666     0,0,-0.99999
+        T = bla3 + bla2;                    // 0,0,-0.99999     0,0,0.999999
+        
+        //T = eta * dir + (w - sqrt(c2)) * hitNormal;     
         refracted->contrib = contrib * hitMat->kt();    
         refracted->type = TRANSMITTED;                  
         refracted->kn = refractedKn;
         refracted->isOutside = !isOutside;              
+        
         ++refractedRays;                                
     }
     else // total internal refraction results in a internal reflected ray
@@ -322,6 +349,7 @@ void SLRay::refractHE(SLRay* refracted)
     }
     
     // set refracted ray parameter
+    refracted->hitKn = hitKn;
     refracted->setDir(T);                       
     refracted->origin.set(hitPoint);            
     refracted->originMat = hitMat;              
