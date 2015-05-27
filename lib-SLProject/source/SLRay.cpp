@@ -273,27 +273,28 @@ void SLRay::refractHE(SLRay* refracted)
             }
             else{   // ignore new material before the current ended
                 // Test 3.2
-                hitKn = hitMat->knI();
+                hitKn = hitMat->knI(); // Save the inside kn of the hit material for later use
                 //cout << " ( x:" << x << " y:" << y << " )" << endl;
             }
             eta = 1;
             refractedKn = kn;
         }
     }
-    else // from ray kn to knO (knI == rayKn)
+    else // from ray kn to knO / hitKn (knI == rayKn)
     {
-        hitNormal *= -1;
+        hitNormal *= -1; // Problem mit isOutside
+
         if ( kn == hitMat->knI() )             // from ray kn to knO (knI = rayKn)
         {
             //cout << "test 2" << endl;
-            if (hitKn != NULL)
+            if (hitKn != NULL) // from ray kn to hitKn
             {
                 // Test 2.1
-                eta = kn / hitKn;
+                eta = kn / hitKn; // refract into previous saved material
                 refractedKn = hitKn;
                 hitKn = NULL;
             }
-            else{
+            else{   // from ray kn to knO (knI == rayKn)
                 // Test 2.2
                 eta = kn / hitMat->knO();
                 refractedKn = hitMat->knO();
@@ -301,16 +302,16 @@ void SLRay::refractHE(SLRay* refracted)
         }
         else
         {
-            if (kn == hitMat->knO())
+            if (kn == hitMat->knO()) // ignore backside surface if the ray comes from the same kn 
             {
                 // Test 4.1
-                eta = 1;// hitMat->knO() / hitMat;
+                eta = 1;
                 refractedKn = kn;
             }
             else{
                 // test 4.2                
-                eta = 1;
-                refractedKn = kn;
+                eta = kn / hitMat->knO();
+                refractedKn = hitMat->knO();
                 //cout << "ERROR 2: " << originMat->name() <<":"<< hitMat->name() <<" _ "<< kn <<" _ "<< hitMat->knI() << endl;
             }
         }

@@ -26,44 +26,36 @@ void SLGullstrandCamera::addLens(SLNode* node, SLfloat position)
     node->rotate(90, 1, 0, 0, TS_Local);
     node->translate(0, position, 0, TS_Local);
     addChild(node);
-    
 }
-
-/*
-void SLGullstrandCamera::addSurface(SLSurface* surf, SLfloat position)
-{
-    _surfaces.push_back(surf);
-    // todo: check that it is a surface
-   
-    SLNode *node = new SLNode( surf );
-    node->translate(0, 0, position, TS_Local);
-    addChild(node);
-}
-
-void SLGullstrandCamera::addLSurface(SLSurface* surf, SLfloat position)
-{
-    _surfaces.push_back(surf);
-    // todo: check that it is a surface
-
-    SLNode *node = new SLNode(surf);
-    node->rotate(90, 1, 0, 0, TS_Local);
-    node->translate(0, position, 0, TS_Local);
-    addChild(node);
-}
-*/
 
 void SLGullstrandCamera::addSurface(SLMesh* mesh, SLfloat position)
 {
     _meshes.push_back(mesh);
-    // todo: check that it is a surface
-    
-
     SLNode *node = new SLNode(mesh);
-    node->translate(0, 0, position, TS_Local);
+    node->translate(-0.25f, -0.25f, position, TS_Local);
     addChild(node);
 }
 
-/*
+void SLGullstrandCamera::addSurface2(SLMesh* mesh, SLfloat position)
+{
+    _meshes.push_back(mesh);
+    SLNode *node = new SLNode(mesh);
+    node->rotate(90, 1, 0, 0, TS_Local);
+    node->translate(0, position, 0, TS_Local);
+    addChild(node);
+}
+
+void SLGullstrandCamera::addSurface3(SLMesh* mesh, SLfloat position)
+{
+    _meshes.push_back(mesh);
+    SLNode *node = new SLNode(mesh);
+    node->rotate(-90, 1, 0, 0, TS_Local);
+    node->translate(0, -position, 0, TS_Local);
+    addChild(node);
+}
+
+
+
 void SLGullstrandCamera::renderClassic(SLSceneView* sv)
 {
     
@@ -84,10 +76,10 @@ void SLGullstrandCamera::renderClassic(SLSceneView* sv)
     double t1 = SLScene::current->timeSec();
     double tStart = t1;
 
-    cout << "start render" << endl;
-    for (SLuint x = 0; x<_img[0].width(); ++x)
+    //cout << "start render" << endl;
+    for (SLuint x = 120; x<_img[0].width(); ++x)
     {
-        for (SLuint y = 0; y<_img[0].height(); ++y)
+        for (SLuint y = 120; y<_img[0].height(); ++y)
         {
             SLRay primaryRay;
             setPrimaryRay((SLfloat)x, (SLfloat)y, &primaryRay);
@@ -151,23 +143,7 @@ void SLGullstrandCamera::prepareImage()
     // get camera vectors eye, lookAt, lookUp
     updateAndGetVM().lookAt(&_EYE, &_LA, &_LU, &_LR);
     
-    if (_cam->projection() == monoOrthographic)
-    {   /*
-        In orthographic projection the bottom-left vector (_BL) points
-        from the eye to the center of the bottom-left pixel of a plane that
-        parallel to the projection plan at zero distance from the eye.
-        *//*
-        SLVec3f pos(_cam->updateAndGetVM().translation());
-        SLfloat hh = tan(SL_DEG2RAD*_cam->fov()*0.5f) * pos.length();
-        SLfloat hw = hh * _sv->scrWdivH();
-
-        // calculate the size of a pixel in world coords.
-        _pxSize = hw * 2 / _sv->scrW();
-
-        _BL = _EYE - hw*_LR - hh*_LU + _pxSize / 2 * _LR - _pxSize / 2 * _LU;
-    }
-    else
-    {
+    
         // In perspective projection the bottom-left vector (_BL) points
         // from the eye to the center of the bottom-left pixel on a projection
         // plan in focal distance. See also the computergraphics script about
@@ -284,7 +260,7 @@ SLbool SLGullstrandCamera::hitRec(SLRay *ray)
     SLbool wasHit = false;
 
     // Test children nodes
-    for (SLint i = 0; i<_surfaces.size(); ++i)
+    for (SLint i = 0; i<_meshes.size(); ++i)
     {
 //        if (_surfaces[i]->hitRec2(ray) && !wasHit)
 //            wasHit = true;
@@ -388,7 +364,7 @@ SLCol4f SLGullstrandCamera::shade(SLRay* ray)
     return localColor;
     
 }
-*/
+
 //-----------------------------------------------------------------------------
 void SLGullstrandCamera::drawMeshes(SLSceneView* sv)
 {
@@ -483,6 +459,9 @@ void SLGullstrandCamera::drawMeshes(SLSceneView* sv)
         }
 
         SLCamera::_bufP.drawArrayAsConstantColorLines(SLCol3f::WHITE*0.7f);
+    }
+    else{
+        //renderClassic(sv);
     }
 }
 //-----------------------------------------------------------------------------

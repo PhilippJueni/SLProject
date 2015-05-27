@@ -26,10 +26,12 @@ public:
     //void        addSurface(SLSurface* surf, SLfloat position = 0);
     //void        addLSurface(SLSurface* surf, SLfloat position = 0);
     void        addSurface(SLMesh* mesh, SLfloat position = 0);
+    void        addSurface2(SLMesh* mesh, SLfloat position = 0);
+    void        addSurface3(SLMesh* mesh, SLfloat position = 0);
 
     void        drawMeshes(SLSceneView* sv);
 
-    /* RT
+    // RT
     void        renderClassic(SLSceneView* sv);
     void        initStats(SLint depth);
     void        prepareImage();
@@ -37,10 +39,10 @@ public:
     SLbool hitRec(SLRay *ray);      
     SLCol4f traceClassic(SLRay* ray);
     SLCol4f shade(SLRay* ray);
-    */
+    
    
 private:
-    /* RT
+    // RT
     SLSceneView* _sv;
     SLImage     _img[6];        //!< max 6 images for cube map
     SLuint      _texName;       //!< OpenGL texture "name" (= ID)
@@ -51,7 +53,6 @@ private:
     SLbool      _continuous;    //!< if true state goes into ready again
     SLVec3f     _BL;            //!< Bottom left vector
     SLuint      _next;          //!< next index to render RT
-    */
 
     //SLVSurface      _surfaces;         //!< vector of children surfaces
     //SLVMesh         _meshes;

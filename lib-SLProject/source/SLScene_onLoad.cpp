@@ -39,6 +39,7 @@
 #include <MyRectangle.h>
 #include <SLSurface.h>
 #include <SLTriangle.h>
+#include <SLSphericalRefractionSurface.h>
 
 
 SLNode* SphereGroup(SLint, SLfloat, SLfloat, SLfloat, SLfloat, SLint, SLMaterial*, SLMaterial*);
@@ -2543,13 +2544,16 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
-        cam1->position(0, 0, 1.5);
+        cam1->position(0, 0, 2);
         cam1->lookAt(0, 0, 0);
         //cam1->focalDist(6);
         //cam1->lensDiameter(0.4f);
         //cam1->lensSamples()->samples(numSamples, numSamples);
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
+        SLGullstrandCamera* cam2 = new SLGullstrandCamera();
+        cam2->position(0, 0, 1);
+        cam2->lookAt(0, 0, 0);
 
         SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
         light1->attenuation(0, 0, 1);
@@ -2560,14 +2564,36 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         background->translate(0, 0, -3.0f, TS_Local);
 
         // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
-       
+        SLMaterial* matNH = new SLMaterial("matNH", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLMesh* surfaceNH = new SLTriangle(matBack, "NH");
+        
+        SLMaterial* matLB = new SLMaterial("matLB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLMesh* surfaceLB = new SLTriangle(matLB, "LB");
+        
+        SLMaterial* matLF = new SLMaterial("matLF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLMesh* surfaceLF = new SLTriangle(matLF, "LF");
+        
+        SLMaterial* matHB = new SLMaterial("matHB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLMesh* surfaceHB = new SLTriangle(matHB, "HB");
+        
+        SLMaterial* matHF = new SLMaterial("matHF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLMesh* surfaceHF = new SLTriangle(matHF, "HF");
+
+        
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        cam2->addSurface(surfaceNH, 1.0f);
+        cam2->addSurface(surfaceLB, 0.5f);
+        cam2->addSurface(surfaceLF, 0.3f);
+        cam2->addSurface(surfaceHB, 0.1f);
+        cam2->addSurface(surfaceHF, 0.0f);
+        
+        
 
         SLNode* scene = new SLNode("Scene");
-       
         scene->addChild(background);
         scene->addChild(light1);
         scene->addChild(cam1);
+        scene->addChild(cam2);
 
         _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
         sv->camera(cam1);
@@ -2594,6 +2620,9 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         //cam1->lensSamples()->samples(numSamples, numSamples);
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
+        SLGullstrandCamera* cam2 = new SLGullstrandCamera();
+        cam2->position(0, 0, 1);
+        cam2->lookAt(0, 0, 0);
 
         SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
         light1->attenuation(0, 0, 1);
@@ -2604,14 +2633,34 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         background->translate(0, 0, -3.0f, TS_Local);
 
         // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
-       
+        SLMaterial* matNH = new SLMaterial("matNH", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLSphericalRefractionSurface* surfNH = new SLSphericalRefractionSurface(2.0f, 2.0f, 32, 32, "test");
+        surfNH->buildMesh(matNH);
+        SLMaterial* matLB = new SLMaterial("matLB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLSphericalRefractionSurface* surfLB = new SLSphericalRefractionSurface(1.0f, 1.0f, 32, 32, "test");
+        surfLB->buildMesh(matLB);
+        SLMaterial* matLF = new SLMaterial("matLF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLSphericalRefractionSurface* surfLF = new SLSphericalRefractionSurface(1.0f, 1.0f, 32, 32, "test");
+        surfLF->buildMesh(matLF);
+        SLMaterial* matHB = new SLMaterial("matHB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLSphericalRefractionSurface* surfHB = new SLSphericalRefractionSurface(1.2f, 1.0f, 32, 32, "test");
+        surfHB->buildMesh(matHB);
+        SLMaterial* matHF = new SLMaterial("matHF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        SLSphericalRefractionSurface* surfHF = new SLSphericalRefractionSurface(1.2f, 1.0f, 32, 32, "test");
+        surfHF->buildMesh(matHF);
+        
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        cam2->addSurface3(surfNH, 1.0f);
+        cam2->addSurface3(surfLB, 0.5f);
+        cam2->addSurface2(surfLF, 0.4f);
+        cam2->addSurface2(surfHB, 0.1f);
+        cam2->addSurface2(surfHF, 0.0f);
 
         SLNode* scene = new SLNode("Scene");
-        
         scene->addChild(background);
         scene->addChild(light1);
         scene->addChild(cam1);
+        scene->addChild(cam2);
 
         _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
         sv->camera(cam1);

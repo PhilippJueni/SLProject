@@ -279,6 +279,12 @@
     <ClInclude Include="..\include\SLTriangle.h">
       <Filter>Nodes\Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SLRefractionSurface.h">
+      <Filter>Nodes\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SLSphericalRefractionSurface.h">
+      <Filter>Nodes\Meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\SLAABBox.cpp">
@@ -462,6 +468,12 @@
       <Filter>Raytracer</Filter>
     </ClCompile>
     <ClCompile Include="source\SLTriangle.cpp">
+      <Filter>Nodes\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SLSphericalRefractionSurface.cpp">
+      <Filter>Nodes\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="SLRefractionSurface.cpp">
       <Filter>Nodes\Meshes</Filter>
     </ClCompile>
   </ItemGroup>

@@ -86,10 +86,11 @@ SLbool SLHumanEyeRT::renderClassic(SLSceneView* sv)
 
     // for (SLuint x = 320; x<_img[0].width(); ++x)
     // for (SLuint y = 235; y<_img[0].height(); ++y)
-    for (SLuint x = 320; x < _img[0].width(); ++x)
+    for (SLuint y = 0/*240*/; y < _img[0].height(); ++y)
     {
-        for (SLuint y = 240; y < _img[0].height(); ++y)
+        for (SLuint x = 0/*320*/; x < _img[0].width(); ++x)
         {
+       
             SLRay primaryRay;
             setPrimaryRay((SLfloat)x, (SLfloat)y, &primaryRay);
 
@@ -106,7 +107,7 @@ SLbool SLHumanEyeRT::renderClassic(SLSceneView* sv)
         // Update image after 500 ms
         double t2 = SLScene::current->timeSec();
         if (t2-t1 > 0.5)
-        {   _pcRendered = (SLint)((SLfloat)x/(SLfloat)_img[0].width()*100);
+        {   _pcRendered = (SLint)((SLfloat)y/(SLfloat)_img[0].height()*100);
             _sv->onWndUpdate();
             t1 = SLScene::current->timeSec();
         }
