@@ -2479,11 +2479,8 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
-        cam1->position(0, 0, 1.5);
-        cam1->lookAt(0, 0, 0);
-        //cam1->focalDist(6);
-        //cam1->lensDiameter(0.4f);
-        //cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->position(2, 2, 1.5);
+        cam1->lookAt(1, 1, 1.5);
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
 
@@ -2613,11 +2610,8 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
-        cam1->position(0, 0, 1.5);
-        cam1->lookAt(0, 0, 0);
-        //cam1->focalDist(6);
-        //cam1->lensDiameter(0.4f);
-        //cam1->lensSamples()->samples(numSamples, numSamples);
+        cam1->position(4, 0, 1);
+        cam1->lookAt(0, 0, 1);
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
         SLGullstrandCamera* cam2 = new SLGullstrandCamera();
@@ -2632,28 +2626,27 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 1, 1, "Rect", matBack), "Background");
         background->translate(0, 0, -3.0f, TS_Local);
 
-        // SLTriangle ////////////////////////////////////////////////////////////////////////////////////////////////
-        SLMaterial* matNH = new SLMaterial("matNH", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
+        // Meshes ////////////////////////////////////////////////////////////////////////////////////////////////
+        SLMaterial* matNH = new SLMaterial("matNH", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.4f, 1.5f, 1.0f);
         SLSphericalRefractionSurface* surfNH = new SLSphericalRefractionSurface(2.0f, 2.0f, 32, 32, "test");
         surfNH->buildMesh(matNH);
         SLMaterial* matLB = new SLMaterial("matLB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfLB = new SLSphericalRefractionSurface(1.0f, 1.0f, 32, 32, "test");
+        SLSphericalRefractionSurface* surfLB = new SLSphericalRefractionSurface(1.0f, 1.5f, 32, 32, "test");
         surfLB->buildMesh(matLB);
         SLMaterial* matLF = new SLMaterial("matLF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfLF = new SLSphericalRefractionSurface(1.0f, 1.0f, 32, 32, "test");
+        SLSphericalRefractionSurface* surfLF = new SLSphericalRefractionSurface(1.0f, 1.5f, 32, 32, "test");
         surfLF->buildMesh(matLF);
         SLMaterial* matHB = new SLMaterial("matHB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfHB = new SLSphericalRefractionSurface(1.2f, 1.0f, 32, 32, "test");
+        SLSphericalRefractionSurface* surfHB = new SLSphericalRefractionSurface(1.2f, -1.0f, 32, 32, "test");
         surfHB->buildMesh(matHB);
         SLMaterial* matHF = new SLMaterial("matHF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfHF = new SLSphericalRefractionSurface(1.2f, 1.0f, 32, 32, "test");
+        SLSphericalRefractionSurface* surfHF = new SLSphericalRefractionSurface(1.2f, 1.2f, 32, 32, "test");
         surfHF->buildMesh(matHF);
-        
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        cam2->addSurface3(surfNH, 1.0f);
+        cam2->addSurface3(surfNH, 1.5f);
         cam2->addSurface3(surfLB, 0.5f);
         cam2->addSurface2(surfLF, 0.4f);
-        cam2->addSurface2(surfHB, 0.1f);
+        cam2->addSurface3(surfHB, 0.0f);
         cam2->addSurface2(surfHF, 0.0f);
 
         SLNode* scene = new SLNode("Scene");
