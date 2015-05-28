@@ -2241,7 +2241,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         MyRectangle* rect = new MyRectangle(SLVec2f(-1, -1), SLVec2f(1, 1), 1, 1, "Rect", mT);
         //rect->setSurface(1.0f, 1.5f);
         //cam2->addSurface( rect, -1);
-        cam2->addSurface(rect, -1);
+        //cam2->addSurface(rect, -1);
         
         //MyRectangle* rect2 = new MyRectangle(SLVec2f(-1, -1), SLVec2f(1, 1), 1, 1, "Rect", mT);
         //rect2->setSurface(1.5f, 1.0f);
@@ -2578,11 +2578,11 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        cam2->addSurface(surfaceNH, 1.0f);
-        cam2->addSurface(surfaceLB, 0.5f);
-        cam2->addSurface(surfaceLF, 0.3f);
-        cam2->addSurface(surfaceHB, 0.1f);
-        cam2->addSurface(surfaceHF, 0.0f);
+        //cam2->addSurface(surfaceNH, 1.0f);
+        //cam2->addSurface(surfaceLB, 0.5f);
+        //cam2->addSurface(surfaceLF, 0.3f);
+        //cam2->addSurface(surfaceHB, 0.1f);
+        //cam2->addSurface(surfaceHF, 0.0f);
         
         
 
@@ -2610,12 +2610,12 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
-        cam1->position(4, 0, 1);
+        cam1->position(0, 0, 110 );
         cam1->lookAt(0, 0, 1);
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
         SLGullstrandCamera* cam2 = new SLGullstrandCamera();
-        cam2->position(0, 0, 1);
+        cam2->position(0, 0, 80);
         cam2->lookAt(0, 0, 0);
 
         SLLightSphere* light1 = new SLLightSphere(0, 2, 5, 0.1f);
@@ -2623,31 +2623,52 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
         SLMaterial* matBack = new SLMaterial("matBack", texC);
-        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-5, -5), SLVec2f(5, 5), 1, 1, "Rect", matBack), "Background");
+        SLNode* background = new SLNode(new SLRectangle(SLVec2f(-40, -40), SLVec2f(40, 40), 1, 1, "Rect", matBack), "Background");
         background->translate(0, 0, -3.0f, TS_Local);
 
-        // Meshes ////////////////////////////////////////////////////////////////////////////////////////////////
-        SLMaterial* matNH = new SLMaterial("matNH", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.4f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfNH = new SLSphericalRefractionSurface(2.0f, 2.0f, 32, 32, "test");
-        surfNH->buildMesh(matNH);
-        SLMaterial* matLB = new SLMaterial("matLB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfLB = new SLSphericalRefractionSurface(1.0f, 1.5f, 32, 32, "test");
-        surfLB->buildMesh(matLB);
-        SLMaterial* matLF = new SLMaterial("matLF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfLF = new SLSphericalRefractionSurface(1.0f, 1.5f, 32, 32, "test");
-        surfLF->buildMesh(matLF);
-        SLMaterial* matHB = new SLMaterial("matHB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfHB = new SLSphericalRefractionSurface(1.2f, -1.0f, 32, 32, "test");
-        surfHB->buildMesh(matHB);
-        SLMaterial* matHF = new SLMaterial("matHF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, 1.5f, 1.0f);
-        SLSphericalRefractionSurface* surfHF = new SLSphericalRefractionSurface(1.2f, 1.2f, 32, 32, "test");
-        surfHF->buildMesh(matHF);
+        // Eye ////////////////////////////////////////////////////////////////////////////////////////////////
+        SLfloat nAir = 1.0f;
+        SLfloat nCornea = 1.376f;
+        SLfloat nEyeWater = 1.336f;
+        SLfloat nLensBark = 1.386f;
+        SLfloat nLensCore = 1.406f;
+
+        SLMaterial* matCF = new SLMaterial("matCF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, nCornea, nAir);
+        SLSphericalRefractionSurface* surfCF = new SLSphericalRefractionSurface(11.5f, 7.7f, 32, 32, "CorneaFront");
+        surfCF->buildMesh(matCF);
+        SLMaterial* matCB = new SLMaterial("matCB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, nCornea, nEyeWater);
+        SLSphericalRefractionSurface* surfCB = new SLSphericalRefractionSurface(11.5f, -6.8f, 32, 32, "CorneaBack");
+        surfCB->buildMesh(matCB);
+        
+        SLMaterial* matLOF = new SLMaterial("matLOF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, nLensBark, nEyeWater);
+        SLSphericalRefractionSurface* surfLOF = new SLSphericalRefractionSurface(7.0f, 10.0f, 32, 32, "lens bark front");
+        surfLOF->buildMesh(matLOF);
+        SLMaterial* matLIF = new SLMaterial("matLIF", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, nLensBark, nLensCore);
+        SLSphericalRefractionSurface* surfLIF = new SLSphericalRefractionSurface(7.0f, -7.911f, 32, 32, "lens core front");
+        surfLIF->buildMesh(matLIF);
+        SLMaterial* matLIB = new SLMaterial("matLIB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, nLensCore, nLensBark);
+        SLSphericalRefractionSurface* surfLIB = new SLSphericalRefractionSurface(7.0f, -5.76f, 32, 32, "lens core back");
+        surfLIB->buildMesh(matLIB);
+        SLMaterial* matLOB = new SLMaterial("matLOB", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.9f, nLensBark, nEyeWater);
+        SLSphericalRefractionSurface* surfLOB = new SLSphericalRefractionSurface(7.0f, 6.0f, 32, 32, "lens bark back");
+        surfLOB->buildMesh(matLOB);
+        
+        SLMaterial* matMac = new SLMaterial("matMac", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.4f, nEyeWater, 1.0f);
+        SLSphericalRefractionSurface* surfMac = new SLSphericalRefractionSurface(5.5f, -12.0f, 32, 32, "macula");
+        surfMac->buildMesh(matMac);
+
+        SLGLTexture* texRec = new SLGLTexture("tron_floor2.png");
+        SLMaterial* matRec = new SLMaterial("texRec", texRec);
+        SLRectangle* rectangle= new SLRectangle(SLVec2f(-2.2f, -1.65f), SLVec2f(2.2f, 1.56f), 1, 1, "Rect", matRec);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        cam2->addSurface3(surfNH, 1.5f);
-        cam2->addSurface3(surfLB, 0.5f);
-        cam2->addSurface2(surfLF, 0.4f);
-        cam2->addSurface3(surfHB, 0.0f);
-        cam2->addSurface2(surfHF, 0.0f);
+        cam2->addSurface2(surfCF, 0.0f);
+        cam2->addSurface3(surfCB, 0.5f);
+        cam2->addSurface2(surfLOF, 3.6f);
+        cam2->addSurface3(surfLIF, 4.146f);
+        cam2->addSurface2(surfLIB, 6.565f);
+        cam2->addSurface3(surfLOB, 7.2f);
+        //cam2->addSurface2(surfMac, 24.0f);        
+        //cam2->addSurface(rectangle, 26.0f);
 
         SLNode* scene = new SLNode("Scene");
         scene->addChild(background);

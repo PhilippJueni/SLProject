@@ -45,6 +45,9 @@ class SLCamera: public SLNode
             SLAABBox&       updateAABBRec    ();
 
             void            drawMeshes      (SLSceneView* sv);
+    virtual void            generateCameraRay(SLRay* primaryRay) {}
+            
+
     virtual SLbool          camUpdate       (SLfloat timeMS);
             void            preShade        (SLRay* ray){(void)ray;}
             void            calcMinMax      (SLVec3f &minV, SLVec3f &maxV);
@@ -95,6 +98,7 @@ class SLCamera: public SLNode
             void            lensSamples     (SLint x, SLint y)   {_lensSamples.samples(x, y);}
             void            eyeSeparation   (const SLfloat es)   {_eyeSeparation = es;}
             void            useDeviceRot    (const SLbool use)   {_useDeviceRot = use;}
+            
                
             // Getters
             const SLMat4f&  updateAndGetVM  () const {return updateAndGetWMI();}

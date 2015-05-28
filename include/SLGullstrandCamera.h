@@ -12,6 +12,7 @@
 
 #include <stdafx.h>
 #include "SLCamera.h"
+#include "SLSphericalRefractionSurface.h"
 
 //#include "SLSurface.h"
 //typedef std::vector<SLSurface*>  SLVSurface;
@@ -25,11 +26,12 @@ public:
     void        addLens(SLNode* node, SLfloat position = 0);
     //void        addSurface(SLSurface* surf, SLfloat position = 0);
     //void        addLSurface(SLSurface* surf, SLfloat position = 0);
-    void        addSurface(SLMesh* mesh, SLfloat position = 0);
-    void        addSurface2(SLMesh* mesh, SLfloat position = 0);
-    void        addSurface3(SLMesh* mesh, SLfloat position = 0);
+    void        addSurface(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
+    void        addSurface2(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
+    void        addSurface3(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
 
     void        drawMeshes(SLSceneView* sv);
+    void        generateCameraRay(SLRay* primaryRay);
 
     // RT
     void        renderClassic(SLSceneView* sv);
@@ -39,6 +41,9 @@ public:
     SLbool hitRec(SLRay *ray);      
     SLCol4f traceClassic(SLRay* ray);
     SLCol4f shade(SLRay* ray);
+
+
+    //void    generateCameraRay(SLfloat x, SLfloat y, SLRay* primaryRay);
     
    
 private:
@@ -54,9 +59,7 @@ private:
     SLVec3f     _BL;            //!< Bottom left vector
     SLuint      _next;          //!< next index to render RT
 
-    //SLVSurface      _surfaces;         //!< vector of children surfaces
-    //SLVMesh         _meshes;
-
+    std::vector<SLSphericalRefractionSurface*>  _surfaces;         //!< vector of children surfaces
     
 };
 

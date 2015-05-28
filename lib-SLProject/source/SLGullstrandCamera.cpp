@@ -12,11 +12,31 @@
 #include <SLLens.h>
 #include <SLSphere.h>
 #include <SLSceneView.h>
+#include <SLRectangle.h>
+#include <SLSphericalRefractionSurface.h>
 //-----------------------------------------------------------------------------
 
 
 SLGullstrandCamera::SLGullstrandCamera()
 {
+    SLfloat nEyeWater = 1.336f;
+    SLMaterial* matMac = new SLMaterial("matMac", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.4f, nEyeWater, 1.0f);
+    SLSphericalRefractionSurface* surfMac = new SLSphericalRefractionSurface(5.5f, -12.0f, 32, 32, "macula");
+    surfMac->buildMesh(matMac);
+    
+    SLNode *node1 = new SLNode(surfMac);
+    node1->rotate(90, 1, 0, 0, TS_Local);
+    node1->translate(0, 24.0f, 0, TS_Local);
+    addChild(node1);    
+
+    SLGLTexture* texRec = new SLGLTexture("tron_floor2.png");
+    SLMaterial* matRec = new SLMaterial("texRec", texRec);
+    SLRectangle* rectangle = new SLRectangle(SLVec2f(-2.2f, -1.65f), SLVec2f(2.2f, 1.56f), 1, 1, "Rect", matRec);    
+
+    SLNode *node2 = new SLNode(rectangle);
+    node2->translate(-0.25f, -0.25f, 26.0f, TS_Local);
+    addChild(node2);
+    
 
 }
 
@@ -26,35 +46,75 @@ void SLGullstrandCamera::addLens(SLNode* node, SLfloat position)
     node->rotate(90, 1, 0, 0, TS_Local);
     node->translate(0, position, 0, TS_Local);
     addChild(node);
+    //_surfaces.push_back(node);
 }
 
-void SLGullstrandCamera::addSurface(SLMesh* mesh, SLfloat position)
+void SLGullstrandCamera::addSurface(SLSphericalRefractionSurface* mesh, SLfloat position)
 {
+    _surfaces.insert(_surfaces.begin(), mesh);
+
     _meshes.push_back(mesh);
     SLNode *node = new SLNode(mesh);
     node->translate(-0.25f, -0.25f, position, TS_Local);
     addChild(node);
 }
 
-void SLGullstrandCamera::addSurface2(SLMesh* mesh, SLfloat position)
+void SLGullstrandCamera::addSurface2(SLSphericalRefractionSurface* mesh, SLfloat position)
 {
-    _meshes.push_back(mesh);
+    _surfaces.insert(_surfaces.begin(), mesh);
+
     SLNode *node = new SLNode(mesh);
     node->rotate(90, 1, 0, 0, TS_Local);
     node->translate(0, position, 0, TS_Local);
     addChild(node);
 }
 
-void SLGullstrandCamera::addSurface3(SLMesh* mesh, SLfloat position)
+void SLGullstrandCamera::addSurface3(SLSphericalRefractionSurface* mesh, SLfloat position)
 {
-    _meshes.push_back(mesh);
     SLNode *node = new SLNode(mesh);
     node->rotate(-90, 1, 0, 0, TS_Local);
     node->translate(0, -position, 0, TS_Local);
     addChild(node);
+    _surfaces.insert(_surfaces.begin(), mesh);
 }
 
+void SLGullstrandCamera::generateCameraRay(SLRay* primaryRay)
+{
+    
+    SLVec3f primaryDir(_BL + _pxSize*((SLfloat)primaryRay->x*_LR + (SLfloat)primaryRay->y*_LU));
+    primaryDir.normalize();
 
+    SLVec3f dir(0,0,1);
+    primaryRay->setDir(dir);
+    primaryRay->origin.z += 26.0f;
+
+
+    SLVec2f hitPoint;
+    // go through surfaces from lens and cornea
+    for (int i = 0; i < _surfaces.size(); i++)
+    {
+        SLSphericalRefractionSurface* surface = _surfaces[i];
+        cout << surface->name() << endl;
+
+        if (i == 0)
+        {
+            hitPoint = surface->getRandomPoint();
+        }
+        else // refract
+        {
+
+        }
+    }
+
+    
+
+
+    cout << "bla" << endl;
+
+
+
+
+}
 
 void SLGullstrandCamera::renderClassic(SLSceneView* sv)
 {

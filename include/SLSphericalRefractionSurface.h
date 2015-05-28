@@ -15,6 +15,8 @@ public:
                                     SLint stacks = 32,
                                     SLint slices = 32,
                                     SLstring name = "SphericalRefractionSurface");
+
+    SLVec2f getRandomPoint();
     
     ~SLSphericalRefractionSurface() { ; }
 

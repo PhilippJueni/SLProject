@@ -35,12 +35,20 @@ SLSphericalRefractionSurface::SLSphericalRefractionSurface(SLfloat diameter,
     SLfloat sagitta = calcSagitta(radius);    
     if (radius > 0)
     {
-        generateLensSurface(radius, 0, -sagitta, radius - sagitta, -SL_HALFPI);
+        generateLensSurface(radius, 0, 0, radius, -SL_HALFPI);
     }
     else
     {
         generateLensSurface(radius, 0, 0, radius, SL_HALFPI);
     }
+}
+
+SLVec2f SLSphericalRefractionSurface::getRandomPoint()
+{
+    SLfloat max = (_diameter / 2) - (_diameter * 0.05);
+    SLfloat rad = SL_random(0.0f,max);
+    SLfloat phi = SL_random(0.0f, SL_2PI);
+    return SLVec2f(rad, phi);    
 }
 
 /*!
@@ -137,7 +145,7 @@ void SLSphericalRefractionSurface::generateLensSurface(SLfloat radius,
                 if (oldY <= y)
                 { // 1
                     x = _diameter / 2;
-                    y = 0;
+                    y = sagitta;
                 }
                 else{ // y wird kleiner 2 bot konkav
                     x = _diameter / 2;

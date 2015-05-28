@@ -84,8 +84,6 @@ SLbool SLHumanEyeRT::renderClassic(SLSceneView* sv)
     double t1 = SLScene::current->timeSec();
     double tStart = t1;
 
-    // for (SLuint x = 320; x<_img[0].width(); ++x)
-    // for (SLuint y = 235; y<_img[0].height(); ++y)
     for (SLuint y = 0/*240*/; y < _img[0].height(); ++y)
     {
         for (SLuint x = 0/*320*/; x < _img[0].width(); ++x)
@@ -177,10 +175,15 @@ void SLHumanEyeRT::setPrimaryRay(SLfloat x, SLfloat y, SLRay* primaryRay)
     {   primaryRay->setDir(_LA);
         primaryRay->origin = _BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU);
     } else
-    {   SLVec3f primaryDir(_BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU));
+    {   
+        SLVec3f primaryDir(_BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU));
         primaryDir.normalize();
         primaryRay->setDir(primaryDir);
         primaryRay->origin = _EYE;
+
+        _cam->generateCameraRay(primaryRay);
+
+        cout << "bla2" << endl;
     }
 }
 //-----------------------------------------------------------------------------
