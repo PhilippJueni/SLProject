@@ -16,7 +16,8 @@ public:
                                     SLint slices = 32,
                                     SLstring name = "SphericalRefractionSurface");
 
-    SLVec2f getRandomPoint();
+    SLVec3f getPoint(SLfloat radius,SLfloat phi);
+    SLVec3f getRandomPoint();
     
     ~SLSphericalRefractionSurface() { ; }
 

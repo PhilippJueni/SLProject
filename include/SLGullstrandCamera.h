@@ -13,6 +13,7 @@
 #include <stdafx.h>
 #include "SLCamera.h"
 #include "SLSphericalRefractionSurface.h"
+#include "SLRectangle.h"
 
 //#include "SLSurface.h"
 //typedef std::vector<SLSurface*>  SLVSurface;
@@ -31,9 +32,10 @@ public:
     void        addSurface3(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
 
     void        drawMeshes(SLSceneView* sv);
-    void        generateCameraRay(SLRay* primaryRay);
+    void        generateCameraRay(SLRay* primaryRay, SLVec3f lb, SLVec3f lr, SLVec3f lu, SLfloat pxSize);
 
     // RT
+    /*
     void        renderClassic(SLSceneView* sv);
     void        initStats(SLint depth);
     void        prepareImage();
@@ -41,13 +43,17 @@ public:
     SLbool hitRec(SLRay *ray);      
     SLCol4f traceClassic(SLRay* ray);
     SLCol4f shade(SLRay* ray);
+    */
+
+    void refract(SLRay* primaryRay, SLSphericalRefractionSurface* surface);
 
 
     //void    generateCameraRay(SLfloat x, SLfloat y, SLRay* primaryRay);
     
    
 private:
-    // RT
+    // RT 
+    /*
     SLSceneView* _sv;
     SLImage     _img[6];        //!< max 6 images for cube map
     SLuint      _texName;       //!< OpenGL texture "name" (= ID)
@@ -58,8 +64,21 @@ private:
     SLbool      _continuous;    //!< if true state goes into ready again
     SLVec3f     _BL;            //!< Bottom left vector
     SLuint      _next;          //!< next index to render RT
+    */
+
+    SLfloat _eyeSize = 24.0f;
 
     std::vector<SLSphericalRefractionSurface*>  _surfaces;         //!< vector of children surfaces
+
+    SLNode* _maculaNode;
+    SLSphericalRefractionSurface* _macula;
+    SLRectangle* _imageRectangle;
+    SLfloat _width;
+    SLfloat _height;
+    SLfloat _pxSize;
+
+    SLVec3f transferCoords(SLfloat x, SLfloat y);
+    SLbool hit(SLRay* ray, SLNode* node);
     
 };
 

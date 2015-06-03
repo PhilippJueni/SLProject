@@ -12,32 +12,36 @@
 #include <SLLens.h>
 #include <SLSphere.h>
 #include <SLSceneView.h>
-#include <SLRectangle.h>
-#include <SLSphericalRefractionSurface.h>
 //-----------------------------------------------------------------------------
 
 
 SLGullstrandCamera::SLGullstrandCamera()
 {
     SLfloat nEyeWater = 1.336f;
-    SLMaterial* matMac = new SLMaterial("matMac", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.4f, nEyeWater, 1.0f);
-    SLSphericalRefractionSurface* surfMac = new SLSphericalRefractionSurface(5.5f, -12.0f, 32, 32, "macula");
-    surfMac->buildMesh(matMac);
+    SLfloat diameterMacula = 5.5f;
     
-    SLNode *node1 = new SLNode(surfMac);
-    node1->rotate(90, 1, 0, 0, TS_Local);
-    node1->translate(0, 24.0f, 0, TS_Local);
-    addChild(node1);    
+    // calculated from diameter of macula
+    _width = 2.2f; 
+    _height = 1.65f;
+
+
+    SLMaterial* matMacula = new SLMaterial("matMac", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nEyeWater, 1.0f);
+    _macula = new SLSphericalRefractionSurface(diameterMacula, -12.0f, 32, 32, "macula");
+    _macula->buildMesh(matMacula);
+    
+    _maculaNode = new SLNode(_macula);
+    _maculaNode->rotate(90, 1, 0, 0, TS_Local);
+    _maculaNode->translate(0, _eyeSize, 0, TS_Local);
+    addChild(_maculaNode);
 
     SLGLTexture* texRec = new SLGLTexture("tron_floor2.png");
     SLMaterial* matRec = new SLMaterial("texRec", texRec);
-    SLRectangle* rectangle = new SLRectangle(SLVec2f(-2.2f, -1.65f), SLVec2f(2.2f, 1.56f), 1, 1, "Rect", matRec);    
-
-    SLNode *node2 = new SLNode(rectangle);
-    node2->translate(-0.25f, -0.25f, 26.0f, TS_Local);
-    addChild(node2);
     
+    _imageRectangle = new SLRectangle(SLVec2f(-_width*0.5f, -_height*0.5f), SLVec2f(_width*0.5f, _height*0.5f), 1, 1, "Rect", matRec);
 
+    SLNode *node2 = new SLNode(_imageRectangle);
+    node2->translate(-0.25f, -0.25f, _eyeSize + 2.0f, TS_Local);
+    addChild(node2);
 }
 
 
@@ -78,18 +82,64 @@ void SLGullstrandCamera::addSurface3(SLSphericalRefractionSurface* mesh, SLfloat
     _surfaces.insert(_surfaces.begin(), mesh);
 }
 
-void SLGullstrandCamera::generateCameraRay(SLRay* primaryRay)
+SLVec3f SLGullstrandCamera::transferCoords(SLfloat x, SLfloat y)
 {
+    SLfloat halfPxSize = _pxSize * 0.5f;
+    SLfloat maculaX = -_width * 0.5f + halfPxSize + x;
+    SLfloat maculaY = -_height * 0.5f + halfPxSize + y;
+
+    SLfloat radius = sqrt(maculaX*maculaX + maculaY*maculaY);
+    SLfloat phi = atan(maculaY / maculaX);
+
+    SLVec3f point = _macula->getPoint(radius, phi);
+    return point;
+}
+
+
+
+SLbool SLGullstrandCamera::hit(SLRay* ray, SLNode* node)
+{
+    return true;
+}
+
+void SLGullstrandCamera::generateCameraRay(SLRay* ray, SLVec3f bl, SLVec3f lr, SLVec3f lu, SLfloat pxSize)
+{
+    _pxSize = pxSize;
+
+    // set startpoint to virtual image surface
+    ray->origin.z += _eyeSize + 2.0f;
     
-    SLVec3f primaryDir(_BL + _pxSize*((SLfloat)primaryRay->x*_LR + (SLfloat)primaryRay->y*_LU));
+    // go to macula
+    ray->setDir(bl + pxSize*((SLfloat)ray->x*lr + (SLfloat)ray->y*lu));
+
+    SLbool bla1 = _maculaNode->hitRec(ray);
+    SLbool bla2 = _macula->hit(ray, _maculaNode);
+    
+
+    cout << "yeah: " << bla1 << bla2 << endl;
+
+    if (bla1)
+    {
+        
+    }
+
+
+    
+
+
+
+
+
+
+    
+    transferCoords(0,0);
+
+    SLVec3f primaryDir(bl + pxSize*((SLfloat)ray->x*lr + (SLfloat)ray->y*lu));
     primaryDir.normalize();
+    
+    
 
-    SLVec3f dir(0,0,1);
-    primaryRay->setDir(dir);
-    primaryRay->origin.z += 26.0f;
-
-
-    SLVec2f hitPoint;
+    SLVec3f hitPoint;
     // go through surfaces from lens and cornea
     for (int i = 0; i < _surfaces.size(); i++)
     {
@@ -99,23 +149,80 @@ void SLGullstrandCamera::generateCameraRay(SLRay* primaryRay)
         if (i == 0)
         {
             hitPoint = surface->getRandomPoint();
-        }
-        else // refract
-        {
+            ray->hitPoint = hitPoint;
 
+            //ray->contrib = contrib * hitMat->kt();
+            ray->type = TRANSMITTED;
+            ray->kn = surface->mat->knO();
+            
+            // set refracted ray parameter
+            ray->hitKn = surface->mat->knI();
+            //ray->setDir(T);
+            ray->origin.set(hitPoint);
+            //ray->originMat = hitMat;
+            ray->length = FLT_MAX;
+            //ray->originNode = hitNode;
+            //ray->originMesh = hitMesh;
+            //ray->originTria = hitTriangle;
+            //ray->depth = depth + 1;
+            //ray->x = x;
+            //ray->y = y;
+            //ray = refracted->depth;
+            
         }
+        
+        ray->hitMat = surface->mat;
+        ray->refractHE(ray);
     }
 
-    
 
+    // generate primary ray to start into scene
+    ray->origin = ray->hitPoint; // set on hitPoint of cornea front
+    //ray->dir = T; // set
+    ray->depth = 1;
+    ray->contrib = 1.0f;
+    ray->kn = 1.0f;
+    ray->type = PRIMARY;
+    ray->isOutside = true;
+    ray->isInsideVolume = false;
+    ray->originMat = NULL;
+    ray->hitMat = NULL;
+    ray->hitDir = true;
+    ray->hitKn = 0.0f;
+    ray->hitPoint = SLVec3f(0, 0, 0);
+    ray->hitNormal = SLVec3f(0, 0, 0); 
+    ray->hitTexCol = SLVec3f(0, 0, 0); 
+    //ray->invDir = T * -1;
+    ray->sign[0] = 1; ray->sign[1] = 1; ray->sign[2] = 1;
+    //ray->signOS
 
     cout << "bla" << endl;
-
-
-
-
 }
 
+//remvoed
+void SLGullstrandCamera::refract(SLRay* ray, SLSphericalRefractionSurface* surface)
+{
+    SLfloat rayKn = ray->kn;
+    SLfloat knI = surface->mat->knI();
+    SLfloat knO = surface->mat->knO();
+    
+    /*
+    if (rayKn == knI)
+    {
+
+    }
+    else if (rayKn == knO)
+    {
+
+    }
+    else
+    {
+        cout << "Error in kn order of gullstrand eye!" << endl;
+    }
+    */
+}
+
+/*
 void SLGullstrandCamera::renderClassic(SLSceneView* sv)
 {
     
@@ -424,7 +531,7 @@ SLCol4f SLGullstrandCamera::shade(SLRay* ray)
     return localColor;
     
 }
-
+*/
 //-----------------------------------------------------------------------------
 void SLGullstrandCamera::drawMeshes(SLSceneView* sv)
 {

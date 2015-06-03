@@ -179,9 +179,9 @@ void SLHumanEyeRT::setPrimaryRay(SLfloat x, SLfloat y, SLRay* primaryRay)
         SLVec3f primaryDir(_BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU));
         primaryDir.normalize();
         primaryRay->setDir(primaryDir);
-        primaryRay->origin = _EYE;
+        primaryRay->origin = _cam->position();
 
-        _cam->generateCameraRay(primaryRay);
+        _cam->generateCameraRay(primaryRay,_BL,_LR,_LU,_pxSize);
 
         cout << "bla2" << endl;
     }
