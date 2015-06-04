@@ -45,11 +45,11 @@ SLSphericalRefractionSurface::SLSphericalRefractionSurface(SLfloat diameter,
 
 SLVec3f SLSphericalRefractionSurface::getPoint(SLfloat radius, SLfloat phi)
 {
-    this->_revPoints;
     
+    
+    SLVec3f correspondingPoint(1,1,23);
 
-
-    return _revPoints[0];
+    return correspondingPoint;
 }
 
 SLVec3f SLSphericalRefractionSurface::getRandomPoint()
@@ -57,8 +57,10 @@ SLVec3f SLSphericalRefractionSurface::getRandomPoint()
     //SLfloat max = (_diameter / 2) - (_diameter * 0.05);
     //SLfloat rad = SL_random(0.0f, max);
     //SLfloat phi = SL_random(0.0f, SL_2PI);
-    SLfloat random = rand() % _revPoints.size();
-    SLVec3f point = this->_revPoints[random];
+    //SLfloat random = rand() % _revPoints.size();
+    //SLVec3f point = this->_revPoints[random];
+    SLVec3f point(3,4,7);
+
     return point;    
 }
 

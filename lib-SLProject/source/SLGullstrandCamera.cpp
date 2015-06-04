@@ -82,6 +82,8 @@ void SLGullstrandCamera::addSurface3(SLSphericalRefractionSurface* mesh, SLfloat
     _surfaces.insert(_surfaces.begin(), mesh);
 }
 
+// change from cartesian to polar
+// get point on macula
 SLVec3f SLGullstrandCamera::transferCoords(SLfloat x, SLfloat y)
 {
     SLfloat halfPxSize = _pxSize * 0.5f;
@@ -110,34 +112,17 @@ void SLGullstrandCamera::generateCameraRay(SLRay* ray, SLVec3f bl, SLVec3f lr, S
     ray->origin.z += _eyeSize + 2.0f;
     
     // go to macula
-    ray->setDir(bl + pxSize*((SLfloat)ray->x*lr + (SLfloat)ray->y*lu));
+    //cout << "x: " << ray->x << " y: " << ray->y << " bl: " << bl << " lr: " << lr << " lu: " << lu << " pxSize: " << _pxSize << endl;
+    SLVec3f dir = bl + _pxSize*((SLfloat)ray->x*lr + (SLfloat)ray->y*lu);
+    dir.normalize();    
+    ray->setDir(dir);
 
-    SLbool bla1 = _maculaNode->hitRec(ray);
-    SLbool bla2 = _macula->hit(ray, _maculaNode);
-    
+    // does not hit aabb ???
+    //SLbool hitMacula = _maculaNode->hitRec(ray);
+    //SLbool hitMacula2 = _macula->hit(ray, _maculaNode);
+    SLVec3f maculaPoint = transferCoords(ray->x,ray->y);
+    ray->origin = maculaPoint;
 
-    cout << "yeah: " << bla1 << bla2 << endl;
-
-    if (bla1)
-    {
-        
-    }
-
-
-    
-
-
-
-
-
-
-    
-    transferCoords(0,0);
-
-    SLVec3f primaryDir(bl + pxSize*((SLfloat)ray->x*lr + (SLfloat)ray->y*lu));
-    primaryDir.normalize();
-    
-    
 
     SLVec3f hitPoint;
     // go through surfaces from lens and cornea
@@ -149,18 +134,19 @@ void SLGullstrandCamera::generateCameraRay(SLRay* ray, SLVec3f bl, SLVec3f lr, S
         if (i == 0)
         {
             hitPoint = surface->getRandomPoint();
-            ray->hitPoint = hitPoint;
+            dir = hitPoint - ray->origin;
+            dir.normalize();
+            ray->setDir(dir);
 
+            ray->hitPoint = hitPoint;
             //ray->contrib = contrib * hitMat->kt();
-            ray->type = TRANSMITTED;
-            ray->kn = surface->mat->knO();
-            
+            //ray->type = PRIMARY;
             // set refracted ray parameter
-            ray->hitKn = surface->mat->knI();
+            //ray->hitKn = surface->mat->knI();
             //ray->setDir(T);
-            ray->origin.set(hitPoint);
+            //ray->origin.set(hitPoint);
             //ray->originMat = hitMat;
-            ray->length = FLT_MAX;
+            //ray->length = FLT_MAX;
             //ray->originNode = hitNode;
             //ray->originMesh = hitMesh;
             //ray->originTria = hitTriangle;
@@ -170,19 +156,23 @@ void SLGullstrandCamera::generateCameraRay(SLRay* ray, SLVec3f bl, SLVec3f lr, S
             //ray = refracted->depth;
             
         }
+        else
+        {
+            // ???
+            ray->hitPoint = hitPoint;
+        }
         
+        ray->kn = surface->mat->knO();
         ray->hitMat = surface->mat;
         ray->refractHE(ray);
     }
 
 
     // generate primary ray to start into scene
-    ray->origin = ray->hitPoint; // set on hitPoint of cornea front
-    //ray->dir = T; // set
     ray->depth = 1;
     ray->contrib = 1.0f;
-    ray->kn = 1.0f;
     ray->type = PRIMARY;
+    
     ray->isOutside = true;
     ray->isInsideVolume = false;
     ray->originMat = NULL;
@@ -626,9 +616,6 @@ void SLGullstrandCamera::drawMeshes(SLSceneView* sv)
         }
 
         SLCamera::_bufP.drawArrayAsConstantColorLines(SLCol3f::WHITE*0.7f);
-    }
-    else{
-        //renderClassic(sv);
     }
 }
 //-----------------------------------------------------------------------------

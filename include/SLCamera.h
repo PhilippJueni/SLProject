@@ -45,8 +45,8 @@ class SLCamera: public SLNode
             SLAABBox&       updateAABBRec    ();
 
             void            drawMeshes      (SLSceneView* sv);
-    virtual void            generateCameraRay(SLRay* primaryRay) {}
-            
+
+    virtual void            generateCameraRay(SLRay* primaryRay, SLVec3f, SLVec3f, SLVec3f,SLfloat) {}
 
     virtual SLbool          camUpdate       (SLfloat timeMS);
             void            preShade        (SLRay* ray){(void)ray;}

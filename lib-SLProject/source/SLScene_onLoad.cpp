@@ -2634,31 +2634,31 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLfloat nLensBark = 1.386f;
         SLfloat nLensCore = 1.406f;
 
-        SLMaterial* matCF = new SLMaterial("matCF", SLCol4f(0.0f, 0.0f, 0.50f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nCornea, nAir);
-        SLSphericalRefractionSurface* surfCF = new SLSphericalRefractionSurface(11.5f, 7.7f, 32, 32, "CorneaFront");
+        SLMaterial* matCF = new SLMaterial("matCF", SLCol4f(0.0f, 0.0f, 0.50f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nAir, nCornea);
+        SLSphericalRefractionSurface* surfCF = new SLSphericalRefractionSurface(11.5f, -7.7f, 32, 32, "CorneaFront");
         surfCF->buildMesh(matCF);
         SLMaterial* matCB = new SLMaterial("matCB", SLCol4f(0.0f, 0.0f, 0.50f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nCornea, nEyeWater);
         SLSphericalRefractionSurface* surfCB = new SLSphericalRefractionSurface(11.5f, -6.8f, 32, 32, "CorneaBack");
         surfCB->buildMesh(matCB);
         
-        SLMaterial* matLOF = new SLMaterial("matLOF", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nLensBark, nEyeWater);
-        SLSphericalRefractionSurface* surfLOF = new SLSphericalRefractionSurface(7.0f, 10.0f, 32, 32, "lens bark front");
+        SLMaterial* matLOF = new SLMaterial("matLOF", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nEyeWater, nLensBark);
+        SLSphericalRefractionSurface* surfLOF = new SLSphericalRefractionSurface(7.0f, -10.0f, 32, 32, "lens bark front");
         surfLOF->buildMesh(matLOF);
         SLMaterial* matLIF = new SLMaterial("matLIF", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nLensBark, nLensCore);
         SLSphericalRefractionSurface* surfLIF = new SLSphericalRefractionSurface(7.0f, -7.911f, 32, 32, "lens core front");
         surfLIF->buildMesh(matLIF);
         SLMaterial* matLIB = new SLMaterial("matLIB", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nLensCore, nLensBark);
-        SLSphericalRefractionSurface* surfLIB = new SLSphericalRefractionSurface(7.0f, -5.76f, 32, 32, "lens core back");
+        SLSphericalRefractionSurface* surfLIB = new SLSphericalRefractionSurface(7.0f, 5.76f, 32, 32, "lens core back");
         surfLIB->buildMesh(matLIB);
         SLMaterial* matLOB = new SLMaterial("matLOB", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nLensBark, nEyeWater);
         SLSphericalRefractionSurface* surfLOB = new SLSphericalRefractionSurface(7.0f, 6.0f, 32, 32, "lens bark back");
         surfLOB->buildMesh(matLOB);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        cam2->addSurface2(surfCF, 0.0f);
+        cam2->addSurface3(surfCF, 0.0f);
         cam2->addSurface3(surfCB, 0.5f);
-        cam2->addSurface2(surfLOF, 3.6f);
+        cam2->addSurface3(surfLOF, 3.6f);
         cam2->addSurface3(surfLIF, 4.146f);
-        cam2->addSurface2(surfLIB, 6.565f);
+        cam2->addSurface3(surfLIB, 6.565f);
         cam2->addSurface3(surfLOB, 7.2f);
 
         SLNode* scene = new SLNode("Scene");
@@ -2666,9 +2666,9 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         scene->addChild(light1);
         scene->addChild(cam1);
         scene->addChild(cam2);
-
+        
         _backColor.set(SLCol4f(0.7f, 1.0f, 0.7f));        
-        sv->camera(cam1);
+        sv->camera(cam2);
         _root3D = scene;
     }
 
