@@ -181,7 +181,7 @@ void SLHumanEyeRT::setPrimaryRay(SLfloat x, SLfloat y, SLRay* primaryRay)
         primaryRay->setDir(primaryDir);
         primaryRay->origin = _cam->position();
 
-        cout << "x: " << x << " y: " << y << " bl: " << _BL << " lr: " << _LR << " lu: " << _LU << " pxSize: " << _pxSize << endl;
+        //cout << "x: " << x << " y: " << y << " bl: " << _BL << " lr: " << _LR << " lu: " << _LU << " pxSize: " << _pxSize << endl;
 
         // bl - bottom left vector
         // lr - lookright

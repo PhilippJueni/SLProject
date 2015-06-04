@@ -16,7 +16,7 @@ public:
                                     SLint slices = 32,
                                     SLstring name = "SphericalRefractionSurface");
 
-    SLVec3f getPoint(SLfloat radius,SLfloat phi);
+    void setPosition(SLVec3f pos){ _position = pos; };
     SLVec3f getRandomPoint();
     
     ~SLSphericalRefractionSurface() { ; }
@@ -36,6 +36,8 @@ private:
 
     SLint   _stacks;        //!< NO. of stacks 
     SLfloat _diameter;      //!< The diameter of the lens
+    SLfloat _radius;
+    SLVec3f _position;
 };
 //-----------------------------------------------------------------------------
 #endif

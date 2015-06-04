@@ -131,7 +131,7 @@ class SLMaterial : public SLObject
             SLfloat         _kr;            //!< reflection coefficient 0.0 - 1.0
             SLfloat         _kt;            //!< transmission coefficient 0.0 - 1.0
             SLfloat         _knI;           //!< refraction index (the materials kn)
-            SLfloat         _knO = 0.0f;    //!< refraction index outside (side of the normals),default vacuum
+            SLfloat         _knO = 1.0f;    //!< refraction index outside (side of the normals),default vacuum
             SLVGLTexture    _textures;      //!< vector of texture pointers
             SLGLProgram*    _program;       //!< pointer to a GLSL shader program
 

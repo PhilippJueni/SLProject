@@ -14,6 +14,7 @@
 #include "SLCamera.h"
 #include "SLSphericalRefractionSurface.h"
 #include "SLRectangle.h"
+#include "SLTriangle.h"
 
 //#include "SLSurface.h"
 //typedef std::vector<SLSurface*>  SLVSurface;
@@ -22,17 +23,13 @@
 class SLGullstrandCamera : public SLCamera, public SLGLTexture
 {
 public:
-    SLGullstrandCamera();
+    SLGullstrandCamera(SLfloat retinaRadius, SLfloat fieldOfViewDEG, SLfloat nEyeWater);
 
-    void        addLens(SLNode* node, SLfloat position = 0);
-    //void        addSurface(SLSurface* surf, SLfloat position = 0);
-    //void        addLSurface(SLSurface* surf, SLfloat position = 0);
+   
     void        addSurface(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
-    void        addSurface2(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
-    void        addSurface3(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
 
     void        drawMeshes(SLSceneView* sv);
-    void        generateCameraRay(SLRay* primaryRay, SLVec3f lb, SLVec3f lr, SLVec3f lu, SLfloat pxSize);
+    void        generateCameraRay(SLRay* primaryRay, SLVec3f lb, SLVec3f lr, SLVec3f lu, SLfloat pxSize );
 
     // RT
     /*
@@ -69,16 +66,23 @@ private:
     SLfloat _eyeSize = 24.0f;
 
     std::vector<SLSphericalRefractionSurface*>  _surfaces;         //!< vector of children surfaces
+    std::vector<SLNode*>  _surfNodes;         //!< vector of children surfaces
 
-    SLNode* _maculaNode;
-    SLSphericalRefractionSurface* _macula;
+    SLNode* _retinaNode;
+    SLSphericalRefractionSurface* _retina;
+
+    //SLTriangle* _retina;
     SLRectangle* _imageRectangle;
-    SLfloat _width;
-    SLfloat _height;
+    SLfloat _hWidth;
+    SLfloat _hHeight;
     SLfloat _pxSize;
+    SLfloat _imagePlaneGap;
 
     SLVec3f transferCoords(SLfloat x, SLfloat y);
-    SLbool hit(SLRay* ray, SLNode* node);
+
+    void startRT(SLRay *ray);
+    void surfaceRT(SLRay *ray, int i);
+    
     
 };
 

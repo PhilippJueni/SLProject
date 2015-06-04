@@ -262,7 +262,7 @@ void SLRay::refractHE(SLRay* refracted)
             //cout << "test 1" << endl;
             eta = kn / hitMat->knI();
             refractedKn = hitMat->knI();
-            cout << kn << " " << refractedKn << endl;
+            //cout << kn << " " << refractedKn << endl;
         }
         else
         {

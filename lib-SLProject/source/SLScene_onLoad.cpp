@@ -2114,6 +2114,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         name("Human Eye Ray tracing");
         info(sv, "Ray Tracing through a gullstrand eye.");
 
+        /*
         // Create textures and materials
         SLGLTexture* texC = new SLGLTexture("VisionExample.png");
 
@@ -2127,7 +2128,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         #endif
 
         // Gullstrand camera
-        SLGullstrandCamera* cam2 = new SLGullstrandCamera;
+        SLGullstrandCamera* cam2 = new SLGullstrandCamera(1.2);
         cam2->position(2, 8, 0);
         cam2->lookAt(0, 0, 0);
         cam2->focalDist(6);
@@ -2196,6 +2197,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         sv->camera(cam1);
         //sv->camera(cam2);
         _root3D = scene;
+        */
     }
     else
     if (sceneName == cmdSceneRTEye2) //.........................................
@@ -2209,7 +2211,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 #else
         SLint numSamples = 6;
 #endif
-
+        /*
         // Create textures and materials
         SLMaterial* matLens = new SLMaterial("lens", SLCol4f(0.0f, 0.0f, 0.0f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.5f, 0.5f, 1.5f);
         SLGLTexture* texC = new SLGLTexture("Checkerboard0512_C.png");
@@ -2230,7 +2232,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
 
         
         // Gullstrand camera
-        SLGullstrandCamera* cam2 = new SLGullstrandCamera;
+        SLGullstrandCamera* cam2 = new SLGullstrandCamera(1.3);
         cam2->position(2, 8, 0);
         cam2->lookAt(0, 0, 0);
         cam2->focalDist(6);
@@ -2247,13 +2249,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         //rect2->setSurface(1.5f, 1.0f);
         //cam2->addSurface(rect2, -1.5);
 
-        /*
-        SLLensSurface *lensSurf = new SLLensSurface(2.0f, 1.0f, 1.5f, 32, 32, "Lens");
-        lensSurf->addBottom( -2.0f );
-        lensSurf->setSurface(1.5f, 1.0f);
-        lensSurf->buildMesh(mT);
-        cam2->addLSurface(lensSurf, -1.5);
-        */
+
         
         //SLNode* node = new SLNode( rect );
         //node->rotate(90, -1, 0, 0);
@@ -2272,6 +2268,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         //sv->camera(cam2);
         //cam2->renderClassic(sv);
         _root3D = scene;
+        */
     }
     else
     if (sceneName == cmdSceneRTEye3) //.........................................
@@ -2533,12 +2530,14 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         name("Ray tracing Triangle");
         info(sv, "HERT Triangle");
 
+        
 #ifndef SL_GLES2
         SLint numSamples = 10;
 #else
         SLint numSamples = 6;
 #endif
 
+        /*
         // standard camera /////////////////////////////////////////////////
         SLCamera* cam1 = new SLCamera;
         cam1->position(0, 0, 2);
@@ -2548,6 +2547,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         //cam1->lensSamples()->samples(numSamples, numSamples);
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
+        
         SLGullstrandCamera* cam2 = new SLGullstrandCamera();
         cam2->position(0, 0, 1);
         cam2->lookAt(0, 0, 0);
@@ -2595,6 +2595,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         _backColor.set(SLCol4f(0.1f, 0.4f, 0.8f));
         sv->camera(cam1);
         _root3D = scene;
+        */
     }
     else
     if (sceneName == cmdSceneRTTriangle5) //.........................................
@@ -2614,9 +2615,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         cam1->lookAt(0, 0, 80);
         cam1->setInitialState();
         ////////////////////////////////////////////////////////////////////
-        SLGullstrandCamera* cam2 = new SLGullstrandCamera();
-        cam2->position(0, 0, 80);
-        cam2->lookAt(0, 0, 0);
+       
 
         SLLightSphere* light1 = new SLLightSphere(0, 50, 115, 0.1f, 0.7f, 0.1f,0.1f);
         light1->attenuation(1);
@@ -2627,20 +2626,25 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLNode* background = new SLNode(new SLRectangle(SLVec2f(-40, -40), SLVec2f(40, 40), 1, 1, "Rect", matBack), "Background");
         background->translate(0, 0, -3.0f, TS_Local);
 
-        // Eye ////////////////////////////////////////////////////////////////////////////////////////////////
+        // Gullstrand Eye ////////////////////////////////////////////////////////////////////////////////////////////////
         SLfloat nAir = 1.0f;
         SLfloat nCornea = 1.376f;
         SLfloat nEyeWater = 1.336f;
         SLfloat nLensBark = 1.386f;
         SLfloat nLensCore = 1.406f;
 
+        SLfloat retinaRadius = 12.0f;
+        SLfloat fieldOfViewDEG = 120;
+        SLGullstrandCamera* cam2 = new SLGullstrandCamera(retinaRadius,fieldOfViewDEG,nEyeWater);
+        cam2->position(0, 0, 80);
+        cam2->lookAt(0, 0, 0);
+
         SLMaterial* matCF = new SLMaterial("matCF", SLCol4f(0.0f, 0.0f, 0.50f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nAir, nCornea);
         SLSphericalRefractionSurface* surfCF = new SLSphericalRefractionSurface(11.5f, -7.7f, 32, 32, "CorneaFront");
         surfCF->buildMesh(matCF);
         SLMaterial* matCB = new SLMaterial("matCB", SLCol4f(0.0f, 0.0f, 0.50f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nCornea, nEyeWater);
         SLSphericalRefractionSurface* surfCB = new SLSphericalRefractionSurface(11.5f, -6.8f, 32, 32, "CorneaBack");
-        surfCB->buildMesh(matCB);
-        
+        surfCB->buildMesh(matCB);        
         SLMaterial* matLOF = new SLMaterial("matLOF", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nEyeWater, nLensBark);
         SLSphericalRefractionSurface* surfLOF = new SLSphericalRefractionSurface(7.0f, -10.0f, 32, 32, "lens bark front");
         surfLOF->buildMesh(matLOF);
@@ -2653,13 +2657,14 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         SLMaterial* matLOB = new SLMaterial("matLOB", SLCol4f(0.0f, 0.0f, 0.5f), SLCol4f(0.5f, 0.5f, 0.5f), 100, 0.0f, 0.8f, nLensBark, nEyeWater);
         SLSphericalRefractionSurface* surfLOB = new SLSphericalRefractionSurface(7.0f, 6.0f, 32, 32, "lens bark back");
         surfLOB->buildMesh(matLOB);
+
+        cam2->addSurface(surfCF, 0.0f);
+        cam2->addSurface(surfCB, 0.5f);
+        cam2->addSurface(surfLOF, 3.6f);
+        cam2->addSurface(surfLIF, 4.2f);
+        cam2->addSurface(surfLIB, 6.7f);
+        cam2->addSurface(surfLOB, 7.2f);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        cam2->addSurface3(surfCF, 0.0f);
-        cam2->addSurface3(surfCB, 0.5f);
-        cam2->addSurface3(surfLOF, 3.6f);
-        cam2->addSurface3(surfLIF, 4.146f);
-        cam2->addSurface3(surfLIB, 6.565f);
-        cam2->addSurface3(surfLOB, 7.2f);
 
         SLNode* scene = new SLNode("Scene");
         scene->addChild(background);

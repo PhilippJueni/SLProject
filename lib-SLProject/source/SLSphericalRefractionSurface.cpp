@@ -17,6 +17,8 @@
 #include "stdafx.h"
 #include "SLSphericalRefractionSurface.h"
 
+extern SLfloat rnd01();
+
 SLSphericalRefractionSurface::SLSphericalRefractionSurface(SLfloat diameter,
     SLfloat radius,
     SLint stacks,
@@ -24,6 +26,7 @@ SLSphericalRefractionSurface::SLSphericalRefractionSurface(SLfloat diameter,
     SLstring name) : SLRevolver(name)
 {
     _diameter = diameter;
+    _radius = radius;
     
     _stacks = stacks;
     _slices = slices;
@@ -32,37 +35,46 @@ SLSphericalRefractionSurface::SLSphericalRefractionSurface(SLfloat diameter,
     _smoothLast = true;
     _revAxis.set(0, 1, 0);
 
-    SLfloat sagitta = calcSagitta(radius);    
-    if (radius > 0)
+    _accelStruct = NULL;
+
+    SLfloat sagitta = calcSagitta(_radius);
+    if (_radius > 0)
     {
-        generateLensSurface(radius, 0, 0, radius, -SL_HALFPI);
+        generateLensSurface(_radius, 0, 0, _radius, -SL_HALFPI);
     }
     else
     {
-        generateLensSurface(radius, 0, 0, radius, SL_HALFPI);
+        generateLensSurface(_radius, 0, 0, _radius, SL_HALFPI);
     }
-}
-
-SLVec3f SLSphericalRefractionSurface::getPoint(SLfloat radius, SLfloat phi)
-{
-    
-    
-    SLVec3f correspondingPoint(1,1,23);
-
-    return correspondingPoint;
 }
 
 SLVec3f SLSphericalRefractionSurface::getRandomPoint()
 {
-    //SLfloat max = (_diameter / 2) - (_diameter * 0.05);
-    //SLfloat rad = SL_random(0.0f, max);
-    //SLfloat phi = SL_random(0.0f, SL_2PI);
-    //SLfloat random = rand() % _revPoints.size();
-    //SLVec3f point = this->_revPoints[random];
-    SLVec3f point(3,4,7);
+    SLfloat alphaRAD = 2 * asin(_diameter / (2 * _radius));
+    SLfloat alphaDEG = alphaRAD * SL_RAD2DEG;
+    
+    // get random angles in the segment
+    SLfloat phiRAD = rnd01() * alphaRAD;
+    SLfloat etaRAD = rnd01() * alphaRAD*0.5;
 
+    SLfloat phiDEG = phiRAD * SL_RAD2DEG;
+    SLfloat etaDEG = etaRAD * SL_RAD2DEG;
+    SLfloat bla = calcSagitta(_radius);
+    SLfloat h = _radius - bla;
+    SLfloat diff = _radius - bla;
+
+    // cartesian coordinates
+    SLfloat x = _radius * sin(phiRAD) * cos(etaRAD);
+    SLfloat y = _radius - (_radius * sin(phiRAD) * sin(etaRAD));
+    SLfloat z = (_radius * cos(etaRAD)) - _radius;
+    SLVec3f point(x, y, z);
+
+    // transform to WS
+    point = _position + point;
     return point;    
 }
+
+
 
 /*!
 \brief Calculate the delta of the angle
