@@ -92,10 +92,17 @@ SLbool SLHumanEyeRT::renderClassic(SLSceneView* sv)
             SLRay primaryRay;
             setPrimaryRay((SLfloat)x, (SLfloat)y, &primaryRay);
 
-            //////////////////////////////////////////
-            SLCol4f color = traceClassic(&primaryRay);
-            //////////////////////////////////////////
-
+            SLCol4f color;
+            if (primaryRay.type != BLOCKED)
+            {
+                //////////////////////////////////////////
+                color = traceClassic(&primaryRay);
+                //////////////////////////////////////////
+            }
+            else
+            {
+                color.set(0,0,0);
+            }
             _img[0].setPixeliRGB(x, y, color);
 
             SLRay::avgDepth += SLRay::depthReached;
@@ -176,10 +183,12 @@ void SLHumanEyeRT::setPrimaryRay(SLfloat x, SLfloat y, SLRay* primaryRay)
         primaryRay->origin = _BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU);
     } else
     {   
+        /*
         SLVec3f primaryDir(_BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU));
         primaryDir.normalize();
         primaryRay->setDir(primaryDir);
         primaryRay->origin = _cam->position();
+        */
 
         //cout << "x: " << x << " y: " << y << " bl: " << _BL << " lr: " << _LR << " lu: " << _LU << " pxSize: " << _pxSize << endl;
 

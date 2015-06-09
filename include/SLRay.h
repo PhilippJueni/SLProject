@@ -19,7 +19,7 @@ class  SLMesh;
 
 //-----------------------------------------------------------------------------
 //! SLRayType enumeration for specifying ray type in ray tracing
-enum SLRayType {PRIMARY=0, REFLECTED=1, TRANSMITTED=2, SHADOW=3};
+enum SLRayType {PRIMARY=0, REFLECTED=1, TRANSMITTED=2, SHADOW=3, BLOCKED=4};
 
 //! Ray tracing constant for max. allowed recursion depth
 #define SL_MAXTRACE    15

@@ -16,74 +16,40 @@
 #include "SLRectangle.h"
 #include "SLTriangle.h"
 
-//#include "SLSurface.h"
-//typedef std::vector<SLSurface*>  SLVSurface;
+enum SLGullstrandCameraType { STANDARD = 0, FULL_FISHEYE = 1, CORNER_FISHEYE = 2 };
 
 //-----------------------------------------------------------------------------
 class SLGullstrandCamera : public SLCamera, public SLGLTexture
 {
 public:
-    SLGullstrandCamera(SLfloat retinaRadius, SLfloat fieldOfViewDEG, SLfloat nEyeWater);
-
-   
-    void        addSurface(SLSphericalRefractionSurface* mesh, SLfloat position = 0);
-
+    SLGullstrandCamera( SLfloat retinaRadius, 
+                        SLfloat fieldOfViewDEG, 
+                        SLfloat nEyeWater, 
+                        SLGullstrandCameraType cameraType=STANDARD);
+    void        addSurface(SLSphericalRefractionSurface* surface, SLfloat position = 0);
     void        drawMeshes(SLSceneView* sv);
     void        generateCameraRay(SLRay* primaryRay, SLVec3f lb, SLVec3f lr, SLVec3f lu, SLfloat pxSize );
-
-    // RT
-    /*
-    void        renderClassic(SLSceneView* sv);
-    void        initStats(SLint depth);
-    void        prepareImage();
-    void        setPrimaryRay(SLfloat x, SLfloat y, SLRay* primaryRay);    
-    SLbool hitRec(SLRay *ray);      
-    SLCol4f traceClassic(SLRay* ray);
-    SLCol4f shade(SLRay* ray);
-    */
-
     void refract(SLRay* primaryRay, SLSphericalRefractionSurface* surface);
-
-
-    //void    generateCameraRay(SLfloat x, SLfloat y, SLRay* primaryRay);
-    
    
 private:
-    // RT 
-    /*
-    SLSceneView* _sv;
-    SLImage     _img[6];        //!< max 6 images for cube map
-    SLuint      _texName;       //!< OpenGL texture "name" (= ID)
-    SLfloat     _pxSize;        //!< Pixel size
-    SLVec3f     _EYE;           //!< Camera position
-    SLVec3f     _LA, _LU, _LR;  //!< Camera lookat, lookup, lookright
-    
-    SLbool      _continuous;    //!< if true state goes into ready again
-    SLVec3f     _BL;            //!< Bottom left vector
-    SLuint      _next;          //!< next index to render RT
-    */
-
     SLfloat _eyeSize = 24.0f;
+    SLfloat _imgWidth = 640;
+    SLfloat _imgHeight = 480;
+    SLfloat _imagePlaneGap = 2.0f;
 
-    std::vector<SLSphericalRefractionSurface*>  _surfaces;         //!< vector of children surfaces
-    std::vector<SLNode*>  _surfNodes;         //!< vector of children surfaces
-
+    std::vector<SLSphericalRefractionSurface*>  _surfaces;      //!< vector of children surfaces
+    std::vector<SLNode*>  _surfNodes;                           //!< vector of children nodes
     SLNode* _retinaNode;
+    SLNode *_rectNode;
     SLSphericalRefractionSurface* _retina;
-
-    //SLTriangle* _retina;
     SLRectangle* _imageRectangle;
     SLfloat _hWidth;
     SLfloat _hHeight;
     SLfloat _pxSize;
-    SLfloat _imagePlaneGap;
+    SLfloat _cameraPosition;
 
-    SLVec3f transferCoords(SLfloat x, SLfloat y);
-
-    void startRT(SLRay *ray);
-    void surfaceRT(SLRay *ray, int i);
-    
-    
+    //SLVec3f transferCoords(SLfloat x, SLfloat y);
+    void cameraHERT(SLRay *ray);    
 };
 
 //-----------------------------------------------------------------------------

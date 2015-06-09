@@ -259,23 +259,16 @@ void SLRay::refractHE(SLRay* refracted)
     {
         if ( kn == hitMat->knO() )  // from air into a material
         {
-            //cout << "test 1" << endl;
             eta = kn / hitMat->knI();
-            refractedKn = hitMat->knI();
-            //cout << kn << " " << refractedKn << endl;
+            refractedKn = hitMat->knI();            
         }
         else
         {
-            // Test 3
-            if (hitKn != NULL && hitKn == hitMat->knI())
+            if (hitKn == NULL || hitKn != hitMat->knI())
             {
-                // Test 3.1                
-                //cout << "ERROR 1: " << originMat->name() << ":" << hitMat->name() << " _ " << kn << " _ " << hitMat->knO();
-            }
-            else{   // ignore new material before the current ended
-                // Test 3.2
-                hitKn = hitMat->knI(); // Save the inside kn of the hit material for later use
-                //cout << " ( x:" << x << " y:" << y << " )" << endl;
+                // ignore new material before the current ended
+                // Save the inside kn of the hit material for later use
+                hitKn = hitMat->knI(); 
             }
             eta = 1;
             refractedKn = kn;
@@ -283,38 +276,20 @@ void SLRay::refractHE(SLRay* refracted)
     }
     else // from ray kn to knO / hitKn (knI == rayKn)
     {
-        hitNormal *= -1; // Problem mit isOutside
+        hitNormal *= -1; 
 
-        if ( kn == hitMat->knI() )             // from ray kn to knO (knI = rayKn)
+        if ( kn == hitMat->knI() && hitKn != NULL ) // from ray kn to knO (knI = rayKn)
         {
-            //cout << "test 2" << endl;
-            if (hitKn != NULL) // from ray kn to hitKn
-            {
-                // Test 2.1
-                eta = kn / hitKn; // refract into previous saved material
-                refractedKn = hitKn;
-                hitKn = NULL;
-            }
-            else{   // from ray kn to knO (knI == rayKn)
-                // Test 2.2
-                eta = kn / hitMat->knO();
-                refractedKn = hitMat->knO();
-            }
+            // from ray kn to hitKn
+            eta = kn / hitKn; // refract into previous saved material
+            refractedKn = hitKn;
+            hitKn = NULL;
         }
         else
-        {
-            if (kn == hitMat->knO()) // ignore backside surface if the ray comes from the same kn 
-            {
-                // Test 4.1
-                eta = 1;
-                refractedKn = kn;
-            }
-            else{
-                // test 4.2                
-                eta = kn / hitMat->knO();
-                refractedKn = hitMat->knO();
-                //cout << "ERROR 2: " << originMat->name() <<":"<< hitMat->name() <<" _ "<< kn <<" _ "<< hitMat->knI() << endl;
-            }
+        {   // from ray kn to knO (knI == rayKn)
+            // ignore backside surface if the ray comes from the same kn (eta=1)
+            eta = kn / hitMat->knO();
+            refractedKn = hitMat->knO();
         }
     }
 

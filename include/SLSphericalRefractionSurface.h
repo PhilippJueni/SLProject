@@ -14,12 +14,15 @@ public:
                                     SLfloat radius = 1.0f,
                                     SLint stacks = 32,
                                     SLint slices = 32,
+                                    SLMaterial* mat = 0,
                                     SLstring name = "SphericalRefractionSurface");
 
     void setPosition(SLVec3f pos){ _position = pos; };
     SLVec3f getRandomPoint();
     
     ~SLSphericalRefractionSurface() { ; }
+
+    SLfloat getDiameter() { return _diameter; }
 
 private:
     void generateLensSurface(       SLfloat radius,

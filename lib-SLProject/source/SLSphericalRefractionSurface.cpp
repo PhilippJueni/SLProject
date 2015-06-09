@@ -23,6 +23,7 @@ SLSphericalRefractionSurface::SLSphericalRefractionSurface(SLfloat diameter,
     SLfloat radius,
     SLint stacks,
     SLint slices,
+    SLMaterial* mat,
     SLstring name) : SLRevolver(name)
 {
     _diameter = diameter;
@@ -46,6 +47,8 @@ SLSphericalRefractionSurface::SLSphericalRefractionSurface(SLfloat diameter,
     {
         generateLensSurface(_radius, 0, 0, _radius, SL_HALFPI);
     }
+
+    buildMesh(mat);
 }
 
 SLVec3f SLSphericalRefractionSurface::getRandomPoint()
@@ -161,33 +164,18 @@ void SLSphericalRefractionSurface::generateLensSurface(SLfloat radius,
         // change angle
         currentAlphaRAD += dAlphaRAD;
 
+        // set end point
         if ((i + 1 == halfStacks))
         {
-            // x wird grösser bot
-            if (oldX <= x)
-            {
-                // y wird grösser bot konvex
-                if (oldY <= y)
-                { // 1
-                    x = _diameter / 2;
-                    y = sagitta;
-                }
-                else{ // y wird kleiner 2 bot konkav
-                    x = _diameter / 2;
-                    y = -sagitta;
-                }
+            
+            if (oldY <= y)
+            { // y increases - konvex
+                x = _diameter / 2;
+                y = sagitta;
             }
-            else{ // x wird kleiner top
-                // y wird grösser top konvex
-                if (oldY <= y)
-                { // 3
-                    x = 0;
-                    y = sagitta;
-                }
-                else{ // y wird kleiner 4 top konkav
-                    x = 0;
-                    y = 0;
-                }
+            else{ // y decreases - konkav
+                x = _diameter / 2;
+                y = -sagitta;
             }
         }
         else
@@ -202,7 +190,7 @@ void SLSphericalRefractionSurface::generateLensSurface(SLfloat radius,
         p.x = x;
         p.y = y;
         p.z = 0;
-        _revPoints.push_back(p);
+        _revPoints.push_back(p);if (_diameter > 20)cout << p << endl;
     }
 }
 
