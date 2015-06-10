@@ -2627,7 +2627,7 @@ void SLScene::onLoad(SLSceneView* sv, SLCmd sceneName)
         light1->attenuation(1);
         //light1->attenuation(1.0f, 0.0f, 0.8f);
 
-        SLGLTexture* texC = new SLGLTexture("VisionExample.png");
+        SLGLTexture* texC = new SLGLTexture("five-franc.png");
         SLMaterial* matBack = new SLMaterial("matBack", texC);
         SLNode* background = new SLNode(new SLRectangle(SLVec2f(-40, -40), SLVec2f(40, 40), 1, 1, "Rect", matBack), "Background");
         background->translate(0, 0, -3.0f, TS_Local);

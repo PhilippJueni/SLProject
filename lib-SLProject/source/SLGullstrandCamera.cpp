@@ -41,7 +41,7 @@ SLGullstrandCamera::SLGullstrandCamera( SLfloat retinaRadius,
                                                 matRetina,
                                                 "retina");
     _retinaNode = new SLNode( _retina, _retina->name() );
-    //_retinaNode->rotate(-90, 1, 0, 0, TS_Local);
+    _retinaNode->rotate(-90, 1, 0, 0, TS_Local);
     _retinaNode->translate(0, -_eyeSize, 0, TS_Local);
     addChild(_retinaNode);    
     
