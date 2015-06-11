@@ -1,7 +1,7 @@
 //#############################################################################
 //  File:      SLHumanEyeRT.h
-//  Author:    Marcus Hudritsch
-//  Date:      July 2014
+//  Author:    Philipp Jüni
+//  Date:      June 2015
 //  Copyright: 2002-2014 Marcus Hudritsch
 //             This software is provide under the GNU General Public License
 //             Please visit: http://opensource.org/licenses/GPL-3.0
@@ -25,7 +25,8 @@ class SLCamera;
 //-----------------------------------------------------------------------------
 //! SLHumanEyeRT hold all the methods for Whitted style Ray Tracing.
 /*!      
-SLHumanEyeRT implements the methods render, eyeToPixel, trace and shade for
+This class is similar to the SLRaytracer Class
+SLRaytracer implements the methods render, eyeToPixel, trace and shade for
 classic Whitted style Ray Tracing. This class is a friend class of SLScene and
 can access via the pointer _s all members of SLScene. The scene traversal for
 the ray intersection tests is done within the intersection method of all nodes. 

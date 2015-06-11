@@ -1317,15 +1317,16 @@ SLbool SLSceneView::onCommand(const SLCmd cmd)
         case cmdSceneRTMuttenzerBox:
         case cmdSceneRTSoftShadows:
         case cmdSceneRTDoF:
-        case cmdSceneRTLens:
-        case cmdSceneRTEye:
-        case cmdSceneRTEye3:
+        case cmdSceneRTLens:    
+
+        case cmdSceneRTCube:
+        case cmdSceneRTSpherical:
         case cmdSceneRTTriangle:
-        case cmdSceneRTTriangle2:
-        case cmdSceneRTTriangle3:
-        case cmdSceneRTTriangle4:
-        case cmdSceneRTTriangle5:
-        case cmdSceneRTEye2:        s->onLoad(this, (SLCmd)cmd); return false;
+        case cmdSceneRTTriangleGull:
+        case cmdSceneRTGullstrandHERT:
+        case cmdSceneRTGullstrandHERTGlas:
+        case cmdSceneRTGullstrandVisualisation:
+                                    s->onLoad(this, (SLCmd)cmd); return false;
 
         case cmdUseSceneViewCamera: switchToSceneViewCamera(); return true;
         case cmdStatsToggle:        _showStats = !_showStats; return true;
@@ -1597,21 +1598,27 @@ void SLSceneView::build2DMenus()
 
     mn3 = new SLButton(this, "Ray tracing >", f);
     mn2->addChild(mn3);
+    mn3->addChild(new SLButton(this, "Gullstrand visualisation", f, cmdSceneRTGullstrandVisualisation, true, curS == cmdSceneRTGullstrandVisualisation, mn2));
+    mn3->addChild(new SLButton(this, "Gullstrand HERT with glasses", f, cmdSceneRTGullstrandHERTGlas, true, curS == cmdSceneRTGullstrandHERTGlas, mn2));
+    mn3->addChild(new SLButton(this, "Gullstrand HERT", f, cmdSceneRTGullstrandHERT, true, curS == cmdSceneRTGullstrandHERT, mn2));
+    mn3->addChild(new SLButton(this, "Triangle Gullstrand", f, cmdSceneRTTriangleGull, true, curS == cmdSceneRTTriangleGull, mn2));
+    mn3->addChild(new SLButton(this, "Spherical", f, cmdSceneRTSpherical, true, curS == cmdSceneRTSpherical, mn2));
+    mn3->addChild(new SLButton(this, "Triangle", f, cmdSceneRTTriangle, true, curS == cmdSceneRTTriangle, mn2));
+    mn3->addChild(new SLButton(this, "Cube", f, cmdSceneRTCube, true, curS == cmdSceneRTCube, mn2));
+    mn3->addChild(new SLButton(this, "Lens Test", f, cmdSceneRTLens, true, curS == cmdSceneRTLens, mn2));
     mn3->addChild(new SLButton(this, "Spheres", f, cmdSceneRTSpheres, true, curS==cmdSceneRTSpheres, mn2));
     mn3->addChild(new SLButton(this, "Muttenzer Box", f, cmdSceneRTMuttenzerBox, true, curS==cmdSceneRTMuttenzerBox, mn2));
     mn3->addChild(new SLButton(this, "Soft Shadows", f, cmdSceneRTSoftShadows, true, curS==cmdSceneRTSoftShadows, mn2));
     mn3->addChild(new SLButton(this, "Depth of Field", f, cmdSceneRTDoF, true, curS==cmdSceneRTDoF, mn2));
-    mn3->addChild(new SLButton(this, "Lens Test", f, cmdSceneRTLens, true, curS==cmdSceneRTLens, mn2));
-    mn3->addChild(new SLButton(this, "Eye Test", f, cmdSceneRTEye, true, curS == cmdSceneRTEye, mn2));
-    mn3->addChild(new SLButton(this, "Ray Test", f, cmdSceneRTEye2, true, curS == cmdSceneRTEye2, mn2));
-    mn3->addChild(new SLButton(this, "Cube RT", f, cmdSceneRTEye3, true, curS == cmdSceneRTEye3, mn2));
-    mn3->addChild(new SLButton(this, "Triangle RT", f, cmdSceneRTTriangle, true, curS == cmdSceneRTTriangle, mn2));
-    mn3->addChild(new SLButton(this, "Triangle RT 2", f, cmdSceneRTTriangle2, true, curS == cmdSceneRTTriangle2, mn2));
-    mn3->addChild(new SLButton(this, "Triangle RT 3", f, cmdSceneRTTriangle3, true, curS == cmdSceneRTTriangle3, mn2));
-    mn3->addChild(new SLButton(this, "Triangle RT 4", f, cmdSceneRTTriangle4, true, curS == cmdSceneRTTriangle4, mn2));
-    mn3->addChild(new SLButton(this, "Triangle RT 5", f, cmdSceneRTTriangle5, true, curS == cmdSceneRTTriangle5, mn2));
     
-
+    
+    
+    
+    
+    
+    
+    
+   
     mn2 = new SLButton(this, "Camera >", f); mn1->addChild(mn2);
    
     mn2->addChild(new SLButton(this, "Reset", f, cmdCamReset));

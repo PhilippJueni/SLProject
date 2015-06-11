@@ -843,17 +843,14 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 
             // calculate v parameter and test bounds
             v = Q.dot(ray->dirOS);
-            if (v < 0.0f || u + v > det)
-            {
-                return false;
-            }
-            else{
-                SLfloat test = 2;
-            }
+            if (v < 0.0f || u + v > det) return false;
+            
+            
 
             // calculate intersection distance t
             inv_det = 1.0f / det;
             t = e2.dot(Q) * inv_det;
+            if (name() == "retina") t = det;
 
             // if intersection is closer replace ray intersection parameters
             if (t > ray->length || t < 0.0f) return false;
@@ -889,7 +886,6 @@ SLbool SLMesh::hitTriangleOS(SLRay* ray, SLNode* node, SLuint iT)
 
             // calculate t, ray intersects triangle
             t = e2.dot(Q) * inv_det;
-            if (name() == "retina") t = -inv_det;
 
             // if intersection is closer replace ray intersection parameters
             if (t > ray->length || t < 0.0f) return false;

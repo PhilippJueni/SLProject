@@ -46,8 +46,6 @@ class SLCamera: public SLNode
 
             void            drawMeshes      (SLSceneView* sv);
 
-    virtual void            generateCameraRay(SLRay* primaryRay, SLVec3f, SLVec3f, SLVec3f,SLfloat) {}
-
     virtual SLbool          camUpdate       (SLfloat timeMS);
             void            preShade        (SLRay* ray){(void)ray;}
             void            calcMinMax      (SLVec3f &minV, SLVec3f &maxV);
@@ -71,6 +69,9 @@ class SLCamera: public SLNode
                                              const SLint x2, const SLint y2);
     virtual SLbool          onKeyPress      (const SLKey key, const SLKey mod);
     virtual SLbool          onKeyRelease    (const SLKey key, const SLKey mod);
+
+            // Generate camera specific primaryRay (used in SLGullstrandCamera)
+    virtual void            generateCameraRay(SLRay*, SLSceneView*) {}
                             
             void            eyeToPixelRay   (SLfloat x, SLfloat y, SLRay* ray);  
             SLbool          isInFrustum     (SLAABBox* aabb);

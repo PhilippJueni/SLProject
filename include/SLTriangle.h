@@ -1,9 +1,23 @@
+//#############################################################################
+//  File:      SLTriangle.cpp
+//  Author:    Philipp Jüni
+//  Date:      June 2015
+//  Codestyle: https://github.com/cpvrlab/SLProject/wiki/Coding-Style-Guidelines
+//  Copyright: 2002-2014 Marcus Hudritsch
+//             This software is provide under the GNU General Public License
+//             Please visit: http://opensource.org/licenses/GPL-3.0
+//#############################################################################
+
 #ifndef SLTRIANGLE_H
 #define SLTRIANGLE_H
 
 #include "SLMesh.h"
 
-
+//-----------------------------------------------------------------------------
+//! Creates a triangle mesh wit 3 vertexes
+/*!
+Creates the simplest possible mesh.
+*/
 class SLTriangle : public SLMesh
 {
 public:

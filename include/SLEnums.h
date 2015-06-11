@@ -89,14 +89,14 @@ enum SLCmd
     cmdSceneRTSoftShadows,
     cmdSceneRTDoF,
     cmdSceneRTLens,
-    cmdSceneRTEye,
-    cmdSceneRTEye2,
-    cmdSceneRTEye3,
-    cmdSceneRTTriangle,
-    cmdSceneRTTriangle2,
-    cmdSceneRTTriangle3,
-    cmdSceneRTTriangle4,
-    cmdSceneRTTriangle5,
+
+    cmdSceneRTCube,
+    cmdSceneRTSpherical,
+    cmdSceneRTTriangle,    
+    cmdSceneRTTriangleGull,
+    cmdSceneRTGullstrandHERT,
+    cmdSceneRTGullstrandHERTGlas,
+    cmdSceneRTGullstrandVisualisation,
 
     cmdMultiSampleToggle,// Toggles multisampling
     cmdDepthTestToggle,  // Toggles the depth test flag

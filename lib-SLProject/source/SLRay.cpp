@@ -296,19 +296,17 @@ void SLRay::refractHE(SLRay* refracted)
     
     // Bec's formula is a little faster (from Ray Tracing News) 
     // hitNormal = Surface normal at intersection point
-    SLbool bla0 = hitDir;                       // true         // true
-    SLfloat c1 = hitNormal * -dir;              // 0.99999      -0.99999
-    SLfloat w = eta * c1;                       // 0.66666      -0.99999
-    SLfloat c2 = 1.0f + (w - eta) * (w + eta);  // 0.99999      0.99999
+    SLfloat c1 = hitNormal * -dir;              
+    SLfloat w = eta * c1;                       
+    SLfloat c2 = 1.0f + (w - eta) * (w + eta);  
 
     if (c2 >= 0.0f)
-    {                                       // T1               T3
-        SLfloat bla1 = (w - sqrt(c2));      // -0.33333         -1.999999
-        SLVec3f bla2 = bla1 * hitNormal;    // -0,-0,-0.33333   0,0,1.999999
-        SLVec3f bla3 = eta * dir;           // 0,0,-0.66666     0,0,-0.99999
-        T = bla3 + bla2;                    // 0,0,-0.99999     0,0,0.999999
+    {                                       
+        SLfloat a = (w - sqrt(c2));      
+        SLVec3f b = a * hitNormal;    
+        SLVec3f c = eta * dir;        
+        T = b + c;                    
         
-        //T = eta * dir + (w - sqrt(c2)) * hitNormal;     
         refracted->contrib = contrib * hitMat->kt();    
         refracted->type = TRANSMITTED;                  
         refracted->kn = refractedKn;

@@ -1,7 +1,7 @@
 //#############################################################################
 //  File:      SLTriangle.cpp
 //  Author:    Philipp Jüni
-//  Date:      July 2014
+//  Date:      June 2015
 //  Codestyle: https://github.com/cpvrlab/SLProject/wiki/Coding-Style-Guidelines
 //  Copyright: 2002-2014 Marcus Hudritsch
 //             This software is provide under the GNU General Public License
@@ -13,9 +13,20 @@
 #include <debug_new.h>        // memory leak detector
 #endif
 
-
 #include "SLTriangle.h"
 
+//-----------------------------------------------------------------------------
+/*!
+Constructor for the triangle mesh
+\param material 
+\param name
+\param v0 vector to vertex 0 - default (0, 0, 0)
+\param v1 vector to vertex 1 - default (1, 0, 0)
+\param v2 vector to vertex 2 - default (0, 1, 0)
+\param t0 texture vector 0 - default (0, 0)
+\param t1 texture vector 0 - default (1, 0)
+\param z2 texture vector 0 - default (0, 1)
+*/
 SLTriangle::SLTriangle(SLMaterial *material, SLstring name, SLVec3f v0, SLVec3f v1, SLVec3f v2, SLVec2f t0, SLVec2f t1, SLVec2f t2 ) : SLMesh(name)
 {
     v[0] = v0;
@@ -33,9 +44,12 @@ SLTriangle::SLTriangle(SLMaterial *material, SLstring name, SLVec3f v0, SLVec3f 
     buildMesh(mat);
 }
 
+/*!
+SLRevolver::buildMesh builds the underlying mesh data structure
+*/
 void SLTriangle::buildMesh(SLMaterial* material)
 {
-    deleteData(); // löscht die Daten in SLMesh->deleteData();
+    deleteData(); // SLMesh->deleteData();
 
     numV = 3; //!< Number of elements in P, N, C, T & Tc
     numI = 3; //!< Number of elements in I16 or I32

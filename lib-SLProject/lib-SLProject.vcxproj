@@ -397,7 +397,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\MyRectangle.h" />
     <ClInclude Include="..\include\SL.h" />
     <ClInclude Include="..\include\SLAccelStruct.h" />
     <ClInclude Include="..\include\SLAnimation.h" />
@@ -482,7 +481,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SLRefractionSurface.cpp" />
-    <ClCompile Include="source\MyRectangle.cpp" />
     <ClCompile Include="source\SLGullstrandCamera.cpp" />
     <ClCompile Include="source\SLHumanEyeRT.cpp" />
     <ClCompile Include="source\SLLens2.cpp" />

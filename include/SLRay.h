@@ -109,7 +109,7 @@ class SLRay
             SLint       hitTriangle;   //!< Points to the intersected triangle
             SLMaterial* hitMat;        //!< Points to material of intersected node
             SLbool      hitDir;        //!< true if the hited side is the outside of the surface, false inside
-            SLfloat     hitKn = NULL;         
+            SLfloat     hitKn = NULL;  //!< saves a hidden surface that is not entered yet because the ray is already inside a mat (intersection)
             
             // Members set before shading
             SLVec3f     hitPoint;      //!< Point of intersection

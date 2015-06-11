@@ -34,8 +34,6 @@ using namespace std::chrono;
 //-----------------------------------------------------------------------------
 SLHumanEyeRT::SLHumanEyeRT()
 {  
-    // beim programmstrat
-
     name("myCoolRaytracer");
    
     _state = rtReady;
@@ -100,7 +98,7 @@ SLbool SLHumanEyeRT::renderClassic(SLSceneView* sv)
                 //////////////////////////////////////////
             }
             else
-            {
+            {   //set color black to create fisheye
                 color.set(0,0,0);
             }
             _img[0].setPixeliRGB(x, y, color);
@@ -153,8 +151,6 @@ SLCol4f SLHumanEyeRT::traceClassic(SLRay* ray)
             if (ray->hitMat->kt())
             {   SLRay refracted;
                 ray->refractHE(&refracted);
-
-                //color += ray->hitMat->kt() * traceClassic(&refracted);
                 SLfloat kt = ray->hitMat->kt();         
                 SLCol4f tC = traceClassic(&refracted);  
                 color += kt * tC;                       
@@ -183,22 +179,13 @@ void SLHumanEyeRT::setPrimaryRay(SLfloat x, SLfloat y, SLRay* primaryRay)
         primaryRay->origin = _BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU);
     } else
     {   
-        /*
         SLVec3f primaryDir(_BL + _pxSize*((SLfloat)x*_LR + (SLfloat)y*_LU));
         primaryDir.normalize();
         primaryRay->setDir(primaryDir);
         primaryRay->origin = _cam->position();
-        */
 
-        //cout << "x: " << x << " y: " << y << " bl: " << _BL << " lr: " << _LR << " lu: " << _LU << " pxSize: " << _pxSize << endl;
-
-        // bl - bottom left vector
-        // lr - lookright
-        // lu - lookup
-        // pxSize - pixel size
-        _cam->generateCameraRay(primaryRay,_BL,_LR,_LU,_pxSize);
-
-        
+        // in gullstrand camera, the primaryRay goes through eye surfaces
+        _cam->generateCameraRay(primaryRay,_sv);
     }
 }
 //-----------------------------------------------------------------------------
